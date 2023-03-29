@@ -3,26 +3,74 @@
   <a href="https://authjs.dev" target="_blank">
     <img height="64px" src="https://authjs.dev/img/logo/logo-sm.png" />
   </a>
-  <a href="https://sequelize.org" target="_blank">
-    <img height="64px" src="https://authjs.dev/img/adapters/sequelize.svg"/>
+  <a href="https://github.com/sidorares/node-mysql2#readme" target="_blank">
+    <img height="64px" src="https://www.mysql.com/common/logos/logo-mysql-170x115.png"/>
   </a>
-  <h3 align="center"><b>Sequelize Adapter</b> - NextAuth.js / Auth.js</a></h3>
+  <h3 align="center"><b>Mysql2 Adapter</b> - NextAuth.js / Auth.js</a></h3>
   <p align="center" style="align: center;">
-    <a href="https://npm.im/@next-auth/sequelize-adapter">
-      <img src="https://img.shields.io/badge/TypeScript-blue?style=flat-square" alt="TypeScript" />
-    </a>
-    <a href="https://npm.im/@next-auth/sequelize-adapter">
-      <img alt="npm" src="https://img.shields.io/npm/v/@next-auth/sequelize-adapter?color=green&label=@next-auth/sequelize-adapter&style=flat-square">
-    </a>
-    <a href="https://www.npmtrends.com/@next-auth/sequelize-adapter">
-      <img src="https://img.shields.io/npm/dm/@next-auth/sequelize-adapter?label=%20downloads&style=flat-square" alt="Downloads" />
-    </a>
-    <a href="https://github.com/nextauthjs/next-auth/stargazers">
-      <img src="https://img.shields.io/github/stars/nextauthjs/next-auth?style=flat-square" alt="Github Stars" />
-    </a>
+
   </p>
 </p>
 
 ---
 
-Check out the documentation at [authjs.dev](https://authjs.dev/reference/adapter/sequelize).
+https://planetscale.com/docs/learn/operating-without-foreign-key-constraints
+https://planetscale.com/blog/why-we-chose-nanoids-for-planetscales-api
+
+
+
+CREATE TABLE `users` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `public_id` varchar(12) NOT NULL,  
+  `name` varchar(255) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `email_verified` datetime DEFAULT NULL,
+  `image` varchar(255) DEFAULT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `public_id` (`public_id`),
+  UNIQUE KEY `email` (`email`)
+);
+
+CREATE TABLE `accounts` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `user_id` bigint DEFAULT NULL,
+  `type` varchar(255) NOT NULL,
+  `provider` varchar(255) NOT NULL,
+  `provider_account_id` varchar(255) NOT NULL,
+  `refresh_token` varchar(255) DEFAULT NULL,
+  `access_token` varchar(255) DEFAULT NULL,
+  `expires_at` int DEFAULT NULL,
+  `token_type` varchar(255) DEFAULT NULL,
+  `scope` varchar(255) DEFAULT NULL,
+  `id_token` text,
+  `session_state` varchar(255) DEFAULT NULL,
+  `oauth_token_secret` varchar(255) DEFAULT NULL,
+  `oauth_token` varchar(255) DEFAULT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`)
+);
+
+CREATE TABLE `sessions` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `user_id` bigint NOT NULL,
+  `expires` datetime NOT NULL,
+  `session_token` varchar(255) NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `sessionToken` (`session_token`),
+  KEY `user_id` (`user_id`)
+);
+
+CREATE TABLE `verification_tokens` (
+  `identifier` varchar(255) NOT NULL,
+  `token` varchar(255) NOT NULL,
+  `expires` datetime NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`token`)
+);
