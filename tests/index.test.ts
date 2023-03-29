@@ -4,13 +4,12 @@ import * as mysql from 'mysql2/promise';
 import { runBasicTests } from "@next-auth/adapter-test";
 import Mysql2Adapter from "../src";
 
-async function getConnection() : Promise<mysql.Connection> {
-  const connection = await mysql.createConnection({
+function getConnection() : Promise<mysql.Connection> {
+  return mysql.createConnection({
     host: 'localhost',
     user: 'root',
     database: 'authjs_test'
   });
-  return connection;
 }
 
 
@@ -19,6 +18,8 @@ runBasicTests({
   adapter: Mysql2Adapter(getConnection),
   db: {
     connect: async () => {
+      const conn = await getConnection();
+      await conn.execute('truncate table users');
       return null; //await sequelize.sync({ force: true })
     },
     verificationToken: async (where) => {
@@ -28,8 +29,15 @@ runBasicTests({
       // return verificationToken?.get({ plain: true }) || null
       return null;
     },
-    user: async (id) => {
-      return null;
+    user: async (publicId) => {
+      console.log('test find user')
+      console.log({publicId})
+      const conn = await getConnection();
+      const [rows, fields] = await conn.query("select * from users where public_id = ?", [publicId])
+
+console.log({rows, fields })
+
+      return rows[0];
       // const user = await sequelize.models.user.findByPk(id)
 
       // return user?.get({ plain: true }) || null

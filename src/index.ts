@@ -25,7 +25,7 @@ import type {
 
 //// import { Sequelize, Model, ModelCtor } from "sequelize"
 
-import * as mysql from 'mysql2/promise';
+import {Connection} from 'mysql2/promise';
 import { customAlphabet, urlAlphabet } from 'nanoid';
 
 // import * as defaultModels from "./models"
@@ -147,7 +147,7 @@ const nanoid = customAlphabet(urlAlphabet, 12);
 
 
 export default function Mysql2Adapter(
-  getConnection: () => Promise<mysql.Connection>
+  getConnection: () => Promise<Connection>
 ): Adapter {
   // const { User, Account, Session, VerificationToken } = {
   //   User:
@@ -201,26 +201,47 @@ export default function Mysql2Adapter(
   // Account.belongsTo(User, { onDelete: "cascade" })
   // Session.belongsTo(User, { onDelete: "cascade" })
 
+  async function execute(sql: string, values: any[]) {
+    console.log({sql, values})
+    const conn = await getConnection();
+    const result = await conn.execute(sql, values);
+  }
+
+  async function query(sql: string, values: any[]) {
+    console.log({sql, values})
+    const conn = await getConnection();
+    const [rows, fields] = await conn.query(sql, values);
+
+    console.log({rows, fields})
+
+    return rows;
+  }
+
   return {
     async createUser(user) {
-      const now = Date.now();
-      const publicId = await nanoid()
-      const conn = await getConnection();
-
-      const addUser = await conn.execute(
+      const publicId = nanoid()
+    
+      await execute(
         "INSERT INTO users (public_id, name, email, email_verified, image, created_at, updated_at) " +
-        "VALUES (?,?,?,?,?,?,?)",
-        [publicId, user.name, user.email, user.emailVerified, user.email, now, now],
+        "VALUES (?,?,?,?,?,NOW(),NOW())",
+        [publicId, user.name, user.email, user.emailVerified, user.email],
       )
-
-      console.log({addUser})
-
+      
       return {
         id: publicId,
-        ...user
+        name: user.name,
+        email: user.email,
+        emailVerified: user.emailVerified
       };
     },
-    async getUser(id) {
+    async getUser(publicId) {
+
+
+      const rows = await query("select * from users where public_id = ?", [publicId]);
+
+      console.log('getUser',{rows})
+
+
       throw new Error()
       // await sync()
 
