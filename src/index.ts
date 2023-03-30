@@ -25,12 +25,18 @@ import type {
 
 //// import { Sequelize, Model, ModelCtor } from "sequelize"
 
-import {Connection} from 'mysql2/promise';
-import { customAlphabet, urlAlphabet } from 'nanoid';
+import { Connection, RowDataPacket } from 'mysql2/promise';
+
+import { Awaitable } from "next-auth";
+
+import {AccountRecord, SessionRecord, UserRecord, VerificationTokenRecord} from './types'
+import { buildUnitOfWork } from "./db";
 
 // import * as defaultModels from "./models"
 
 // export { defaultModels as models }
+
+
 
 // @see https://sequelize.org/master/manual/typescript.html
 // interface AccountInstance
@@ -143,7 +149,7 @@ import { customAlphabet, urlAlphabet } from 'nanoid';
  * ```
  */
 
-const nanoid = customAlphabet(urlAlphabet, 12);
+
 
 
 export default function Mysql2Adapter(
@@ -201,48 +207,41 @@ export default function Mysql2Adapter(
   // Account.belongsTo(User, { onDelete: "cascade" })
   // Session.belongsTo(User, { onDelete: "cascade" })
 
-  async function execute(sql: string, values: any[]) {
-    console.log({sql, values})
-    const conn = await getConnection();
-    const result = await conn.execute(sql, values);
-  }
-
-  async function query(sql: string, values: any[]) {
-    console.log({sql, values})
-    const conn = await getConnection();
-    const [rows, fields] = await conn.query(sql, values);
-
-    console.log({rows, fields})
-
-    return rows;
-  }
+  const db = buildUnitOfWork(getConnection);
 
   return {
     async createUser(user) {
-      const publicId = nanoid()
-    
-      await execute(
-        "INSERT INTO users (public_id, name, email, email_verified, image, created_at, updated_at) " +
-        "VALUES (?,?,?,?,?,NOW(),NOW())",
-        [publicId, user.name, user.email, user.emailVerified, user.email],
-      )
-      
-      return {
-        id: publicId,
+
+      const userRecord = await db.users.create({
         name: user.name,
         email: user.email,
-        emailVerified: user.emailVerified
+        email_verified: user.emailVerified,
+        image: user.image
+      })
+
+      if (userRecord == null) 
+        throw new Error("creaing user failed!");
+
+      return {
+        id: userRecord.public_id,
+        name: userRecord.name,
+        email: userRecord.email,
+        emailVerified: userRecord.email_verified
       };
     },
     async getUser(publicId) {
 
 
-      const rows = await query("select * from users where public_id = ?", [publicId]);
+      const user = await queryOne<UserRecord>("select * from users where public_id = ?", [publicId]);
 
-      console.log('getUser',{rows})
+      if (user == null) return null;
 
-
-      throw new Error()
+      return {
+        id: user.public_id,
+        name: user.name,
+        email: user.email,
+        emailVerified: user.email_verified
+      };
       // await sync()
 
       // const userInstance = await User.findByPk(id)
@@ -250,7 +249,16 @@ export default function Mysql2Adapter(
       // return userInstance?.get({ plain: true }) ?? null
     },
     async getUserByEmail(email) {
-      throw new Error()
+      const user = await queryOne<UserRecord>("select * from users where email = ?", [email]);
+
+      if (user == null) return null;
+
+      return {
+        id: user.public_id,
+        name: user.name,
+        email: user.email,
+        emailVerified: user.email_verified
+      };
       // await sync()
 
       // const userInstance = await User.findOne({
@@ -260,7 +268,25 @@ export default function Mysql2Adapter(
       // return userInstance?.get({ plain: true }) ?? null
     },
     async getUserByAccount({ provider, providerAccountId }) {
-      throw new Error()
+
+
+      const account = await queryOne<AccountRecord>(
+          "select * from accounts where provider = ? and provider_account_id = ?", 
+          [provider, providerAccountId]);
+
+      if (account == null) return null;
+
+      const user = await queryOne<UserRecord>("select * from users where id = ?", [account.user_id]);
+
+      if (user == null) return null;
+
+      return {
+        id: user.public_id,
+        name: user.name,
+        email: user.email,
+        emailVerified: user.email_verified
+      };
+
       // await sync()
 
       // const accountInstance = await Account.findOne({

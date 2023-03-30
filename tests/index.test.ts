@@ -3,6 +3,7 @@ import * as mysql from 'mysql2/promise';
 
 import { runBasicTests } from "@next-auth/adapter-test";
 import Mysql2Adapter from "../src";
+import { buildUnitOfWork } from '../src/db';
 
 function getConnection() : Promise<mysql.Connection> {
   return mysql.createConnection({
@@ -13,6 +14,8 @@ function getConnection() : Promise<mysql.Connection> {
 }
 
 
+const db = buildUnitOfWork(getConnection);
+
 
 runBasicTests({
   adapter: Mysql2Adapter(getConnection),
@@ -20,7 +23,6 @@ runBasicTests({
     connect: async () => {
       const conn = await getConnection();
       await conn.execute('truncate table users');
-      return null; //await sequelize.sync({ force: true })
     },
     verificationToken: async (where) => {
       // const verificationToken =
@@ -30,26 +32,35 @@ runBasicTests({
       return null;
     },
     user: async (publicId) => {
-      console.log('test find user')
-      console.log({publicId})
-      const conn = await getConnection();
-      const [rows, fields] = await conn.query("select * from users where public_id = ?", [publicId])
+      console.log(`test find user with id ${publicId}`)
+      const user = db.users.getByPublicId(publicId);
 
-console.log({rows, fields })
-
-      return rows[0];
+      return user;
       // const user = await sequelize.models.user.findByPk(id)
 
       // return user?.get({ plain: true }) || null
     },
     account: async (where) => {
-      return null;
+      console.log(`test find account with provider ${where.provider}/${where.providerAccountId}`)
+      const conn = await getConnection();
+      const [rows] = await conn.query(
+          "select * from accounts where provider = ? and provider_account_id = ?", 
+          [where.provider, where.providerAccountId])      
+      return rows[0];
       // const account = await sequelize.models.account.findOne({ where })
 
       // return account?.get({ plain: true }) || null
     },
     session: async (sessionToken) => {
-      return null;
+      console.log(`test find session with token ${sessionToken}`)
+      const conn = await getConnection();
+      const [rows] = await conn.query(
+          "select * from sessions where session_token = ?", 
+          [sessionToken])    
+          
+    console.log({row: rows[0]})          
+
+      return rows[0];
       // const session = await sequelize.models.session.findOne({
       //   where: { sessionToken },
       // })
