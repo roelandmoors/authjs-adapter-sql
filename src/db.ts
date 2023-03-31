@@ -12,7 +12,6 @@ export interface SqlHelpers {
 
 function buildSqlHelpers(getConnection: () => Promise<Connection>) : SqlHelpers {
     const execute = async (sql: string, values: any[]) :Promise<ResultSetHeader> => {
-        console.log({ sql, values })
         const conn = await getConnection();
         const result = await conn.execute(sql, values) as ResultSetHeader[];
         await conn.end();
@@ -23,7 +22,6 @@ function buildSqlHelpers(getConnection: () => Promise<Connection>) : SqlHelpers 
         const conn = await getConnection();
         const [rows] = await conn.query<T[] & RowDataPacket[][]>(sql, values);
         await conn.end();
-        console.log({ sql, values, count: rows.length, rows })
         return rows;
     }
     
@@ -44,8 +42,6 @@ export function buildUnitOfWork(getConnection: () => Promise<Connection>) {
         sessions: new SessionRepo(sqlHelpers),
         accounts: new AccountRepo(sqlHelpers),
         verificationTokens: new VerificationTokenRepo(sqlHelpers),
-        helpers: sqlHelpers
+        raw: sqlHelpers
     }
-
 }
-

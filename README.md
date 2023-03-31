@@ -20,22 +20,20 @@ https://planetscale.com/blog/why-we-chose-nanoids-for-planetscales-api
 
 
 CREATE TABLE `users` (
-  `id` bigint NOT NULL AUTO_INCREMENT,
-  `public_id` varchar(12) NOT NULL,  
+  `id` varchar(12) NOT NULL,
   `name` varchar(255) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
-  `email_verified` datetime DEFAULT NULL,
+  `email_verified` datetime(6) DEFAULT NULL,
   `image` varchar(255) DEFAULT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `public_id` (`public_id`),
   UNIQUE KEY `email` (`email`)
 );
 
 CREATE TABLE `accounts` (
   `id` bigint NOT NULL AUTO_INCREMENT,
-  `user_id` bigint DEFAULT NULL,
+  `user_id` varchar(12) DEFAULT NULL,
   `type` varchar(255) NOT NULL,
   `provider` varchar(255) NOT NULL,
   `provider_account_id` varchar(255) NOT NULL,
@@ -56,7 +54,7 @@ CREATE TABLE `accounts` (
 
 CREATE TABLE `sessions` (
   `id` bigint NOT NULL AUTO_INCREMENT,
-  `user_public_id` varchar(12) NOT NULL,
+  `user_id` varchar(12) NOT NULL,
   `expires` datetime NOT NULL,
   `session_token` varchar(255) NOT NULL,
   `created_at` datetime NOT NULL,

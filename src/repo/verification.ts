@@ -33,7 +33,7 @@ export class VerificationTokenRepo {
 
     async create(identifier:string, token:string, expires: Date): Promise<VerificationTokenRecord | null> {
         await this.sql.execute(
-            "INSERT INTO verification_tokens (identifier, token, expires, created_at, updated_at) " +
+            "insert into verification_tokens (identifier, token, expires, created_at, updated_at) " +
             "VALUES (?,?,?,NOW(),NOW())",
             [identifier, token, expires]);
         return await this.getByToken(token, identifier);

@@ -23,7 +23,10 @@ runBasicTests({
   adapter: Mysql2Adapter(getConnection),
   db: {
     connect: async () => {
-      await db.helpers.execute('truncate table users', [])
+      await db.raw.execute('truncate table users', [])
+      await db.raw.execute('truncate table accounts', [])
+      await db.raw.execute('truncate table sessions', [])
+      await db.raw.execute('truncate table verification_tokens', [])
     },
 
     verificationToken: async (where) => {
@@ -32,8 +35,8 @@ runBasicTests({
       return convertVerificationToken(token);
     },
 
-    user: async (publicId) => {
-      const userRecord = await db.users.getByPublicId(publicId);  
+    user: async (id) => {
+      const userRecord = await db.users.getById(id);  
       if (userRecord == null) return null    
       return convertUser(userRecord);
     },

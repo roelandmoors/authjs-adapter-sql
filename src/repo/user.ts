@@ -6,8 +6,7 @@ import { AdapterUser } from "next-auth/adapters";
 const nanoid = customAlphabet(urlAlphabet, 12);
 
 export interface UserRecord {
-    id: number
-    public_id: string;
+    id: string
     name: string | null | undefined;
     email: string
     email_verified: Date | null;
@@ -17,8 +16,9 @@ export interface UserRecord {
 }
 
 export function convertUser(userRecord: UserRecord): AdapterUser {    
+    console.log({userRecord})
     return {
-        id: userRecord.public_id,
+        id: userRecord.id,
         name: userRecord.name,
         email: userRecord.email,
         emailVerified: userRecord.email_verified,
@@ -33,16 +33,10 @@ export class UserRepo {
         this.sql = sql;
     }
 
-    getById(id: number): Promise<UserRecord | null> {
+    getById(id: string): Promise<UserRecord | null> {
         return this.sql.queryOne<UserRecord>(
             "select * from users where id = ?",
             [id]);
-    }
-
-    getByPublicId(publicId: string): Promise<UserRecord | null> {
-        return this.sql.queryOne<UserRecord>(
-            "select * from users where public_id = ?",
-            [publicId]);
     }
 
     getByEmail(email: string): Promise<UserRecord | null> {
@@ -52,12 +46,12 @@ export class UserRepo {
     }
 
     async create(name?:string | null, image?:string | null, email?:string | null, emailVerified?:Date | null): Promise<UserRecord | null> {
-        const publicId = nanoid()
-        const result = await this.sql.execute(
-            "INSERT INTO users (public_id, name, image, email, email_verified, created_at, updated_at) " +
+        const id = nanoid()
+        await this.sql.execute(
+            "insert into users (id, name, image, email, email_verified, created_at, updated_at) " +
             "VALUES (?,?,?,?,?,NOW(),NOW())",
-            [publicId, name, image, email, emailVerified],
+            [id, name, image, email, emailVerified],
         )
-        return await this.getById(result.insertId);
+        return await this.getById(id);
     }
 }

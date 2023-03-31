@@ -3,16 +3,19 @@ import { SqlHelpers } from "../db";
 
 export interface SessionRecord {
     id: number;
-    user_public_id: number;
+    user_id: string;
     expires: Date;
     session_token: string
     created_at: Date
     updated_at: Date
 }
 
-export function convertSession(sessionRecord: SessionRecord): any {    
+export function convertSession(rec: SessionRecord): any {    
     return {
-        userId: sessionRecord.user_public_id
+        id: rec.id,
+        userId: rec.user_id,
+        expires: rec.expires,
+        sessionToken: rec.session_token
     };
 }
 
@@ -41,12 +44,21 @@ export class SessionRepo {
             [token])
     }  
     
-    async create(userPublicId:string, sessionToken:string, expires:Date): Promise<SessionRecord | null> {
+    async create(userId:string, sessionToken:string, expires:Date): Promise<SessionRecord | null> {
         const result = await this.sql.execute(
-            "INSERT INTO sessions (user_public_id, expires, session_token, created_at, updated_at) " +
+            "insert into sessions (user_id, expires, session_token, created_at, updated_at) " +
             "VALUES (?,?,?,NOW(),NOW())",
-            [userPublicId, expires, sessionToken],
+            [userId, expires, sessionToken],
         )
         return await this.getById(result.insertId);
     }
+
+    async updateExpires(sessionToken: string, expires?: Date): Promise<SessionRecord | null> {
+        const result = await this.sql.execute(
+            "update sessions set expires = ? where session_token = ? ",
+            [expires, sessionToken],
+        )
+        return await this.getById(result.insertId);
+      }
+  
 }

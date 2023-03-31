@@ -2,7 +2,7 @@ import { SqlHelpers } from "../db";
 
 export interface AccountRecord {
     id: number;
-    user_id: number;
+    user_id: string;
     type: string;
     provider: string;
     provider_account_id: string;
@@ -18,9 +18,21 @@ export interface AccountRecord {
     updated_at: Date;
 }
 
-export function convertAccount(accountRecord: AccountRecord): any {    
+export function convertAccount(rec: AccountRecord): any {    
     return {
-
+        id: rec.id,
+        userId: rec.user_id,
+        type: rec.type,
+        provider: rec.provider,
+        providerAccountId: rec.provider_account_id,
+        refreshToken: rec.refresh_token,
+        expiresAt: rec.expires_at,
+        tokenType: rec.token_type,
+        scope: rec.scope,
+        idToken: rec.id_token,
+        sessionState: rec.session_state,
+        oauthTokenSecret: rec.oauth_token_secret,
+        oauthToken: rec.oauth_token,
     };
 }
 

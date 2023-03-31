@@ -27,7 +27,7 @@ import type {
 
 import { Connection } from 'mysql2/promise';
 import { buildUnitOfWork } from "./db";
-import { convertUser } from "./repo/user";
+import { convertUser, UserRepo } from "./repo/user";
 import { convertVerificationToken } from "./repo/verification";
 import { convertSession } from "./repo/session";
 
@@ -215,8 +215,8 @@ export default function Mysql2Adapter(
       return convertUser(userRecord);
     },
 
-    async getUser(publicId) {
-      const userRecord = await db.users.getByPublicId(publicId);
+    async getUser(id) {
+      const userRecord = await db.users.getById(id);
       if (userRecord == null) return null;
       return convertUser(userRecord);
     },
@@ -247,6 +247,9 @@ export default function Mysql2Adapter(
     },
 
     async deleteUser(userId) {
+
+      //await db.accounts.
+
       throw new Error()
       // await sync()
 
@@ -280,39 +283,20 @@ export default function Mysql2Adapter(
     },
 
     async getSessionAndUser(sessionToken) {
-      throw new Error()
-      // await sync()
-
-      // const sessionInstance = await Session.findOne({
-      //   where: { sessionToken },
-      // })
-
-      // if (!sessionInstance) {
-      //   return null
-      // }
-
-      // const userInstance = await User.findByPk(sessionInstance.userId)
-
-      // if (!userInstance) {
-      //   return null
-      // }
-
-      // return {
-      //   session: sessionInstance?.get({ plain: true }),
-      //   user: userInstance?.get({ plain: true }),
-      // }
+      const sessionRecord = await db.sessions.getByToken(sessionToken);
+      if (sessionRecord == null) return null;
+      const userRecord = await db.users.getById(sessionRecord.user_id);
+      if (userRecord == null) return null;
+      return {
+        session: convertSession(sessionRecord),
+        user: convertUser(userRecord),
+      }      
     },
 
     async updateSession({ sessionToken, expires }) {
-      throw new Error()
-      // await sync()
-
-      // await Session.update(
-      //   { expires, sessionToken },
-      //   { where: { sessionToken } }
-      // )
-
-      // return await Session.findOne({ where: { sessionToken } })
+      const sessionRecord = await db.sessions.updateExpires(sessionToken, expires);
+      if (sessionRecord == null) return null;
+      return convertSession(sessionRecord);
     },
 
     async deleteSession(sessionToken) {
