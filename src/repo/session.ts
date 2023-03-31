@@ -9,6 +9,12 @@ export interface SessionRecord {
     updated_at: Date
 }
 
+export function convertSession(sessionRecord: SessionRecord): any {    
+    return {
+
+    };
+}
+
 export class SessionRepo {
     sql: SqlHelpers;
 
@@ -16,10 +22,16 @@ export class SessionRepo {
         this.sql = sql;
     }
 
-    getById(id:number) : Promise<SessionRepo | null> {
-        return this.sql.queryOne<SessionRepo>(
+    getById(id:number) : Promise<SessionRecord | null> {
+        return this.sql.queryOne<SessionRecord>(
             "select * from sessions where id = ?", 
             [id]);
+    }
+
+    getByToken(token:string) : Promise<SessionRecord | null> {
+        return this.sql.queryOne<SessionRecord>(
+            "select * from sessions where session_token = ?", 
+            [token]);
     }
 
 }

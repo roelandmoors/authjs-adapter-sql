@@ -24,8 +24,8 @@ export class VerificationTokenRepo {
         this.sql = sql;
     }
 
-    getById(id:number) : Promise<VerificationTokenRepo | null> {
-        return this.sql.queryOne<VerificationTokenRepo>(
+    getById(id:number) : Promise<VerificationTokenRecord | null> {
+        return this.sql.queryOne<VerificationTokenRecord>(
             "select * from sessions where id = ?", 
             [id]);
     }

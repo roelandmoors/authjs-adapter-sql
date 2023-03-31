@@ -6,6 +6,8 @@ import Mysql2Adapter from "../src";
 import { buildUnitOfWork } from '../src/db';
 import { convertUser } from '../src/repo/user';
 import { convertVerificationToken } from '../src/repo/verification';
+import { convertSession } from '../src/repo/session';
+import { convertAccount } from '../src/repo/account';
 
 function getConnection() : Promise<mysql.Connection> {
   return mysql.createConnection({
@@ -15,9 +17,7 @@ function getConnection() : Promise<mysql.Connection> {
   });
 }
 
-
 const db = buildUnitOfWork(getConnection);
-
 
 runBasicTests({
   adapter: Mysql2Adapter(getConnection),
@@ -25,51 +25,29 @@ runBasicTests({
     connect: async () => {
       await db.helpers.execute('truncate table users', [])
     },
-    verificationToken: async (where) => {
 
+    verificationToken: async (where) => {
       const token = await db.verificationTokens.getByToken(where.identifier, where.token);
       if (token == null) return null;
       return convertVerificationToken(token);
-
-      // const verificationToken =
-      //   await sequelize.models.verificationToken.findOne({ where })
-
-      // return verificationToken?.get({ plain: true }) || null
-      return null;
     },
+
     user: async (publicId) => {
       const userRecord = await db.users.getByPublicId(publicId);  
       if (userRecord == null) return null    
       return convertUser(userRecord);
     },
+
     account: async (where) => {
-      console.log(`test find account with provider ${where.provider}/${where.providerAccountId}`)
-      const conn = await getConnection();
-      const [rows] = await conn.query(
-          "select * from accounts where provider = ? and provider_account_id = ?", 
-          [where.provider, where.providerAccountId])      
-      await conn.end();
-      return rows[0];
-      // const account = await sequelize.models.account.findOne({ where })
-
-      // return account?.get({ plain: true }) || null
+      const account = await db.accounts.getByProvider(where.provider, where.providerAccountId);
+      if (account == null) return null;
+      return convertAccount(account);
     },
+
     session: async (sessionToken) => {
-      console.log(`test find session with token ${sessionToken}`)
-      const conn = await getConnection();
-      const [rows] = await conn.query(
-          "select * from sessions where session_token = ?", 
-          [sessionToken])    
-      await conn.end();
-          
-    console.log({row: rows[0]})          
-
-      return rows[0];
-      // const session = await sequelize.models.session.findOne({
-      //   where: { sessionToken },
-      // })
-
-      // return session?.get({ plain: true }) || null
+      const session = await db.sessions.getByToken(sessionToken);
+      if (session == null) return null;
+      return convertSession(session);
     },
   },
 })

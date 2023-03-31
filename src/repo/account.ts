@@ -18,6 +18,12 @@ export interface AccountRecord {
     updated_at: Date;
 }
 
+export function convertAccount(accountRecord: AccountRecord): any {    
+    return {
+
+    };
+}
+
 export class AccountRepo {
     sql: SqlHelpers;
 
@@ -29,6 +35,12 @@ export class AccountRepo {
         return this.sql.queryOne<AccountRecord>(
             "select * from accounts where id = ?", 
             [id]);
+    }
+
+    getByProvider(provider:string, providerAccountId:string) : Promise<AccountRecord | null> {
+        return this.sql.queryOne<AccountRecord>(
+            "select * from accounts where provider = ? and provider_account_id = ?", 
+            [provider, providerAccountId]);
     }
 
 }
