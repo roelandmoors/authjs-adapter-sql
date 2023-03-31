@@ -25,12 +25,10 @@ import type {
 
 //// import { Sequelize, Model, ModelCtor } from "sequelize"
 
-import { Connection, RowDataPacket } from 'mysql2/promise';
-
-import { Awaitable } from "next-auth";
-
+import { Connection } from 'mysql2/promise';
 import { buildUnitOfWork } from "./db";
-import { convertUser, UserRecord } from "./repo/user";
+import { convertUser } from "./repo/user";
+import { convertVerificationToken } from "./repo/verification";
 
 // import * as defaultModels from "./models"
 
@@ -210,66 +208,37 @@ export default function Mysql2Adapter(
 
   return {
     async createUser(user) {
-
       const userRecord = await db.users.create({
         name: user.name,
         email: user.email,
         email_verified: user.emailVerified,
         image: user.image
       })
-
       if (userRecord == null) 
         throw new Error("creaing user failed!");
-
       return convertUser(userRecord);
     },
+
     async getUser(publicId) {
       const userRecord = await db.users.getByPublicId(publicId);
       if (userRecord == null) return null;
       return convertUser(userRecord);
     },
+
     async getUserByEmail(email) {
       const userRecord = await db.users.getByEmail(email);
       if (userRecord == null) return null;
       return convertUser(userRecord);
     },
+
     async getUserByAccount({ provider, providerAccountId }) {
-
-
-      // const account = await queryOne<AccountRecord>(
-      //     "select * from accounts where provider = ? and provider_account_id = ?", 
-      //     [provider, providerAccountId]);
-
-      // if (account == null) return null;
-
-      // const user = await queryOne<UserRecord>("select * from users where id = ?", [account.user_id]);
-
-      // if (user == null) return null;
-
-      // return {
-      //   id: user.public_id,
-      //   name: user.name,
-      //   email: user.email,
-      //   emailVerified: user.email_verified
-      // };
-
-      throw new Error()
-
-
-      // await sync()
-
-      // const accountInstance = await Account.findOne({
-      //   where: { provider, providerAccountId },
-      // })
-
-      // if (!accountInstance) {
-      //   return null
-      // }
-
-      // const userInstance = await User.findByPk(accountInstance.userId)
-
-      // return userInstance?.get({ plain: true }) ?? null
+      const account = await db.accounts.getByProvider(provider, providerAccountId);
+      if (account == null) return null;
+      const user = await db.users.getById(account.user_id);
+      if (user == null) return null;
+      return convertUser(user);
     },
+
     async updateUser(user) {
       throw new Error()
       // await sync()
@@ -280,6 +249,7 @@ export default function Mysql2Adapter(
       // // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       // return userInstance!
     },
+
     async deleteUser(userId) {
       throw new Error()
       // await sync()
@@ -290,12 +260,14 @@ export default function Mysql2Adapter(
 
       // return userInstance
     },
+
     async linkAccount(account) {
       throw new Error()
       // await sync()
 
       // await Account.create(account)
     },
+
     async unlinkAccount({ provider, providerAccountId }) {
       throw new Error()
       // await sync()
@@ -304,12 +276,14 @@ export default function Mysql2Adapter(
       //   where: { provider, providerAccountId },
       // })
     },
+
     async createSession(session) {
       throw new Error()
       // await sync()
 
       // return await Session.create(session)
     },
+
     async getSessionAndUser(sessionToken) {
       throw new Error()
       // await sync()
@@ -333,6 +307,7 @@ export default function Mysql2Adapter(
       //   user: userInstance?.get({ plain: true }),
       // }
     },
+
     async updateSession({ sessionToken, expires }) {
       throw new Error()
       // await sync()
@@ -344,29 +319,26 @@ export default function Mysql2Adapter(
 
       // return await Session.findOne({ where: { sessionToken } })
     },
+
     async deleteSession(sessionToken) {
       throw new Error()
       // await sync()
 
       // await Session.destroy({ where: { sessionToken } })
     },
+
     async createVerificationToken(token) {
       throw new Error()
       // await sync()
 
       // return await VerificationToken.create(token)
     },
+
     async useVerificationToken({ identifier, token }) {
-      throw new Error()
-      // await sync()
-
-      // const tokenInstance = await VerificationToken.findOne({
-      //   where: { identifier, token },
-      // })
-
-      // await VerificationToken.destroy({ where: { identifier } })
-
-      // return tokenInstance?.get({ plain: true }) ?? null
+      const tokenRecord = await db.verificationTokens.getByToken(identifier, token);
+      if (tokenRecord == null) return null;
+      await db.verificationTokens.deleteByToken(identifier, token);
+      return convertVerificationToken(tokenRecord);
     },
   }
 }

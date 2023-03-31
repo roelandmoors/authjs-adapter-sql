@@ -6,7 +6,7 @@ import { AdapterUser } from "next-auth/adapters";
 const nanoid = customAlphabet(urlAlphabet, 12);
 
 export interface UserRecord {
-    id: bigint
+    id: number
     public_id: string;
     name: string | null | undefined;
     email: string
@@ -58,6 +58,6 @@ export class UserRepo {
             "VALUES (?,?,?,?,?,NOW(),NOW())",
             [publicId, user.name, user.image, user.email, user.email_verified],
         )
-        return await this.getById(userId);
+        return await this.getById(userId.insertId);
     }
 }

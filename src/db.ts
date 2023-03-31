@@ -5,18 +5,18 @@ import { UserRepo } from './repo/user';
 import { VerificationTokenRepo } from './repo/verification';
 
 export interface SqlHelpers {
-    execute: (sql: string, values: any[]) => Promise<number>;
+    execute: (sql: string, values: any[]) => Promise<ResultSetHeader>;
     query: <T>(sql: string, values: any[]) => Promise<T[]>;
     queryOne: <T>(sql: string, values: any[]) => Promise<T | null>;
 }
 
 function buildSqlHelpers(getConnection: () => Promise<Connection>) : SqlHelpers {
-    const execute = async (sql: string, values: any[]) :Promise<number> => {
+    const execute = async (sql: string, values: any[]) :Promise<ResultSetHeader> => {
         console.log({ sql, values })
         const conn = await getConnection();
         const result = await conn.execute(sql, values) as ResultSetHeader[];
         await conn.end();
-        return result[0].insertId;
+        return result[0];
     }
     
     const query = async <T>(sql: string, values: any[]): Promise<T[]> => {

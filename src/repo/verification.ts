@@ -1,3 +1,4 @@
+import { ResultSetHeader } from "mysql2";
 import { VerificationToken } from "next-auth/adapters";
 import { SqlHelpers } from "../db";
 
@@ -35,4 +36,10 @@ export class VerificationTokenRepo {
             "select * from sessions where identifier = ? and token = ?", 
             [identifier, token]);
     }
+
+    deleteByToken(identifier: string, token: string) : Promise<ResultSetHeader> {
+        return this.sql.execute(
+            "delete from verification_tokens where identifier = ? and token = ?",
+            [identifier, token])
+      }
 }

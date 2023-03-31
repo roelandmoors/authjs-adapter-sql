@@ -1,8 +1,8 @@
 import { SqlHelpers } from "../db";
 
 export interface SessionRecord {
-    id: bigint;
-    user_id: bigint;
+    id: number;
+    user_id: number;
     expires: Date;
     session_token: string
     created_at: Date

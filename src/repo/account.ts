@@ -1,8 +1,8 @@
 import { SqlHelpers } from "../db";
 
 export interface AccountRecord {
-    id: bigint;
-    user_id: bigint;
+    id: number;
+    user_id: number;
     type: string;
     provider: string;
     provider_account_id: string;
