@@ -12,12 +12,14 @@ function buildSqlHelpers(getConnection: () => Promise<Connection>) : SqlHelpers 
         console.log({ sql, values })
         const conn = await getConnection();
         const result = await conn.execute(sql, values) as ResultSetHeader[];
+        await conn.end();
         return result[0].insertId;
     }
     
     const query = async <T>(sql: string, values: any[]): Promise<T[]> => {
         const conn = await getConnection();
         const [rows] = await conn.query<T[] & RowDataPacket[][]>(sql, values);
+        await conn.end();
         console.log({ sql, values, count: rows.length, rows })
         return rows;
     }

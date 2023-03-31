@@ -29,12 +29,22 @@ import { Connection, RowDataPacket } from 'mysql2/promise';
 
 import { Awaitable } from "next-auth";
 
-import {AccountRecord, SessionRecord, UserRecord, VerificationTokenRecord} from './types'
 import { buildUnitOfWork } from "./db";
+import { UserRecord } from "./repo/user";
 
 // import * as defaultModels from "./models"
 
 // export { defaultModels as models }
+
+function mapUser(userRecord:UserRecord):AdapterUser {
+  return {
+    id: userRecord.public_id,
+    name: userRecord.name,
+    email: userRecord.email,
+    emailVerified: userRecord.email_verified,
+    image: userRecord.image
+  };
+}
 
 
 
@@ -222,49 +232,17 @@ export default function Mysql2Adapter(
       if (userRecord == null) 
         throw new Error("creaing user failed!");
 
-      return {
-        id: userRecord.public_id,
-        name: userRecord.name,
-        email: userRecord.email,
-        emailVerified: userRecord.email_verified
-      };
+      return mapUser(userRecord);
     },
     async getUser(publicId) {
-
-      const user = await db.users.getByPublicId(publicId);
-
-      if (user == null) return null;
-
-      return {
-        id: user.public_id,
-        name: user.name,
-        email: user.email,
-        emailVerified: user.email_verified
-      };
-      // await sync()
-
-      // const userInstance = await User.findByPk(id)
-
-      // return userInstance?.get({ plain: true }) ?? null
+      const userRecord = await db.users.getByPublicId(publicId);
+      if (userRecord == null) return null;
+      return mapUser(userRecord);
     },
     async getUserByEmail(email) {
-      const user = await db.users.getByEmail(email);
-
-      if (user == null) return null;
-
-      return {
-        id: user.public_id,
-        name: user.name,
-        email: user.email,
-        emailVerified: user.email_verified
-      };
-      // await sync()
-
-      // const userInstance = await User.findOne({
-      //   where: { email },
-      // })
-
-      // return userInstance?.get({ plain: true }) ?? null
+      const userRecord = await db.users.getByEmail(email);
+      if (userRecord == null) return null;
+      return mapUser(userRecord);
     },
     async getUserByAccount({ provider, providerAccountId }) {
 

@@ -53,6 +53,7 @@ runBasicTests({
       const [rows] = await conn.query(
           "select * from accounts where provider = ? and provider_account_id = ?", 
           [where.provider, where.providerAccountId])      
+      await conn.end();
       return rows[0];
       // const account = await sequelize.models.account.findOne({ where })
 
@@ -64,6 +65,7 @@ runBasicTests({
       const [rows] = await conn.query(
           "select * from sessions where session_token = ?", 
           [sessionToken])    
+      await conn.end();
           
     console.log({row: rows[0]})          
 
