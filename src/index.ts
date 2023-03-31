@@ -328,10 +328,11 @@ export default function Mysql2Adapter(
     },
 
     async createVerificationToken(token) {
-      throw new Error()
-      // await sync()
-
-      // return await VerificationToken.create(token)
+      return await db.verificationTokens.create({
+        identifier: token.identifier,
+        token: token.token,
+        expires: token.expires
+      })
     },
 
     async useVerificationToken({ identifier, token }) {

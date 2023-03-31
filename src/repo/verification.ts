@@ -25,16 +25,18 @@ export class VerificationTokenRepo {
         this.sql = sql;
     }
 
-    getById(id:number) : Promise<VerificationTokenRecord | null> {
-        return this.sql.queryOne<VerificationTokenRecord>(
-            "select * from sessions where id = ?", 
-            [id]);
-    }
-
     getByToken(identifier:string, token:string) : Promise<VerificationTokenRecord | null> {
         return this.sql.queryOne<VerificationTokenRecord>(
-            "select * from sessions where identifier = ? and token = ?", 
+            "select * from verification_tokens where identifier = ? and token = ?", 
             [identifier, token]);
+    }
+
+    async create(rec:Omit<VerificationTokenRecord, "id" | "created_at" | "updated_at">) : Promise<VerificationTokenRecord | null> {
+        await this.sql.execute(
+            "INSERT INTO verification_tokens (identifier, token, expires, created_at, updated_at) " +
+            "VALUES (?,?,?,NOW(),NOW())",
+            [rec.identifier, rec.token, rec.expires]);
+        return await this.getByToken(rec.token, rec.identifier);
     }
 
     deleteByToken(identifier: string, token: string) : Promise<ResultSetHeader> {

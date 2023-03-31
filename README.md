@@ -69,7 +69,7 @@ CREATE TABLE `sessions` (
 CREATE TABLE `verification_tokens` (
   `identifier` varchar(255) NOT NULL,
   `token` varchar(255) NOT NULL,
-  `expires` datetime NOT NULL,
+  `expires` datetime(6) NOT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`token`)
