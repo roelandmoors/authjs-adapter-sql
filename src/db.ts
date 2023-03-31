@@ -35,7 +35,8 @@ export function buildUnitOfWork(getConnection: () => Promise<Connection>) {
     const sqlHelpers = buildSqlHelpers(getConnection);
 
     return {
-        users: new UserRepo(sqlHelpers)
+        users: new UserRepo(sqlHelpers),
+        ...sqlHelpers
     }
 
 }

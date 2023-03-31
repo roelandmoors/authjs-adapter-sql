@@ -34,12 +34,18 @@ export class UserRepo {
             [publicId]);
     }    
 
+    getByEmail(email:string) : Promise<UserRecord | null> {
+        return this.sql.queryOne<UserRecord>(
+            "select * from users where email = ?", 
+            [email]);
+    }   
+
     async create(user : Omit<UserRecord, "id" | "created_at" | "updated_at" | "public_id">) : Promise<UserRecord | null> {
         const publicId = nanoid()
         const userId = await this.sql.execute(
-            "INSERT INTO users (public_id, name, email, email_verified, image, created_at, updated_at) " +
+            "INSERT INTO users (public_id, name, image, email, email_verified, created_at, updated_at) " +
             "VALUES (?,?,?,?,?,NOW(),NOW())",
-            [publicId, user.name, user.email, user.email_verified, user.email],
+            [publicId, user.name, user.image, user.email, user.email_verified],
           )
         return await this.getById(userId);
     }

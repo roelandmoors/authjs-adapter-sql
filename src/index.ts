@@ -231,8 +231,7 @@ export default function Mysql2Adapter(
     },
     async getUser(publicId) {
 
-
-      const user = await queryOne<UserRecord>("select * from users where public_id = ?", [publicId]);
+      const user = await db.users.getByPublicId(publicId);
 
       if (user == null) return null;
 
@@ -249,7 +248,7 @@ export default function Mysql2Adapter(
       // return userInstance?.get({ plain: true }) ?? null
     },
     async getUserByEmail(email) {
-      const user = await queryOne<UserRecord>("select * from users where email = ?", [email]);
+      const user = await db.users.getByEmail(email);
 
       if (user == null) return null;
 
@@ -270,22 +269,25 @@ export default function Mysql2Adapter(
     async getUserByAccount({ provider, providerAccountId }) {
 
 
-      const account = await queryOne<AccountRecord>(
-          "select * from accounts where provider = ? and provider_account_id = ?", 
-          [provider, providerAccountId]);
+      // const account = await queryOne<AccountRecord>(
+      //     "select * from accounts where provider = ? and provider_account_id = ?", 
+      //     [provider, providerAccountId]);
 
-      if (account == null) return null;
+      // if (account == null) return null;
 
-      const user = await queryOne<UserRecord>("select * from users where id = ?", [account.user_id]);
+      // const user = await queryOne<UserRecord>("select * from users where id = ?", [account.user_id]);
 
-      if (user == null) return null;
+      // if (user == null) return null;
 
-      return {
-        id: user.public_id,
-        name: user.name,
-        email: user.email,
-        emailVerified: user.email_verified
-      };
+      // return {
+      //   id: user.public_id,
+      //   name: user.name,
+      //   email: user.email,
+      //   emailVerified: user.email_verified
+      // };
+
+      throw new Error()
+
 
       // await sync()
 

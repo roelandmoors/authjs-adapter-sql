@@ -21,8 +21,7 @@ runBasicTests({
   adapter: Mysql2Adapter(getConnection),
   db: {
     connect: async () => {
-      const conn = await getConnection();
-      await conn.execute('truncate table users');
+      await db.execute('truncate table users', [])
     },
     verificationToken: async (where) => {
       // const verificationToken =
@@ -33,9 +32,17 @@ runBasicTests({
     },
     user: async (publicId) => {
       console.log(`test find user with id ${publicId}`)
-      const user = db.users.getByPublicId(publicId);
+      const user = await db.users.getByPublicId(publicId);
 
-      return user;
+      if (user == null) return null
+
+      return {
+        id: user.public_id,
+        name: user.name,
+        email: user.email,
+        emailVerified: user.email_verified,
+        image: user.image
+      };
       // const user = await sequelize.models.user.findByPk(id)
 
       // return user?.get({ plain: true }) || null
