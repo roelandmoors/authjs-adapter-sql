@@ -248,7 +248,9 @@ export default function Mysql2Adapter(
 
     async deleteUser(userId) {
 
-      //await db.accounts.
+      await db.sessions.deleteByUserId(userId)
+      await db.accounts.deleteByUserId(userId);
+      await db.users.deleteById(userId)
 
       throw new Error()
       // await sync()
@@ -268,12 +270,7 @@ export default function Mysql2Adapter(
     },
 
     async unlinkAccount({ provider, providerAccountId }) {
-      throw new Error()
-      // await sync()
-
-      // await Account.destroy({
-      //   where: { provider, providerAccountId },
-      // })
+      await db.accounts.delete(provider, providerAccountId);
     },
 
     async createSession(session) {

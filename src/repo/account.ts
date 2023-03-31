@@ -55,4 +55,10 @@ export class AccountRepo {
             [provider, providerAccountId]);
     }
 
+    delete(provider: string, providerAccountId: string) {
+        return this.sql.execute(
+            "delete from accounts where provider = ? and provider_account_id = ?",
+            [provider, providerAccountId])
+      }
+
 }

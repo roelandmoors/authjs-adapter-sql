@@ -16,7 +16,6 @@ export interface UserRecord {
 }
 
 export function convertUser(userRecord: UserRecord): AdapterUser {    
-    console.log({userRecord})
     return {
         id: userRecord.id,
         name: userRecord.name,
