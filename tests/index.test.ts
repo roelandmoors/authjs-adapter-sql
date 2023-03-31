@@ -4,6 +4,8 @@ import * as mysql from 'mysql2/promise';
 import { runBasicTests } from "@next-auth/adapter-test";
 import Mysql2Adapter from "../src";
 import { buildUnitOfWork } from '../src/db';
+import { convertUser } from '../src/repo/user';
+import { convertVerificationToken } from '../src/repo/verification';
 
 function getConnection() : Promise<mysql.Connection> {
   return mysql.createConnection({
@@ -21,9 +23,14 @@ runBasicTests({
   adapter: Mysql2Adapter(getConnection),
   db: {
     connect: async () => {
-      await db.execute('truncate table users', [])
+      await db.helpers.execute('truncate table users', [])
     },
     verificationToken: async (where) => {
+
+      const token = await db.verificationTokens.getByToken(where.identifier, where.token);
+      if (token == null) return null;
+      return convertVerificationToken(token);
+
       // const verificationToken =
       //   await sequelize.models.verificationToken.findOne({ where })
 
@@ -31,21 +38,9 @@ runBasicTests({
       return null;
     },
     user: async (publicId) => {
-      console.log(`test find user with id ${publicId}`)
-      const user = await db.users.getByPublicId(publicId);
-
-      if (user == null) return null
-
-      return {
-        id: user.public_id,
-        name: user.name,
-        email: user.email,
-        emailVerified: user.email_verified,
-        image: user.image
-      };
-      // const user = await sequelize.models.user.findByPk(id)
-
-      // return user?.get({ plain: true }) || null
+      const userRecord = await db.users.getByPublicId(publicId);  
+      if (userRecord == null) return null    
+      return convertUser(userRecord);
     },
     account: async (where) => {
       console.log(`test find account with provider ${where.provider}/${where.providerAccountId}`)

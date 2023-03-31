@@ -1,5 +1,8 @@
 import { Connection, ResultSetHeader, RowDataPacket } from 'mysql2/promise';
+import { AccountRepo } from './repo/account';
+import { SessionRepo } from './repo/session';
 import { UserRepo } from './repo/user';
+import { VerificationTokenRepo } from './repo/verification';
 
 export interface SqlHelpers {
     execute: (sql: string, values: any[]) => Promise<number>;
@@ -38,7 +41,10 @@ export function buildUnitOfWork(getConnection: () => Promise<Connection>) {
 
     return {
         users: new UserRepo(sqlHelpers),
-        ...sqlHelpers
+        sessions: new SessionRepo(sqlHelpers),
+        accounts: new AccountRepo(sqlHelpers),
+        verificationTokens: new VerificationTokenRepo(sqlHelpers),
+        helpers: sqlHelpers
     }
 
 }

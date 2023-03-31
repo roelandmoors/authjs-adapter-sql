@@ -1,3 +1,5 @@
+import { SqlHelpers } from "../db";
+
 export interface AccountRecord {
     id: bigint;
     user_id: bigint;
@@ -14,4 +16,19 @@ export interface AccountRecord {
     oauth_token: string;
     created_at: Date;
     updated_at: Date;
+}
+
+export class AccountRepo {
+    sql: SqlHelpers;
+
+    constructor(sql:SqlHelpers) {
+        this.sql = sql;
+    }
+
+    getById(id:number) : Promise<AccountRecord | null> {
+        return this.sql.queryOne<AccountRecord>(
+            "select * from accounts where id = ?", 
+            [id]);
+    }
+
 }
