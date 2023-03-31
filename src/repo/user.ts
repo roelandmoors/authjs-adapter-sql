@@ -51,13 +51,13 @@ export class UserRepo {
             [email]);
     }
 
-    async create(user: Omit<UserRecord, "id" | "created_at" | "updated_at" | "public_id">): Promise<UserRecord | null> {
+    async create(name?:string | null, image?:string | null, email?:string | null, emailVerified?:Date | null): Promise<UserRecord | null> {
         const publicId = nanoid()
-        const userId = await this.sql.execute(
+        const result = await this.sql.execute(
             "INSERT INTO users (public_id, name, image, email, email_verified, created_at, updated_at) " +
             "VALUES (?,?,?,?,?,NOW(),NOW())",
-            [publicId, user.name, user.image, user.email, user.email_verified],
+            [publicId, name, image, email, emailVerified],
         )
-        return await this.getById(userId.insertId);
+        return await this.getById(result.insertId);
     }
 }

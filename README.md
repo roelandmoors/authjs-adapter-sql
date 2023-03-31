@@ -56,7 +56,7 @@ CREATE TABLE `accounts` (
 
 CREATE TABLE `sessions` (
   `id` bigint NOT NULL AUTO_INCREMENT,
-  `user_id` bigint NOT NULL,
+  `user_public_id` varchar(12) NOT NULL,
   `expires` datetime NOT NULL,
   `session_token` varchar(255) NOT NULL,
   `created_at` datetime NOT NULL,

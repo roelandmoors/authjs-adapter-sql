@@ -29,6 +29,7 @@ import { Connection } from 'mysql2/promise';
 import { buildUnitOfWork } from "./db";
 import { convertUser } from "./repo/user";
 import { convertVerificationToken } from "./repo/verification";
+import { convertSession } from "./repo/session";
 
 // import * as defaultModels from "./models"
 
@@ -208,12 +209,7 @@ export default function Mysql2Adapter(
 
   return {
     async createUser(user) {
-      const userRecord = await db.users.create({
-        name: user.name,
-        email: user.email,
-        email_verified: user.emailVerified,
-        image: user.image
-      })
+      const userRecord = await db.users.create(user.name, user.image, user.email, user.emailVerified)
       if (userRecord == null) 
         throw new Error("creaing user failed!");
       return convertUser(userRecord);
@@ -278,10 +274,9 @@ export default function Mysql2Adapter(
     },
 
     async createSession(session) {
-      throw new Error()
-      // await sync()
-
-      // return await Session.create(session)
+      const sessionRecord = await db.sessions.create(session.userId, session.sessionToken, session.expires);
+      if (sessionRecord == null) return null;
+      return convertSession(sessionRecord);
     },
 
     async getSessionAndUser(sessionToken) {
@@ -321,18 +316,11 @@ export default function Mysql2Adapter(
     },
 
     async deleteSession(sessionToken) {
-      throw new Error()
-      // await sync()
-
-      // await Session.destroy({ where: { sessionToken } })
+      await db.sessions.deleteByToken(sessionToken)
     },
 
     async createVerificationToken(token) {
-      return await db.verificationTokens.create({
-        identifier: token.identifier,
-        token: token.token,
-        expires: token.expires
-      })
+      return await db.verificationTokens.create(token.identifier, token.token, token.expires)
     },
 
     async useVerificationToken({ identifier, token }) {

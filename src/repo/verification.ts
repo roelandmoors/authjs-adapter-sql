@@ -12,36 +12,36 @@ export interface VerificationTokenRecord {
 
 export function convertVerificationToken(tokenRecord: VerificationTokenRecord): VerificationToken {
     return {
-       identifier: tokenRecord.identifier,
-       token: tokenRecord.token,
-       expires: tokenRecord.expires
+        identifier: tokenRecord.identifier,
+        token: tokenRecord.token,
+        expires: tokenRecord.expires
     };
 }
 
 export class VerificationTokenRepo {
     sql: SqlHelpers;
 
-    constructor(sql:SqlHelpers) {
+    constructor(sql: SqlHelpers) {
         this.sql = sql;
     }
 
-    getByToken(identifier:string, token:string) : Promise<VerificationTokenRecord | null> {
+    getByToken(identifier: string, token: string): Promise<VerificationTokenRecord | null> {
         return this.sql.queryOne<VerificationTokenRecord>(
-            "select * from verification_tokens where identifier = ? and token = ?", 
+            "select * from verification_tokens where identifier = ? and token = ?",
             [identifier, token]);
     }
 
-    async create(rec:Omit<VerificationTokenRecord, "id" | "created_at" | "updated_at">) : Promise<VerificationTokenRecord | null> {
+    async create(identifier:string, token:string, expires: Date): Promise<VerificationTokenRecord | null> {
         await this.sql.execute(
             "INSERT INTO verification_tokens (identifier, token, expires, created_at, updated_at) " +
             "VALUES (?,?,?,NOW(),NOW())",
-            [rec.identifier, rec.token, rec.expires]);
-        return await this.getByToken(rec.token, rec.identifier);
+            [identifier, token, expires]);
+        return await this.getByToken(token, identifier);
     }
 
-    deleteByToken(identifier: string, token: string) : Promise<ResultSetHeader> {
+    deleteByToken(identifier: string, token: string): Promise<ResultSetHeader> {
         return this.sql.execute(
             "delete from verification_tokens where identifier = ? and token = ?",
             [identifier, token])
-      }
+    }
 }
