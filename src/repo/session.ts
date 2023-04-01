@@ -1,4 +1,3 @@
-import { ResultSetHeader } from "mysql2/promise";
 import { SqlHelpers } from "../db";
 
 export interface SessionRecord {
@@ -38,8 +37,15 @@ export class SessionRepo {
             [token]);
     }
 
-    deleteByToken(token: string): Promise<ResultSetHeader> {
-        return this.sql.execute(
+
+    async deleteByUserId(userId: string): Promise<void> {
+        await this.sql.execute(
+            "delete from sessions where user_id = ?",
+            [userId])
+    } 
+
+    async deleteByToken(token: string): Promise<void> {
+        await this.sql.execute(
             "delete from sessions where session_token = ?",
             [token])
     }  

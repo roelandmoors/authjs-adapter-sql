@@ -247,30 +247,31 @@ export default function Mysql2Adapter(
     },
 
     async deleteUser(userId) {
-
       await db.sessions.deleteByUserId(userId)
       await db.accounts.deleteByUserId(userId);
       await db.users.deleteById(userId)
-
-      throw new Error()
-      // await sync()
-
-      // const userInstance = await User.findByPk(userId)
-
-      // await User.destroy({ where: { id: userId } })
-
-      // return userInstance
     },
 
     async linkAccount(account) {
-      throw new Error()
-      // await sync()
 
-      // await Account.create(account)
+      await db.accounts.create({
+        user_id : account.userId,
+        type : account.type,
+        provider : account.provider,
+        provider_account_id : account.providerAccountId,
+        refresh_token : account.refreshToken,
+        expires_at : account.expiresAt,
+        token_type : account.tokenType,
+        scope : account.scope,
+        id_token : account.idToken,
+        session_state : account.sessionState,
+        oauth_token_secret : account.oauth_tokenSecret,
+        oauth_token : account.oauthToken 
+      })
     },
 
     async unlinkAccount({ provider, providerAccountId }) {
-      await db.accounts.delete(provider, providerAccountId);
+      await db.accounts.deleteByProvider(provider, providerAccountId);
     },
 
     async createSession(session) {

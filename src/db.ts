@@ -10,10 +10,17 @@ export interface SqlHelpers {
     queryOne: <T>(sql: string, values: any[]) => Promise<T | null>;
 }
 
+function replaceUndefined(values: any[]) {
+    return values.map(x => {
+        if (x === undefined) return null;
+        return x;
+    })
+}
+
 function buildSqlHelpers(getConnection: () => Promise<Connection>) : SqlHelpers {
     const execute = async (sql: string, values: any[]) :Promise<ResultSetHeader> => {
         const conn = await getConnection();
-        const result = await conn.execute(sql, values) as ResultSetHeader[];
+        const result = await conn.execute(sql, replaceUndefined(values)) as ResultSetHeader[];
         await conn.end();
         return result[0];
     }

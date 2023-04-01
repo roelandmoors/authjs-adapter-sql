@@ -53,4 +53,10 @@ export class UserRepo {
         )
         return await this.getById(id);
     }
+
+    deleteById(id: string) {
+        return this.sql.execute(
+            "delete from users where id = ?",
+            [id])
+    }
 }
