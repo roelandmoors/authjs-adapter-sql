@@ -1,11 +1,11 @@
 {
-  "name": "@next-auth/mysql2-adapter",
+  "name": "mysql2-adapter",
   "version": "0.0.1",
   "description": "Mysql2 adapter for next-auth.",
   "homepage": "https://authjs.dev",
-  "repository": "https://github.com/nextauthjs/next-auth",
+  "repository": "https://github.com/roelandmoors/authjs-adapter-mysql2",
   "bugs": {
-    "url": "https://github.com/nextauthjs/next-auth/issues"
+    "url": "https://github.com/roelandmoors/authjs-adapter-mysql2/issues"
   },
   "author": "github.com/roelandmoors",
   "main": "dist/index.js",

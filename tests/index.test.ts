@@ -10,7 +10,7 @@ import { convertAccount } from '../src/repo/account';
 
 function getConnection() : Promise<mysql.Connection> {
   return mysql.createConnection({
-    host: 'localhost',
+    host: '127.0.0.1',
     user: process.env.DB_USER || 'root',
     password: process.env.DB_PASSWORD,
     database: process.env.DB_DATABASE || 'authjs_test'

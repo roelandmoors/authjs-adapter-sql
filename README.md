@@ -14,6 +14,28 @@
 
 ---
 
+```
+npm install git+https://github.com/roelandmoors/authjs-adapter-mysql2.git
+```
+
+
+```ts
+import Mysql2Adapter from "mysql2-adapter";
+
+function getConnection() {
+  return mysql.createConnection({
+    host: '127.0.0.1',
+    user: 'root',
+    database: 'fancydb'
+  });
+}
+export default NextAuth({
+    adapter: Mysql2Adapter(getConnection),
+    providers: []
+});
+```
+
+
 ## Mysql tables
 
 ```sql
