@@ -14,11 +14,9 @@
 
 ---
 
-https://planetscale.com/docs/learn/operating-without-foreign-key-constraints
-https://planetscale.com/blog/why-we-chose-nanoids-for-planetscales-api
+## Mysql tables
 
-
-
+```sql
 CREATE TABLE `users` (
   `id` varchar(12) NOT NULL,
   `name` varchar(255) DEFAULT NULL,
@@ -72,3 +70,9 @@ CREATE TABLE `verification_tokens` (
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`token`)
 );
+```
+
+## PlanetScale
+
+- https://planetscale.com/docs/learn/operating-without-foreign-key-constraints
+- https://planetscale.com/blog/why-we-chose-nanoids-for-planetscales-api
