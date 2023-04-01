@@ -20,7 +20,9 @@ function replaceUndefined(values: any[]) {
 function buildSqlHelpers(getConnection: () => Promise<Connection>) : SqlHelpers {
     const execute = async (sql: string, values: any[]) :Promise<ResultSetHeader> => {
         const conn = await getConnection();
-        const result = await conn.execute(sql, replaceUndefined(values)) as ResultSetHeader[];
+        const replacedValues = replaceUndefined(values);
+        //console.log({sql, replacedValues})
+        const result = await conn.execute(sql, replacedValues) as ResultSetHeader[];
         await conn.end();
         return result[0];
     }

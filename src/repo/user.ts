@@ -59,4 +59,12 @@ export class UserRepo {
             "delete from users where id = ?",
             [id])
     }
+
+    async updateName(id:string, name:string) {
+        await this.sql.execute(
+            "update users set name = ? where id = ? ",
+            [name, id]
+        )
+        return await this.getById(id);
+    }
 }

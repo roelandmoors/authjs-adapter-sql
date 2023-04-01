@@ -22,9 +22,6 @@ import type {
   VerificationToken,
 } from "next-auth/adapters";
 
-
-//// import { Sequelize, Model, ModelCtor } from "sequelize"
-
 import { Connection } from 'mysql2/promise';
 import { buildUnitOfWork } from "./db";
 import { convertUser, UserRepo } from "./repo/user";
@@ -153,57 +150,6 @@ import { convertSession } from "./repo/session";
 export default function Mysql2Adapter(
   getConnection: () => Promise<Connection>
 ): Adapter {
-  // const { User, Account, Session, VerificationToken } = {
-  //   User:
-  //     models?.User ??
-  //     client.define<UserInstance>(
-  //       "user",
-  //       defaultModels.User,
-  //       defaultModelOptions
-  //     ),
-  //   Account:
-  //     models?.Account ??
-  //     client.define<AccountInstance>(
-  //       "account",
-  //       defaultModels.Account,
-  //       defaultModelOptions
-  //     ),
-  //   Session:
-  //     models?.Session ??
-  //     client.define<SessionInstance>(
-  //       "session",
-  //       defaultModels.Session,
-  //       defaultModelOptions
-  //     ),
-  //   VerificationToken:
-  //     models?.VerificationToken ??
-  //     client.define<VerificationTokenInstance>(
-  //       "verificationToken",
-  //       defaultModels.VerificationToken,
-  //       defaultModelOptions
-  //     ),
-  // }
-
-
-  // let _synced = false
-  // const sync = async () => {
-  //   if (process.env.NODE_ENV !== "production" && synchronize && !_synced) {
-  //     const syncOptions =
-  //       typeof synchronize === "object" ? synchronize : undefined
-
-  //     await Promise.all([
-  //       User.sync(syncOptions),
-  //       Account.sync(syncOptions),
-  //       Session.sync(syncOptions),
-  //       VerificationToken.sync(syncOptions),
-  //     ])
-
-  //     _synced = true
-  //   }
-  // }
-
-  // Account.belongsTo(User, { onDelete: "cascade" })
-  // Session.belongsTo(User, { onDelete: "cascade" })
 
   const db = buildUnitOfWork(getConnection);
 
@@ -236,14 +182,11 @@ export default function Mysql2Adapter(
     },
 
     async updateUser(user) {
-      throw new Error()
-      // await sync()
-
-      // await User.update(user, { where: { id: user.id } })
-      // const userInstance = await User.findByPk(user.id)
-
-      // // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      // return userInstance!
+      // TODO: not only update name, make it smarter
+      if (user.id == null) return null;
+      const userRecord = await db.users.updateName(user.id, user.name)
+      if (userRecord == null) return null;
+      return convertUser(userRecord);
     },
 
     async deleteUser(userId) {
@@ -259,14 +202,14 @@ export default function Mysql2Adapter(
         type : account.type,
         provider : account.provider,
         provider_account_id : account.providerAccountId,
-        refresh_token : account.refreshToken,
-        expires_at : account.expiresAt,
-        token_type : account.tokenType,
+        refresh_token : account.refresh_token,
+        expires_at : account.expires_at,
+        token_type : account.token_type,
         scope : account.scope,
-        id_token : account.idToken,
-        session_state : account.sessionState,
-        oauth_token_secret : account.oauth_tokenSecret,
-        oauth_token : account.oauthToken 
+        id_token : account.id_token,
+        session_state : account.session_state,
+        oauth_token_secret : account.oauth_token_secret,
+        oauth_token : account.oauth_token 
       })
     },
 
