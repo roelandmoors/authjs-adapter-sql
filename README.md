@@ -13,6 +13,11 @@
 
 ---
 
+This adapter uses [Mysql2](https://github.com/sidorares/node-mysql2#readme) directly to integrate with [Authjs](https://authjs.dev/).  
+
+[PlanetScale](https://planetscale.com/) is supported.
+
+
 ## How to use
 
 Install:

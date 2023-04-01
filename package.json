@@ -1,6 +1,6 @@
 {
   "name": "authjs-adapter-mysql2",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Mysql2 adapter for next-auth.",
   "homepage": "https://authjs.dev",
   "repository": "https://github.com/roelandmoors/authjs-adapter-mysql2",
@@ -29,8 +29,8 @@
     "dist"
   ],
   "devDependencies": {
-    "@next-auth/adapter-test": "https://gitpkg.now.sh/nextauthjs/next-auth/packages/adapter-test?next-auth@4.20.1",
-    "@next-auth/tsconfig": "https://gitpkg.now.sh/nextauthjs/next-auth/packages/tsconfig?next-auth@4.20.1",
+    "@next-auth/adapter-test": "https://gitpkg.now.sh/nextauthjs/next-auth/packages/adapter-test?main",
+    "@next-auth/tsconfig": "https://gitpkg.now.sh/nextauthjs/next-auth/packages/tsconfig?main",
     "@swc/core": "^1.3.42",
     "@swc/jest": "^0.2.24",
     "jest": "^27.5.1",
