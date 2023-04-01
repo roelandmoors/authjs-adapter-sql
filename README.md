@@ -24,7 +24,8 @@ use [schema.sql](schema.sql) to create the tables.
 
 
 ```ts
-import Mysql2Adapter from "mysql2-adapter";
+import Mysql2Adapter from "authjs-adapter-mysql2";
+import * as mysql from 'mysql2/promise';``
 
 function getConnection() {
   return mysql.createConnection({
