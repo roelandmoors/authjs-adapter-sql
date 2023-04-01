@@ -208,8 +208,6 @@ export default function Mysql2Adapter(
         scope : account.scope,
         id_token : account.id_token,
         session_state : account.session_state,
-        oauth_token_secret : account.oauth_token_secret,
-        oauth_token : account.oauth_token 
       })
     },
 
