@@ -15,13 +15,13 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      DB_DATABASE: test_db
+      DB_DATABASE: authjs_test
       DB_USER: root
       DB_PASSWORD: root    
 
     strategy:
       matrix:
-        node-version: [18.x]
+        node-version: [19.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
