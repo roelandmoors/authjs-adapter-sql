@@ -38,3 +38,4 @@ jobs:
         cache: 'npm'        
     - run: npm ci
     - run: npm test
+      timeout-minutes: 5

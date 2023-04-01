@@ -18,7 +18,7 @@ CREATE TABLE `accounts` (
   `provider_account_id` varchar(255) NOT NULL,
   `refresh_token` varchar(255) DEFAULT NULL,
   `access_token` varchar(255) DEFAULT NULL,
-  `expires_at` int DEFAULT NULL,
+  `expires_at` bigint DEFAULT NULL,
   `token_type` varchar(255) DEFAULT NULL,
   `scope` varchar(255) DEFAULT NULL,
   `id_token` text,
