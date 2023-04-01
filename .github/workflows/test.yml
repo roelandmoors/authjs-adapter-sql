@@ -1,7 +1,7 @@
 # This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
 
-name: Node.js CI
+name: CI
 
 on:
   push:
@@ -25,11 +25,12 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
+    - uses: actions/checkout@v3
     - name: Set up MySQL
       run: |
         sudo systemctl start mysql.service
         mysql -e 'CREATE DATABASE ${{ env.DB_DATABASE }};' -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}    
-    - uses: actions/checkout@v3
+        mysql -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }} ${{ env.DB_DATABASE }} < ./schema.sql
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
       with:
