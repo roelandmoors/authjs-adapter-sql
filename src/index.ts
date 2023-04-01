@@ -45,9 +45,9 @@ export default function Mysql2Adapter(
 
     async updateUser(user) {
       // TODO: not only update name, make it smarter
-      if (user.id == null) return null;
+      if (user.id == null) throw new Error('empty user id');
       const userRecord = await db.users.updateName(user.id, user.name)
-      if (userRecord == null) return null;
+      if (userRecord == null) throw new Error('user not found after update');
       return convertUser(userRecord);
     },
 

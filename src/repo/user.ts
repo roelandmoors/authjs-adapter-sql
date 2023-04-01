@@ -60,7 +60,7 @@ export class UserRepo {
             [id])
     }
 
-    async updateName(id:string, name:string) {
+    async updateName(id:string, name?:string|null) {
         await this.sql.execute(
             "update users set name = ? where id = ? ",
             [name, id]
