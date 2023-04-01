@@ -1,6 +1,6 @@
 {
-  "name": "mysql2-adapter",
-  "version": "0.0.1",
+  "name": "authjs-adapter-mysql2",
+  "version": "0.0.2",
   "description": "Mysql2 adapter for next-auth.",
   "homepage": "https://authjs.dev",
   "repository": "https://github.com/roelandmoors/authjs-adapter-mysql2",

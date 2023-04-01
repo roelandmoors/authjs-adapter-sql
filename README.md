@@ -12,9 +12,12 @@
 [![CI](https://github.com/roelandmoors/authjs-adapter-mysql2/actions/workflows/test.yml/badge.svg)](https://github.com/roelandmoors/authjs-adapter-mysql2/actions/workflows/test.yml)
 
 ---
-TODO:
+
+## How to use
+
+Install:
 ```
-npm install git+https://github.com/roelandmoors/authjs-adapter-mysql2.git
+npm i authjs-adapter-mysql2
 ```
 
 use [schema.sql](schema.sql) to create the tables.
