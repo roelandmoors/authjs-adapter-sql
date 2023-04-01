@@ -8,8 +8,8 @@ export interface AccountRecord {
     type: ProviderType;
     provider: string;
     provider_account_id: string;
-    access_token?: string | null;
-    refresh_token?: string | null;
+    access_token?: string;
+    refresh_token?: string;
     expires_at?: number;
     token_type?: string;
     scope?: string;

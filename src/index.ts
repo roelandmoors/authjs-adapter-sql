@@ -202,6 +202,7 @@ export default function Mysql2Adapter(
         type : account.type,
         provider : account.provider,
         provider_account_id : account.providerAccountId,
+        access_token : account.access_token,
         refresh_token : account.refresh_token,
         expires_at : account.expires_at,
         token_type : account.token_type,
