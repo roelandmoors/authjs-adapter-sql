@@ -19,19 +19,25 @@ function replaceUndefined(values: any[]) {
 
 function buildSqlHelpers(getConnection: () => Promise<Connection>) : SqlHelpers {
     const execute = async (sql: string, values: any[]) :Promise<ResultSetHeader> => {
-        const conn = await getConnection();
         const replacedValues = replaceUndefined(values);
-        //console.log({sql, replacedValues})
-        const result = await conn.execute(sql, replacedValues) as ResultSetHeader[];
-        await conn.end();
-        return result[0];
+        const conn = await getConnection();
+        try {
+            const result = await conn.execute(sql, replacedValues) as ResultSetHeader[];
+            return result[0];
+        } finally {
+            await conn.end();
+        }
     }
     
     const query = async <T>(sql: string, values: any[]): Promise<T[]> => {
         const conn = await getConnection();
-        const [rows] = await conn.query<T[] & RowDataPacket[][]>(sql, values);
-        await conn.end();
-        return rows;
+        try {
+            const [rows] = await conn.query<T[] & RowDataPacket[][]>(sql, values);
+            return rows;
+        }
+        finally {
+            await conn.end();
+        }
     }
     
     const queryOne = async <T>(sql: string, values: any[]): Promise<T | null> => {
