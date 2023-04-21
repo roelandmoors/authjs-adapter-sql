@@ -40,8 +40,9 @@
     "preset": "@next-auth/adapter-test/jest"
   },
   "dependencies": {
-    "mysql2": "^3.2.0",
+    "mysql2": "^3.2.3",
+    "nanoid": "^3.3.6",
     "next-auth": "^4",
-    "nanoid": "^3.3.6"
+    "server-only": "^0.0.1"
   }
 }

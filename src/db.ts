@@ -1,3 +1,5 @@
+import "server-only"
+
 import { Connection, ResultSetHeader, RowDataPacket } from 'mysql2/promise';
 import { AccountRepo } from './repo/account';
 import { SessionRepo } from './repo/session';
