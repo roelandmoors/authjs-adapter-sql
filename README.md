@@ -46,6 +46,16 @@ export default NextAuth({
 ```
 
 
+When using the new app dir in NextJs you may need this:
+```ts
+const nextConfig = {
+  experimental: {
+    appDir: true,
+    serverComponentsExternalPackages: ["mysql2"],
+  },
+}
+```
+
 
 ## PlanetScale
 
