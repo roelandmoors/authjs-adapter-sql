@@ -1,11 +1,11 @@
 {
-  "name": "authjs-adapter-mysql2",
-  "version": "0.0.4",
-  "description": "Mysql2 adapter for next-auth.",
+  "name": "authjs-adapter-mysql",
+  "version": "0.0.5",
+  "description": "Mysql adapter for next-auth.",
   "homepage": "https://authjs.dev",
-  "repository": "https://github.com/roelandmoors/authjs-adapter-mysql2",
+  "repository": "https://github.com/roelandmoors/authjs-adapter-mysql",
   "bugs": {
-    "url": "https://github.com/roelandmoors/authjs-adapter-mysql2/issues"
+    "url": "https://github.com/roelandmoors/authjs-adapter-mysql/issues"
   },
   "author": "github.com/roelandmoors",
   "main": "dist/index.js",
@@ -14,7 +14,7 @@
     "next-auth",
     "next.js",
     "oauth",
-    "mysql2"
+    "mysql"
   ],
   "private": false,
   "publishConfig": {
