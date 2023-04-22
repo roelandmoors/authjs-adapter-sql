@@ -15,7 +15,7 @@
 
 This adapter uses mysql statements to integrate with [Authjs](https://authjs.dev/).
 
-[PlanetScale](https://planetscale.com/) is supported.
+[PlanetScale](https://planetscale.com/) is supported with Mysql2 or the serverless driver.
 
 ## How to use with Mysql2
 
@@ -30,6 +30,7 @@ use [schema.sql](schema.sql) to create the tables.
 ```ts
 import Mysql2Adapter from "authjs-adapter-mysql";
 import * as mysql from "mysql2/promise";
+import buildMysqlHelpers from "authjs-adapter-mysql/dist/mysql";
 
 function getConnection() {
   return mysql.createConnection({
@@ -71,6 +72,7 @@ use [schema.sql](schema.sql) to create the tables.
 
 ```ts
 import Mysql2Adapter from "authjs-adapter-mysql";
+import buildPlanetScaleHelpers from "authjs-adapter-mysql/dist/planetscale";
 
 const client = new Client(config);
 const psHelpers = buildPlanetScaleHelpers(client);
