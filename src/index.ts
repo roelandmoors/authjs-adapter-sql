@@ -1,25 +1,16 @@
-import type {
-  Adapter,
-} from "next-auth/adapters";
-
-import { Connection } from 'mysql2/promise';
-import { buildUnitOfWork } from "./db";
+import type { Adapter } from "next-auth/adapters";
+import { SqlHelpers, buildUnitOfWork } from "./db";
 import { convertUser } from "./repo/user";
 import { convertVerificationToken } from "./repo/verification";
 import { convertSession } from "./repo/session";
 
-
-export default function Mysql2Adapter(
-  getConnection: () => Promise<Connection>
-): Adapter {
-
-  const db = buildUnitOfWork(getConnection);
+export default function Mysql2Adapter(sqlHelpers: SqlHelpers): Adapter {
+  const db = buildUnitOfWork(sqlHelpers);
 
   return {
     async createUser(user) {
-      const userRecord = await db.users.create(user.name, user.image, user.email, user.emailVerified)
-      if (userRecord == null) 
-        throw new Error("creaing user failed!");
+      const userRecord = await db.users.create(user.name, user.image, user.email, user.emailVerified);
+      if (userRecord == null) throw new Error("creaing user failed!");
       return convertUser(userRecord);
     },
 
@@ -45,33 +36,32 @@ export default function Mysql2Adapter(
 
     async updateUser(user) {
       // TODO: not only update name, make it smarter
-      if (user.id == null) throw new Error('empty user id');
-      const userRecord = await db.users.updateName(user.id, user.name)
-      if (userRecord == null) throw new Error('user not found after update');
+      if (user.id == null) throw new Error("empty user id");
+      const userRecord = await db.users.updateName(user.id, user.name);
+      if (userRecord == null) throw new Error("user not found after update");
       return convertUser(userRecord);
     },
 
     async deleteUser(userId) {
-      await db.sessions.deleteByUserId(userId)
+      await db.sessions.deleteByUserId(userId);
       await db.accounts.deleteByUserId(userId);
-      await db.users.deleteById(userId)
+      await db.users.deleteById(userId);
     },
 
     async linkAccount(account) {
-
       await db.accounts.create({
-        user_id : account.userId,
-        type : account.type,
-        provider : account.provider,
-        provider_account_id : account.providerAccountId,
-        access_token : account.access_token,
-        refresh_token : account.refresh_token,
-        expires_at : account.expires_at,
-        token_type : account.token_type,
-        scope : account.scope,
-        id_token : account.id_token,
-        session_state : account.session_state,
-      })
+        user_id: account.userId,
+        type: account.type,
+        provider: account.provider,
+        provider_account_id: account.providerAccountId,
+        access_token: account.access_token,
+        refresh_token: account.refresh_token,
+        expires_at: account.expires_at,
+        token_type: account.token_type,
+        scope: account.scope,
+        id_token: account.id_token,
+        session_state: account.session_state,
+      });
     },
 
     async unlinkAccount({ provider, providerAccountId }) {
@@ -92,7 +82,7 @@ export default function Mysql2Adapter(
       return {
         session: convertSession(sessionRecord),
         user: convertUser(userRecord),
-      }      
+      };
     },
 
     async updateSession({ sessionToken, expires }) {
@@ -102,11 +92,11 @@ export default function Mysql2Adapter(
     },
 
     async deleteSession(sessionToken) {
-      await db.sessions.deleteByToken(sessionToken)
+      await db.sessions.deleteByToken(sessionToken);
     },
 
     async createVerificationToken(token) {
-      return await db.verificationTokens.create(token.identifier, token.token, token.expires)
+      return await db.verificationTokens.create(token.identifier, token.token, token.expires);
     },
 
     async useVerificationToken({ identifier, token }) {
@@ -115,5 +105,5 @@ export default function Mysql2Adapter(
       await db.verificationTokens.deleteByToken(identifier, token);
       return convertVerificationToken(tokenRecord);
     },
-  }
+  };
 }

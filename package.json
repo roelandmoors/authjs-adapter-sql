@@ -36,13 +36,18 @@
     "jest": "^27.5.1",
     "ts-jest": "^27.0.3"
   },
+  "peerDependencies": {
+    "@planetscale/database": "^1.7.0",
+    "mysql2": "^3.2.3",
+    "nanoid": "^3.3.6"
+  },
   "jest": {
     "preset": "@next-auth/adapter-test/jest"
   },
+  "prettier": {
+    "printWidth": 120
+  },
   "dependencies": {
-    "mysql2": "^3.2.3",
-    "nanoid": "^3.3.6",
-    "next-auth": "^4",
-    "server-only": "^0.0.1"
+    "next-auth": "^4"
   }
 }

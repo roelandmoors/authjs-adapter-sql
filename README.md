@@ -13,49 +13,51 @@
 
 ---
 
-This adapter uses [Mysql2](https://github.com/sidorares/node-mysql2#readme) directly to integrate with [Authjs](https://authjs.dev/).  
+This adapter uses mysql statements to integrate with [Authjs](https://authjs.dev/).
 
 [PlanetScale](https://planetscale.com/) is supported.
-
 
 ## How to use
 
 Install:
+
 ```
-npm i authjs-adapter-mysql2
+npm i authjs-adapter-mysql2 mysql2 nanoid
 ```
 
 use [schema.sql](schema.sql) to create the tables.
 
-
 ```ts
 import Mysql2Adapter from "authjs-adapter-mysql2";
-import * as mysql from 'mysql2/promise';``
+import * as mysql from "mysql2/promise";
 
 function getConnection() {
   return mysql.createConnection({
-    host: '127.0.0.1',
-    user: 'root',
-    database: 'fancydb'
+    host: "127.0.0.1",
+    user: "root",
+    database: "fancydb",
   });
 }
+
+// or create your own ...
+const mysqlHelpers = buildMysqlHelpers(getConnection);
+
 export default NextAuth({
-    adapter: Mysql2Adapter(getConnection),
-    providers: []
+  adapter: Mysql2Adapter(mysqlHelpers),
+  providers: [],
 });
 ```
 
-
 When using the new app dir in NextJs you may need this:
+
 ```ts
 const nextConfig = {
   experimental: {
     appDir: true,
     serverComponentsExternalPackages: ["mysql2"],
   },
-}
+};
 ```
-
 
 ## PlanetScale
 
