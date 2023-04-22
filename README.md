@@ -39,7 +39,7 @@ function getConnection() {
   });
 }
 
-// or create your own ...
+// or create your own to replace mysql/nanoid
 const mysqlHelpers = buildMysqlHelpers(getConnection);
 
 export default NextAuth({

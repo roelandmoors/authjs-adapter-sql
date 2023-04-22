@@ -7,10 +7,9 @@ import { convertUser } from "../src/repo/user";
 import { convertVerificationToken } from "../src/repo/verification";
 import { convertSession } from "../src/repo/session";
 import { convertAccount } from "../src/repo/account";
-import type { Connection } from "mysql2/promise";
 import buildMysqlHelpers from "../src/mysql";
 
-function getConnection(): Promise<Connection> {
+function getConnection() {
   return mysql.createConnection({
     host: "127.0.0.1",
     user: process.env.DB_USER || "root",
