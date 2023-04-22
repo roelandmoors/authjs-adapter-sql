@@ -1,4 +1,4 @@
-import { ExtendedSqlHelpers } from "../db";
+import { ExtendedSqlHelpers, convertDate } from "../db";
 
 export interface SessionRecord {
   id: number;
@@ -13,7 +13,7 @@ export function convertSession(rec: SessionRecord): any {
   return {
     id: rec.id,
     userId: rec.user_id,
-    expires: rec.expires,
+    expires: convertDate(rec.expires),
     sessionToken: rec.session_token,
   };
 }

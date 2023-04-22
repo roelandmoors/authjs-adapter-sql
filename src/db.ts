@@ -39,6 +39,16 @@ function buildExtendedSqlHelpers(sqlHelpers: SqlHelpers): ExtendedSqlHelpers {
   return { ...sqlHelpers, execute, queryOne };
 }
 
+export const convertDate = (d: Date | string | null): Date | null => {
+  let emailVerified: Date | null;
+  if (typeof d === "string") {
+    emailVerified = new Date(Date.parse(d + "Z"));
+  } else {
+    emailVerified = d;
+  }
+  return emailVerified;
+};
+
 export function buildUnitOfWork(sqlHelpers: SqlHelpers) {
   const esqlHelpers = buildExtendedSqlHelpers(sqlHelpers);
 

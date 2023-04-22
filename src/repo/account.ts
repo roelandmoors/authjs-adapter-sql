@@ -10,7 +10,7 @@ export interface AccountRecord {
   provider_account_id: string;
   access_token?: string;
   refresh_token?: string;
-  expires_at?: number;
+  expires_at?: number | string;
   token_type?: string;
   scope?: string;
   id_token?: string;
@@ -30,7 +30,7 @@ export function convertAccount(rec: AccountRecord): AdapterAccount {
     providerAccountId: rec.provider_account_id,
     access_token: rec.access_token,
     refresh_token: rec.refresh_token,
-    expires_at: rec.expires_at,
+    expires_at: Number(rec.expires_at),
     token_type: rec.token_type,
     scope: rec.scope,
     id_token: rec.id_token,

@@ -1,11 +1,11 @@
-import { ExtendedSqlHelpers } from "../db";
+import { ExtendedSqlHelpers, convertDate } from "../db";
 import { AdapterUser } from "next-auth/adapters";
 
 export interface UserRecord {
   id: string;
   name: string | null | undefined;
   email: string;
-  email_verified: Date | null;
+  email_verified: Date | string | null;
   image: string | null | undefined;
   created_at: Date;
   updated_at: Date;
@@ -16,7 +16,7 @@ export function convertUser(userRecord: UserRecord): AdapterUser {
     id: userRecord.id,
     name: userRecord.name,
     email: userRecord.email,
-    emailVerified: userRecord.email_verified,
+    emailVerified: convertDate(userRecord.email_verified),
     image: userRecord.image,
   };
 }
