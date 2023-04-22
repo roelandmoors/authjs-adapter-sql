@@ -10,6 +10,7 @@ export interface ExecuteResult {
 export interface SqlHelpers {
   execute: (sql: string, values: any[]) => Promise<ExecuteResult>;
   query: <T>(sql: string, values: any[]) => Promise<T[]>;
+  generateId: () => string;
 }
 
 export interface ExtendedSqlHelpers extends SqlHelpers {
@@ -35,7 +36,7 @@ function buildExtendedSqlHelpers(sqlHelpers: SqlHelpers): ExtendedSqlHelpers {
     return null;
   };
 
-  return { execute, query: sqlHelpers.query, queryOne };
+  return { ...sqlHelpers, execute, queryOne };
 }
 
 export function buildUnitOfWork(sqlHelpers: SqlHelpers) {

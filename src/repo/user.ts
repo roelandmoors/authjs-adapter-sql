@@ -1,9 +1,5 @@
 import { ExtendedSqlHelpers } from "../db";
-
-import { customAlphabet, urlAlphabet } from "nanoid";
 import { AdapterUser } from "next-auth/adapters";
-
-const nanoid = customAlphabet(urlAlphabet, 12);
 
 export interface UserRecord {
   id: string;
@@ -46,7 +42,7 @@ export class UserRepo {
     email?: string | null,
     emailVerified?: Date | null
   ): Promise<UserRecord | null> {
-    const id = nanoid();
+    const id = this.sql.generateId();
     await this.sql.execute(
       "insert into users (id, name, image, email, email_verified, created_at, updated_at) " +
         "VALUES (?,?,?,?,?,NOW(),NOW())",
