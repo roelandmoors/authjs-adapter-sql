@@ -21,7 +21,7 @@
     "access": "public"
   },
   "scripts": {
-    "test": "jest",
+    "test": "jest tests/mysql.test.ts",
     "build": "tsc"
   },
   "files": [
