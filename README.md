@@ -6,7 +6,7 @@
   <a href="https://github.com/sidorares/node-mysql2#readme" target="_blank">
     <img height="64px" src="https://www.mysql.com/common/logos/logo-mysql-170x115.png"/>
   </a>
-  <h3 align="center"><b>Mysql2 Adapter</b> - NextAuth.js / Auth.js</a></h3>
+  <h3 align="center"><b>Mysql/PlanetScale Adapter</b> - NextAuth.js / Auth.js</a></h3>
 </p>
 
 [![CI](https://github.com/roelandmoors/authjs-adapter-mysql2/actions/workflows/test.yml/badge.svg)](https://github.com/roelandmoors/authjs-adapter-mysql2/actions/workflows/test.yml)
@@ -17,18 +17,18 @@ This adapter uses mysql statements to integrate with [Authjs](https://authjs.dev
 
 [PlanetScale](https://planetscale.com/) is supported.
 
-## How to use
+## How to use with Mysql2
 
 Install:
 
 ```
-npm i authjs-adapter-mysql2 mysql2 nanoid
+npm i authjs-adapter-mysql mysql2 nanoid
 ```
 
 use [schema.sql](schema.sql) to create the tables.
 
 ```ts
-import Mysql2Adapter from "authjs-adapter-mysql2";
+import Mysql2Adapter from "authjs-adapter-mysql";
 import * as mysql from "mysql2/promise";
 
 function getConnection() {
@@ -59,7 +59,28 @@ const nextConfig = {
 };
 ```
 
-## PlanetScale
+## How to use with PlanetScale serverless driver
+
+Install:
+
+```
+npm i authjs-adapter-mysql @planetscale/database nanoid
+```
+
+use [schema.sql](schema.sql) to create the tables.
+
+```ts
+import Mysql2Adapter from "authjs-adapter-mysql";
+
+const client = new Client(config);
+const psHelpers = buildPlanetScaleHelpers(client);
+
+export default NextAuth({
+  adapter: Mysql2Adapter(psHelpers),
+  providers: [],
+});
+```
 
 - https://planetscale.com/docs/learn/operating-without-foreign-key-constraints
 - https://planetscale.com/blog/why-we-chose-nanoids-for-planetscales-api
+- https://planetscale.com/docs/tutorials/planetscale-serverless-driver
