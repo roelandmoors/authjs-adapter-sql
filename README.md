@@ -9,7 +9,7 @@
   <h3 align="center"><b>Mysql/PlanetScale Adapter</b> - NextAuth.js / Auth.js</a></h3>
 </p>
 
-[![CI](https://github.com/roelandmoors/authjs-adapter-mysql2/actions/workflows/test.yml/badge.svg)](https://github.com/roelandmoors/authjs-adapter-mysql2/actions/workflows/test.yml)
+[![CI](https://github.com/roelandmoors/authjs-adapter-mysql/actions/workflows/test.yml/badge.svg)](https://github.com/roelandmoors/authjs-adapter-mysql/actions/workflows/test.yml)
 
 ---
 
@@ -28,7 +28,7 @@ npm i authjs-adapter-mysql mysql2 nanoid
 use [schema.sql](schema.sql) to create the tables.
 
 ```ts
-import Mysql2Adapter from "authjs-adapter-mysql";
+import MysqlAdapter from "authjs-adapter-mysql";
 import * as mysql from "mysql2/promise";
 import buildMysqlHelpers from "authjs-adapter-mysql/dist/mysql";
 
@@ -44,7 +44,7 @@ function getConnection() {
 const mysqlHelpers = buildMysqlHelpers(getConnection);
 
 export default NextAuth({
-  adapter: Mysql2Adapter(mysqlHelpers),
+  adapter: MysqlAdapter(mysqlHelpers),
   providers: [],
 });
 ```
@@ -71,14 +71,14 @@ npm i authjs-adapter-mysql @planetscale/database nanoid
 use [schema.sql](schema.sql) to create the tables.
 
 ```ts
-import Mysql2Adapter from "authjs-adapter-mysql";
+import MysqlAdapter from "authjs-adapter-mysql";
 import buildPlanetScaleHelpers from "authjs-adapter-mysql/dist/planetscale";
 
 const client = new Client(config);
 const psHelpers = buildPlanetScaleHelpers(client);
 
 export default NextAuth({
-  adapter: Mysql2Adapter(psHelpers),
+  adapter: MysqlAdapter(psHelpers),
   providers: [],
 });
 ```

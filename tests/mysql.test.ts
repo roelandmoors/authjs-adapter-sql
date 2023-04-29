@@ -1,7 +1,7 @@
 import * as mysql from "mysql2/promise";
 
 import { runBasicTests } from "@next-auth/adapter-test";
-import Mysql2Adapter from "../src";
+import MysqlAdapter from "../src";
 import { buildUnitOfWork } from "../src/db";
 import { convertUser } from "../src/repo/user";
 import { convertVerificationToken } from "../src/repo/verification";
@@ -23,7 +23,7 @@ const mysqlHelpers = buildMysqlHelpers(getConnection);
 const db = buildUnitOfWork(mysqlHelpers);
 
 runBasicTests({
-  adapter: Mysql2Adapter(mysqlHelpers),
+  adapter: MysqlAdapter(mysqlHelpers),
   db: {
     connect: async () => {
       await db.raw.execute("truncate table users", []);
