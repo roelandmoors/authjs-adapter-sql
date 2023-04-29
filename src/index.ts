@@ -4,7 +4,7 @@ import { convertUser } from "./repo/user";
 import { convertVerificationToken } from "./repo/verification";
 import { convertSession } from "./repo/session";
 
-export default function Mysql2Adapter(sqlHelpers: SqlHelpers): Adapter {
+export default function MysqlAdapter(sqlHelpers: SqlHelpers): Adapter {
   const db = buildUnitOfWork(sqlHelpers);
 
   return {

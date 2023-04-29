@@ -3,7 +3,7 @@ import { Client } from "@planetscale/database";
 import fetch from "node-fetch";
 
 import { runBasicTests } from "@next-auth/adapter-test";
-import Mysql2Adapter from "../src";
+import MysqlAdapter from "../src";
 import { buildUnitOfWork } from "../src/db";
 import { convertUser } from "../src/repo/user";
 import { convertVerificationToken } from "../src/repo/verification";
@@ -25,7 +25,7 @@ const helpers = buildPlanetScaleHelpers(client);
 const db = buildUnitOfWork(helpers);
 
 runBasicTests({
-  adapter: Mysql2Adapter(helpers),
+  adapter: MysqlAdapter(helpers),
   db: {
     connect: async () => {
       await db.raw.execute("truncate table users", []);
