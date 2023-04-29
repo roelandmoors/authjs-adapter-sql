@@ -6,7 +6,7 @@ export default function buildPlanetScaleHelpers(client: Client): SqlHelpers {
   const execute = async (sql: string, values: any[]): Promise<ExecuteResult> => {
     const conn = client.connection();
     const result = await conn.execute(sql, values);
-    return { insertId: BigInt(result.insertId) };
+    return { insertId: Number(result.insertId) };
   };
 
   const query = async <T>(sql: string, values: any[]): Promise<T[]> => {

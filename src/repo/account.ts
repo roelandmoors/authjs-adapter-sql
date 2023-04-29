@@ -45,7 +45,7 @@ export class AccountRepo {
     this.sql = sql;
   }
 
-  getById(id: bigint): Promise<AccountRecord | null> {
+  getById(id: Number): Promise<AccountRecord | null> {
     return this.sql.queryOne<AccountRecord>("select * from accounts where id = ?", [id]);
   }
 

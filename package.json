@@ -9,6 +9,12 @@
   },
   "author": "github.com/roelandmoors",
   "main": "dist/index.js",
+  "exports": {
+    ".": "./dist/index.js",
+    "./planetscale": "./dist/planetscale.js",
+    "./mysql": "./dist/mysql.js",
+    "./db": "./dist/db.js"
+  },
   "license": "ISC",
   "keywords": [
     "next-auth",

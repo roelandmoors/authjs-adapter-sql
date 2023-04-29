@@ -25,7 +25,7 @@ export class SessionRepo {
     this.sql = sql;
   }
 
-  getById(id: bigint): Promise<SessionRecord | null> {
+  getById(id: Number): Promise<SessionRecord | null> {
     return this.sql.queryOne<SessionRecord>("select * from sessions where id = ?", [id]);
   }
 

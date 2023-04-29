@@ -4,7 +4,7 @@ import { UserRepo } from "./repo/user";
 import { VerificationTokenRepo } from "./repo/verification";
 
 export interface ExecuteResult {
-  insertId: bigint;
+  insertId: number;
 }
 
 export interface SqlHelpers {

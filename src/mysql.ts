@@ -7,7 +7,7 @@ export default function buildMysqlHelpers(getConnection: () => Promise<Connectio
     const conn = await getConnection();
     try {
       const result = (await conn.execute(sql, values)) as ResultSetHeader[];
-      return { insertId: BigInt(result[0].insertId) };
+      return { insertId: Number(result[0].insertId) };
     } finally {
       await conn.end();
     }
