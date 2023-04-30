@@ -40,9 +40,8 @@ export default function MysqlAdapter(sqlHelpers: SqlHelpers): Adapter {
     },
 
     async updateUser(user) {
-      // TODO: not only update name, make it smarter
       if (user.id == null) throw new Error("empty user id");
-      const userRecord = await db.users.updateName(Number(user.id), user.name);
+      const userRecord = await db.users.updateUser(user);
       if (userRecord == null) throw new Error("user not found after update");
       return convertUser(userRecord);
     },

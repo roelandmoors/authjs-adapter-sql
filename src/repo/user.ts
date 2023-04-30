@@ -61,8 +61,20 @@ export class UserRepo {
     return this.sql.execute("delete from users where id = ?", [id]);
   }
 
-  async updateName(id: number, name?: string | null) {
-    await this.sql.execute("update users set name = ? where id = ? ", [name, id]);
+  async updateUser(user: User) {
+    const id = Number(user.id);
+
+    let sqlFields = [];
+    let values = [];
+    for (const [field, value] of Object.entries(user)) {
+      if (field === "id") continue;
+      sqlFields.push(toSnakeCase(field));
+      values.push(value);
+    }
+    values.push(id);
+    const updateSql = sqlFields.map((f) => f + " = ?").join(",");
+
+    await this.sql.execute(`update users set ${updateSql} where id = ? `, values);
     return await this.getById(id);
   }
 }

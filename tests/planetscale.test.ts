@@ -13,7 +13,7 @@ import buildPlanetScaleHelpers from "../src/planetscale";
 
 const config = {
   fetch: fetch,
-  host: "aws.connect.psdb.cloud",
+  host: process.env.PLANETSCALE_HOST,
   username: process.env.PLANETSCALE_USERNAME,
   password: process.env.PLANETSCALE_PASSWORD,
 };
