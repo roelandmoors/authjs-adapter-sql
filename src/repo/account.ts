@@ -4,7 +4,7 @@ import { ExtendedSqlHelpers } from "../db";
 
 export interface AccountRecord {
   id: number;
-  user_id: string;
+  user_id: number;
   type: ProviderType;
   provider: string;
   provider_account_id: string;
@@ -24,7 +24,7 @@ export interface AccountRecord {
 export function convertAccount(rec: AccountRecord): AdapterAccount {
   return {
     id: rec.id,
-    userId: rec.user_id,
+    userId: rec.user_id.toString(),
     type: rec.type,
     provider: rec.provider,
     providerAccountId: rec.provider_account_id,

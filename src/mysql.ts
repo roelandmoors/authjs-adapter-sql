@@ -1,6 +1,5 @@
 import type { Connection, ResultSetHeader, RowDataPacket } from "mysql2/promise";
 import { ExecuteResult, SqlHelpers } from "./db";
-import generateNanoId from "./nanoid";
 
 export default function buildMysqlHelpers(getConnection: () => Promise<Connection>): SqlHelpers {
   const execute = async (sql: string, values: any[]): Promise<ExecuteResult> => {
@@ -22,5 +21,5 @@ export default function buildMysqlHelpers(getConnection: () => Promise<Connectio
       await conn.end();
     }
   };
-  return { execute, query, generateId: generateNanoId };
+  return { execute, query };
 }

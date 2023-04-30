@@ -2,7 +2,7 @@ import { ExtendedSqlHelpers, convertDate } from "../db";
 
 export interface SessionRecord {
   id: number;
-  user_id: string;
+  user_id: number;
   expires: Date;
   session_token: string;
   created_at: Date;

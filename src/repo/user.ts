@@ -2,7 +2,7 @@ import { ExtendedSqlHelpers, convertDate } from "../db";
 import { AdapterUser } from "next-auth/adapters";
 
 export interface UserRecord {
-  id: string;
+  id: number;
   name: string | null | undefined;
   email: string;
   email_verified: Date | string | null;
@@ -13,7 +13,7 @@ export interface UserRecord {
 
 export function convertUser(userRecord: UserRecord): AdapterUser {
   return {
-    id: userRecord.id,
+    id: userRecord.id.toString(),
     name: userRecord.name,
     email: userRecord.email,
     emailVerified: convertDate(userRecord.email_verified),
@@ -28,7 +28,7 @@ export class UserRepo {
     this.sql = sql;
   }
 
-  getById(id: string): Promise<UserRecord | null> {
+  getById(id: number): Promise<UserRecord | null> {
     return this.sql.queryOne<UserRecord>("select * from users where id = ?", [id]);
   }
 
@@ -42,20 +42,20 @@ export class UserRepo {
     email?: string | null,
     emailVerified?: Date | null
   ): Promise<UserRecord | null> {
-    const id = this.sql.generateId();
-    await this.sql.execute(
-      "insert into users (id, name, image, email, email_verified, created_at, updated_at) " +
-        "VALUES (?,?,?,?,?,NOW(),NOW())",
-      [id, name, image, email, emailVerified]
+    const result = await this.sql.execute(
+      "insert into users (name, image, email, email_verified, created_at, updated_at) " +
+        "VALUES (?,?,?,?,NOW(),NOW())",
+      [name, image, email, emailVerified]
     );
-    return await this.getById(id);
+
+    return await this.getById(result.insertId);
   }
 
   deleteById(id: string) {
     return this.sql.execute("delete from users where id = ?", [id]);
   }
 
-  async updateName(id: string, name?: string | null) {
+  async updateName(id: number, name?: string | null) {
     await this.sql.execute("update users set name = ? where id = ? ", [name, id]);
     return await this.getById(id);
   }

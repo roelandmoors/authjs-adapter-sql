@@ -4,6 +4,10 @@ import { convertUser } from "./repo/user";
 import { convertVerificationToken } from "./repo/verification";
 import { convertSession } from "./repo/session";
 
+function isNumeric(value: string) {
+  return /^\d+$/.test(value);
+}
+
 export default function MysqlAdapter(sqlHelpers: SqlHelpers): Adapter {
   const db = buildUnitOfWork(sqlHelpers);
 
@@ -15,7 +19,8 @@ export default function MysqlAdapter(sqlHelpers: SqlHelpers): Adapter {
     },
 
     async getUser(id) {
-      const userRecord = await db.users.getById(id);
+      if (!isNumeric(id)) return null;
+      const userRecord = await db.users.getById(Number(id));
       if (userRecord == null) return null;
       return convertUser(userRecord);
     },
@@ -37,7 +42,7 @@ export default function MysqlAdapter(sqlHelpers: SqlHelpers): Adapter {
     async updateUser(user) {
       // TODO: not only update name, make it smarter
       if (user.id == null) throw new Error("empty user id");
-      const userRecord = await db.users.updateName(user.id, user.name);
+      const userRecord = await db.users.updateName(Number(user.id), user.name);
       if (userRecord == null) throw new Error("user not found after update");
       return convertUser(userRecord);
     },
@@ -50,7 +55,7 @@ export default function MysqlAdapter(sqlHelpers: SqlHelpers): Adapter {
 
     async linkAccount(account) {
       await db.accounts.create({
-        user_id: account.userId,
+        user_id: Number(account.userId),
         type: account.type,
         provider: account.provider,
         provider_account_id: account.providerAccountId,

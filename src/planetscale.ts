@@ -1,6 +1,5 @@
 import { Client } from "@planetscale/database";
 import { ExecuteResult, SqlHelpers } from "./db";
-import generateNanoId from "./nanoid";
 
 export default function buildPlanetScaleHelpers(client: Client): SqlHelpers {
   const execute = async (sql: string, values: any[]): Promise<ExecuteResult> => {
@@ -15,5 +14,5 @@ export default function buildPlanetScaleHelpers(client: Client): SqlHelpers {
     return rows as T[];
   };
 
-  return { execute, query, generateId: generateNanoId };
+  return { execute, query };
 }

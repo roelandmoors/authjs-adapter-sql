@@ -22,7 +22,7 @@ This adapter uses mysql statements to integrate with [Authjs](https://authjs.dev
 Install:
 
 ```
-npm i authjs-adapter-mysql mysql2 nanoid
+npm i authjs-adapter-mysql mysql2
 ```
 
 use [schema.sql](schema.sql) to create the tables.
@@ -40,7 +40,7 @@ function getConnection() {
   });
 }
 
-// or create your own to replace mysql2/nanoid
+// or create your own to replace mysql2
 const mysqlHelpers = buildMysqlHelpers(getConnection);
 
 export default NextAuth({
@@ -65,7 +65,7 @@ const nextConfig = {
 Install:
 
 ```
-npm i authjs-adapter-mysql @planetscale/database nanoid
+npm i authjs-adapter-mysql @planetscale/database
 ```
 
 use [schema.sql](schema.sql) to create the tables.
@@ -84,5 +84,4 @@ export default NextAuth({
 ```
 
 - https://planetscale.com/docs/learn/operating-without-foreign-key-constraints
-- https://planetscale.com/blog/why-we-chose-nanoids-for-planetscales-api
 - https://planetscale.com/docs/tutorials/planetscale-serverless-driver

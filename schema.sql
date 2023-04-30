@@ -1,5 +1,5 @@
 CREATE TABLE `users` (
-  `id` varchar(12) NOT NULL,
+  `id` bigint NOT NULL AUTO_INCREMENT,
   `name` varchar(255) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
   `email_verified` datetime(6) DEFAULT NULL,
@@ -12,7 +12,7 @@ CREATE TABLE `users` (
 
 CREATE TABLE `accounts` (
   `id` bigint NOT NULL AUTO_INCREMENT,
-  `user_id` varchar(12) DEFAULT NULL,
+  `user_id` bigint DEFAULT NULL,
   `type` varchar(255) NOT NULL,
   `provider` varchar(255) NOT NULL,
   `provider_account_id` varchar(255) NOT NULL,
@@ -33,7 +33,7 @@ CREATE TABLE `accounts` (
 
 CREATE TABLE `sessions` (
   `id` bigint NOT NULL AUTO_INCREMENT,
-  `user_id` varchar(12) NOT NULL,
+  `user_id` bigint NOT NULL,
   `expires` datetime(6) NOT NULL,
   `session_token` varchar(255) NOT NULL,
   `created_at` datetime NOT NULL,
