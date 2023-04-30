@@ -12,7 +12,7 @@ export interface SessionRecord {
 export function convertSession(rec: SessionRecord): any {
   return {
     id: rec.id,
-    userId: rec.user_id,
+    userId: rec.user_id.toString(),
     expires: convertDate(rec.expires),
     sessionToken: rec.session_token,
   };
