@@ -1,3 +1,4 @@
+import { User } from "next-auth";
 import { ExtendedSqlHelpers, convertDate } from "../db";
 import { AdapterUser } from "next-auth/adapters";
 
@@ -36,16 +37,21 @@ export class UserRepo {
     return this.sql.queryOne<UserRecord>("select * from users where email = ?", [email]);
   }
 
-  async create(
-    name?: string | null,
-    image?: string | null,
-    email?: string | null,
-    emailVerified?: Date | null
-  ): Promise<UserRecord | null> {
+  async create(user: Omit<User, "id">): Promise<UserRecord | null> {
+    let sqlFields = ["created_at", "updated_at"];
+    let params = ["NOW()", "NOW()"];
+    let values = [];
+    for (const [field, value] of Object.entries(user)) {
+      sqlFields.push(toSnakeCase(field));
+      params.push("?");
+      values.push(value);
+    }
+
+    console.log({ sqlFields, params, values });
+
     const result = await this.sql.execute(
-      "insert into users (name, image, email, email_verified, created_at, updated_at) " +
-        "VALUES (?,?,?,?,NOW(),NOW())",
-      [name, image, email, emailVerified]
+      `insert into users (${sqlFields.join(",")}) VALUES (${params.join(",")})`,
+      values
     );
 
     return await this.getById(result.insertId);
@@ -59,4 +65,11 @@ export class UserRepo {
     await this.sql.execute("update users set name = ? where id = ? ", [name, id]);
     return await this.getById(id);
   }
+}
+
+function toSnakeCase(value: string): string {
+  return value
+    .split(/\.?(?=[A-Z])/)
+    .join("_")
+    .toLowerCase();
 }

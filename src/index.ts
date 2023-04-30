@@ -13,7 +13,7 @@ export default function MysqlAdapter(sqlHelpers: SqlHelpers): Adapter {
 
   return {
     async createUser(user) {
-      const userRecord = await db.users.create(user.name, user.image, user.email, user.emailVerified);
+      const userRecord = await db.users.create(user);
       if (userRecord == null) throw new Error("creaing user failed!");
       return convertUser(userRecord);
     },

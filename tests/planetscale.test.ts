@@ -41,7 +41,7 @@ runBasicTests({
     },
 
     user: async (id) => {
-      const userRecord = await db.users.getById(id);
+      const userRecord = await db.users.getById(Number(id));
       if (userRecord == null) return null;
       return convertUser(userRecord);
     },
