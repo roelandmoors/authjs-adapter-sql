@@ -40,7 +40,7 @@ function getConnection() {
   });
 }
 
-// or create your own to replace mysql2
+// you can create your own helpers for custom logic
 const mysqlHelpers = buildMysqlHelpers(getConnection);
 
 export default NextAuth({
@@ -75,6 +75,8 @@ import MysqlAdapter from "authjs-adapter-mysql";
 import buildPlanetScaleHelpers from "authjs-adapter-mysql/dist/planetscale";
 
 const client = new Client(config);
+
+// you can create your own helpers for custom logic
 const psHelpers = buildPlanetScaleHelpers(client);
 
 export default NextAuth({
