@@ -1,4 +1,4 @@
-import { ExtendedSqlHelpers, convertDate } from "../db";
+import { ExtendedSqlHelpers, convertDate, datetimeToStr } from "../db";
 
 export interface SessionRecord {
   id: number;
@@ -44,13 +44,14 @@ export class SessionRepo {
   async create(userId: string, sessionToken: string, expires: Date): Promise<SessionRecord | null> {
     const result = await this.sql.execute`insert into sessions 
       (user_id, expires, session_token, created_at, updated_at) 
-      VALUES (${userId},${expires.toISOString()},${sessionToken},NOW(),NOW())`;
+      VALUES (${userId},${datetimeToStr(expires)},${sessionToken},NOW(),NOW())`;
     return await this.getById(result.insertId);
   }
 
   async updateExpires(sessionToken: string, expires?: Date): Promise<SessionRecord | null> {
-    const result = await this.sql
-      .execute`update sessions set expires = ${expires?.toISOString()} where session_token = ${sessionToken} `;
+    const result = await this.sql.execute`update sessions set expires = ${datetimeToStr(
+      expires
+    )} where session_token = ${sessionToken} `;
     return await this.getById(result.insertId);
   }
 }

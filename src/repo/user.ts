@@ -39,20 +39,21 @@ export class UserRepo {
 
   async create(user: Omit<User, "id">): Promise<UserRecord | null> {
     let sqlFields = ["created_at", "updated_at"];
-    let params = ["NOW()", "NOW()"];
+    let params = [];
     let values = [];
     for (const [field, value] of Object.entries(user)) {
       sqlFields.push(toSnakeCase(field));
-      params.push("?");
+      params.push(",");
       values.push(value);
     }
-
-    console.log({ sqlFields, params, values });
+    params.pop();
 
     const sql: string[] = [];
-    sql.push(`insert into users (${sqlFields.join(",")}) VALUES (`); //todo params
+    sql.push(`insert into users (${sqlFields.join(",")}) VALUES (NOW(), NOW(),`);
+    sql.push(...params);
+    sql.push(")");
 
-    const result = await this.sql.execute(sql, values);
+    const result = await this.sql.execute(sql, ...values);
 
     return await this.getById(result.insertId);
   }
@@ -62,19 +63,24 @@ export class UserRepo {
   }
 
   async updateUser(user: User) {
+    // const id = Number(user.id);
+
+    // let sqlFields = [];
+    // let values = [];
+    // for (const [field, value] of Object.entries(user)) {
+    //   if (field === "id") continue;
+    //   sqlFields.push(toSnakeCase(field));
+    //   values.push(value);
+    // }
+    // values.push(id);
+    // const updateSql = sqlFields.map((f) => f + " = ?").join(",");
+
+    // await this.sql.execute(`update users set ${updateSql} where id = ? `, ...values);
+    // return await this.getById(id);
+
     const id = Number(user.id);
 
-    let sqlFields = [];
-    let values = [];
-    for (const [field, value] of Object.entries(user)) {
-      if (field === "id") continue;
-      sqlFields.push(toSnakeCase(field));
-      values.push(value);
-    }
-    values.push(id);
-    const updateSql = sqlFields.map((f) => f + " = ?").join(",");
-
-    await this.sql.execute(`update users set ${updateSql} where id = ? `, values);
+    await this.sql.execute`update users set name = ${user.name} where id = ${id} `;
     return await this.getById(id);
   }
 }

@@ -1,5 +1,5 @@
 import { VerificationToken } from "next-auth/adapters";
-import { ExecuteResult, ExtendedSqlHelpers, convertDate } from "../db";
+import { ExecuteResult, ExtendedSqlHelpers, convertDate, datetimeToStr } from "../db";
 
 export interface VerificationTokenRecord {
   identifier: string;
@@ -26,12 +26,12 @@ export class VerificationTokenRepo {
 
   getByToken(identifier: string, token: string): Promise<VerificationTokenRecord | null> {
     return this.sql
-      .queryOne<VerificationTokenRecord>`select * from verification_tokens where identifier =${identifier}? and token = ${token}`;
+      .queryOne<VerificationTokenRecord>`select * from verification_tokens where identifier =${identifier} and token = ${token}`;
   }
 
   async create(identifier: string, token: string, expires: Date): Promise<VerificationTokenRecord | null> {
     await this.sql.execute`insert into verification_tokens (identifier, token, expires, created_at, updated_at) 
-      VALUES (${identifier},${token},${expires.toISOString()},NOW(),NOW())`;
+      VALUES (${identifier},${token},${datetimeToStr(expires)},NOW(),NOW())`;
     return await this.getByToken(token, identifier);
   }
 

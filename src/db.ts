@@ -76,3 +76,10 @@ export function buildUnitOfWork(sqlHelpers: SqlHelpers): UnitOfWork {
     raw: esqlHelpers,
   };
 }
+
+export function datetimeToStr(expires?: Date) {
+  if (!expires) expires = new Date();
+  const tzoffset = expires.getTimezoneOffset() * 60000; //offset in milliseconds
+  const localISOTime = new Date(expires.getTime() - tzoffset).toISOString().slice(0, -1);
+  return localISOTime;
+}
