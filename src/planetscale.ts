@@ -1,16 +1,16 @@
 import { Client } from "@planetscale/database";
-import { ExecuteResult, SqlHelpers } from "./db";
+import { ExecuteResult, Primitive, SqlHelpers } from "./db";
 
 export default function buildPlanetScaleHelpers(client: Client): SqlHelpers {
-  const execute = async (sql: string, values: any[]): Promise<ExecuteResult> => {
+  const execute = async (sql: ReadonlyArray<string>, ...values: Primitive[]): Promise<ExecuteResult> => {
     const conn = client.connection();
-    const result = await conn.execute(sql, values);
+    const result = await conn.execute(sql.join("?"), values);
     return { insertId: Number(result.insertId) };
   };
 
-  const query = async <T>(sql: string, values: any[]): Promise<T[]> => {
+  const query = async <T>(sql: ReadonlyArray<string>, ...values: Primitive[]): Promise<T[]> => {
     const conn = client.connection();
-    const { rows } = await conn.execute(sql, values);
+    const { rows } = await conn.execute(sql.join("?"), values);
     return rows as T[];
   };
 

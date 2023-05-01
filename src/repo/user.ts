@@ -49,10 +49,10 @@ export class UserRepo {
 
     console.log({ sqlFields, params, values });
 
-    const result = await this.sql.execute(
-      `insert into users (${sqlFields.join(",")}) VALUES (${params.join(",")})`,
-      values
-    );
+    const sql: string[] = [];
+    sql.push(`insert into users (${sqlFields.join(",")}) VALUES (`); //todo params
+
+    const result = await this.sql.execute(sql, values);
 
     return await this.getById(result.insertId);
   }

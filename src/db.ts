@@ -14,12 +14,12 @@ export interface QueryResultRow {
 }
 
 export interface SqlHelpers {
-  execute: (sql: TemplateStringsArray, ...values: Primitive[]) => Promise<ExecuteResult>;
-  query: <T extends QueryResultRow>(sql: TemplateStringsArray, ...values: Primitive[]) => Promise<T[]>;
+  execute: (sql: ReadonlyArray<string>, ...values: Primitive[]) => Promise<ExecuteResult>;
+  query: <T extends QueryResultRow>(sql: ReadonlyArray<string>, ...values: Primitive[]) => Promise<T[]>;
 }
 
 export interface ExtendedSqlHelpers extends SqlHelpers {
-  queryOne: <T extends QueryResultRow>(sql: TemplateStringsArray, ...values: Primitive[]) => Promise<T | null>;
+  queryOne: <T extends QueryResultRow>(sql: ReadonlyArray<string>, ...values: Primitive[]) => Promise<T | null>;
 }
 
 function replaceUndefined(values: any[]) {
@@ -30,13 +30,13 @@ function replaceUndefined(values: any[]) {
 }
 
 function buildExtendedSqlHelpers(sqlHelpers: SqlHelpers): ExtendedSqlHelpers {
-  const execute = async (sql: TemplateStringsArray, ...values: Primitive[]): Promise<ExecuteResult> => {
+  const execute = async (sql: ReadonlyArray<string>, ...values: Primitive[]): Promise<ExecuteResult> => {
     const replacedValues = replaceUndefined(values);
     return await sqlHelpers.execute(sql, ...replacedValues);
   };
 
   const queryOne = async <T extends QueryResultRow>(
-    sql: TemplateStringsArray,
+    sql: ReadonlyArray<string>,
     ...values: Primitive[]
   ): Promise<T | null> => {
     const rows = await sqlHelpers.query<T>(sql, ...values);

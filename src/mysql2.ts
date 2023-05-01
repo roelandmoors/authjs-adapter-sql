@@ -2,7 +2,7 @@ import type { Connection, ResultSetHeader, RowDataPacket } from "mysql2/promise"
 import { ExecuteResult, Primitive, SqlHelpers } from "./db";
 
 export default function buildMysql2Helpers(getConnection: () => Promise<Connection>): SqlHelpers {
-  const execute = async (sql: TemplateStringsArray, ...values: Primitive[]): Promise<ExecuteResult> => {
+  const execute = async (sql: ReadonlyArray<string>, ...values: Primitive[]): Promise<ExecuteResult> => {
     const conn = await getConnection();
     try {
       const result = (await conn.execute(sql.join("?"), values)) as ResultSetHeader[];
@@ -12,7 +12,7 @@ export default function buildMysql2Helpers(getConnection: () => Promise<Connecti
     }
   };
 
-  const query = async <T>(sql: TemplateStringsArray, ...values: Primitive[]): Promise<T[]> => {
+  const query = async <T>(sql: ReadonlyArray<string>, ...values: Primitive[]): Promise<T[]> => {
     const conn = await getConnection();
     try {
       const [rows] = await conn.query<T[] & RowDataPacket[][]>(sql.join("?"), values);
