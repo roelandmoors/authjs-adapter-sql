@@ -30,11 +30,11 @@ export class UserRepo {
   }
 
   getById(id: number): Promise<UserRecord | null> {
-    return this.sql.queryOne<UserRecord>("select * from users where id = ?", [id]);
+    return this.sql.queryOne<UserRecord>`select * from users where id = ${id}`;
   }
 
   getByEmail(email: string): Promise<UserRecord | null> {
-    return this.sql.queryOne<UserRecord>("select * from users where email = ?", [email]);
+    return this.sql.queryOne<UserRecord>`select * from users where email = ${email}`;
   }
 
   async create(user: Omit<User, "id">): Promise<UserRecord | null> {
@@ -58,7 +58,7 @@ export class UserRepo {
   }
 
   deleteById(id: string) {
-    return this.sql.execute("delete from users where id = ?", [id]);
+    return this.sql.execute`delete from users where id = ${id}`;
   }
 
   async updateUser(user: User) {
