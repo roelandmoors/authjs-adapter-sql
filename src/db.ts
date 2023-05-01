@@ -48,7 +48,15 @@ export const convertDate = (d: Date | string | null): Date | null => {
   return emailVerified;
 };
 
-export function buildUnitOfWork(sqlHelpers: SqlHelpers) {
+export interface UnitOfWork {
+  users: UserRepo;
+  sessions: SessionRepo;
+  accounts: AccountRepo;
+  verificationTokens: VerificationTokenRepo;
+  raw: ExtendedSqlHelpers;
+}
+
+export function buildUnitOfWork(sqlHelpers: SqlHelpers): UnitOfWork {
   const esqlHelpers = buildExtendedSqlHelpers(sqlHelpers);
 
   return {

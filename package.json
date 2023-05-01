@@ -27,7 +27,7 @@
     "access": "public"
   },
   "scripts": {
-    "test": "jest tests/mysql2.test.ts",
+    "test": "jest tests/mysql2.test.ts tests/pg.test.ts",
     "build": "tsc"
   },
   "files": [
@@ -47,7 +47,7 @@
   "peerDependencies": {
     "@planetscale/database": "^1.7.0",
     "mysql2": "^3.2.3",
-    "pg": "^8.10.0"
+    "@vercel/postgres": "^0.1.2"
   },
   "prettier": {
     "printWidth": 120
