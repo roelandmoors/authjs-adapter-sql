@@ -17,7 +17,7 @@ export function convertUser(userRecord: UserRecord): AdapterUser {
     id: userRecord.id.toString(),
     name: userRecord.name,
     email: userRecord.email,
-    emailVerified: convertDate(userRecord.email_verified),
+    emailVerified: convertDate(userRecord.email_verified, true),
     image: userRecord.image,
   };
 }

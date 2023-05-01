@@ -47,14 +47,11 @@ function buildExtendedSqlHelpers(sqlHelpers: SqlHelpers): ExtendedSqlHelpers {
   return { ...sqlHelpers, execute, queryOne };
 }
 
-export const convertDate = (d: Date | string | null): Date | null => {
-  let emailVerified: Date | null;
+export const convertDate = (d: Date | string | null, addZ: boolean = false): Date | null => {
   if (typeof d === "string") {
-    emailVerified = new Date(Date.parse(d + "Z"));
-  } else {
-    emailVerified = d;
-  }
-  return emailVerified;
+    if (addZ) d += "Z";
+    return new Date(Date.parse(d));
+  } else return d;
 };
 
 export interface UnitOfWork {
@@ -82,4 +79,19 @@ export function datetimeToStr(expires?: Date) {
   const tzoffset = expires.getTimezoneOffset() * 60000; //offset in milliseconds
   const localISOTime = new Date(expires.getTime() - tzoffset).toISOString().slice(0, -1);
   return localISOTime;
+}
+
+// TODO: make this smarter and easier
+export function arrayToSqlString(o: any): string {
+  let sql = "";
+  if (Array.isArray(sql)) {
+    sql = (o as string[]).join("?");
+  } else if (typeof o === "string" || o instanceof String) {
+    sql = o as string;
+  } else if (o.hasOwnProperty("raw")) {
+    sql = (o as TemplateStringsArray).raw.join("?");
+  } else {
+    sql = Array.from(o).join("?");
+  }
+  return sql;
 }
