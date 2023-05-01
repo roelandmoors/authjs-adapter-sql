@@ -1,21 +1,21 @@
 import { VercelPoolClient } from "@vercel/postgres";
-import { ExecuteResult, SqlHelpers } from "./db";
+import { QueryResultRow, ExecuteResult, Primitive, SqlHelpers } from "./db";
 
 export default function builVercelHelpers(getConnection: () => Promise<VercelPoolClient>): SqlHelpers {
-  const execute = async (sql: string, values: any[]): Promise<ExecuteResult> => {
+  const execute = async (sql: TemplateStringsArray, ...values: Primitive[]): Promise<ExecuteResult> => {
     const client = await getConnection();
     try {
-      const result = (await client.sql(sql, values)) as ResultSetHeader[];
-      return { insertId: Number(result[0].insertId) };
+      const result = await client.sql(sql, ...values);
+      return { insertId: Number(result.oid) };
     } finally {
       await client.release();
     }
   };
 
-  const query = async <T>(sql: string, values: any[]): Promise<T[]> => {
+  const query = async <T extends QueryResultRow>(sql: TemplateStringsArray, ...values: Primitive[]): Promise<T[]> => {
     const client = await getConnection();
     try {
-      const [rows] = await client.sql<T[] & RowDataPacket[][]>(sql, values);
+      const { rows } = await client.sql<T>(sql, ...values);
       return rows;
     } finally {
       await client.release();
