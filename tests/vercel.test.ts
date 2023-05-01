@@ -1,5 +1,5 @@
 require("dotenv").config();
-import { createClient, createPool } from "@vercel/postgres";
+import { createPool } from "@vercel/postgres";
 
 import { runBasicTests } from "@next-auth/adapter-test";
 import SqlAdapter from "../src";
@@ -8,7 +8,7 @@ import { buildUnitOfWork } from "../src/db";
 import dbTests from "./shared";
 
 function getConnection() {
-  return createPool({ connectionString: process.env.POSTGRES_URL });
+  return createPool();
 }
 
 const vercelHelpers = buildVercelHelpers(getConnection);
