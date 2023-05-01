@@ -6,7 +6,7 @@
   <h3 align="center"><b>Sql Adapter</b> - NextAuth.js / Auth.js</a></h3>
 </p>
 
-[![CI](https://github.com/roelandmoors/authjs-adapter-sql/actions/workflows/test.yml/badge.svg)](https://github.com/roelandmoors/authjs-adapter-sql/actions/workflows/test.yml)
+[![CI](https://github.com/roelandmoors/authjs-adapter-sql/actions/workflows/mysql_test.yml/badge.svg)](https://github.com/roelandmoors/authjs-adapter-sql/actions/workflows/mysql_test.yml)
 
 ---
 
