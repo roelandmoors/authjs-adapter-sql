@@ -1,7 +1,3 @@
-require("dotenv").config();
-import { Client } from "@planetscale/database";
-import fetch from "node-fetch";
-
 import { runBasicTests } from "@next-auth/adapter-test";
 import SqlAdapter from "../src";
 import { buildUnitOfWork } from "../src/db";
@@ -9,23 +5,19 @@ import { convertUser } from "../src/repo/user";
 import { convertVerificationToken } from "../src/repo/verification";
 import { convertSession } from "../src/repo/session";
 import { convertAccount } from "../src/repo/account";
-import buildPlanetScaleHelpers from "../src/planetscale";
+import buildPgHelpers from "../src/pg";
+const { Client } = require("pg");
 
-const config = {
-  fetch: fetch,
-  host: process.env.PLANETSCALE_HOST,
-  username: process.env.PLANETSCALE_USERNAME,
-  password: process.env.PLANETSCALE_PASSWORD,
-};
+function getConnection() {
+  return new Client();
+}
 
-const client = new Client(config);
+const mysqlHelpers = buildPgHelpers(getConnection);
 
-const helpers = buildPlanetScaleHelpers(client);
-
-const db = buildUnitOfWork(helpers);
+const db = buildUnitOfWork(mysqlHelpers);
 
 runBasicTests({
-  adapter: SqlAdapter(helpers),
+  adapter: SqlAdapter(mysqlHelpers),
   db: {
     connect: async () => {
       await db.raw.execute("truncate table users", []);

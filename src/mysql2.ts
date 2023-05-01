@@ -1,7 +1,7 @@
 import type { Connection, ResultSetHeader, RowDataPacket } from "mysql2/promise";
 import { ExecuteResult, SqlHelpers } from "./db";
 
-export default function buildMysqlHelpers(getConnection: () => Promise<Connection>): SqlHelpers {
+export default function buildMysql2Helpers(getConnection: () => Promise<Connection>): SqlHelpers {
   const execute = async (sql: string, values: any[]): Promise<ExecuteResult> => {
     const conn = await getConnection();
     try {

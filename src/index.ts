@@ -4,11 +4,7 @@ import { convertUser } from "./repo/user";
 import { convertVerificationToken } from "./repo/verification";
 import { convertSession } from "./repo/session";
 
-function isNumeric(value: string) {
-  return /^\d+$/.test(value);
-}
-
-export default function MysqlAdapter(sqlHelpers: SqlHelpers): Adapter {
+export default function SqlAdapter(sqlHelpers: SqlHelpers): Adapter {
   const db = buildUnitOfWork(sqlHelpers);
 
   return {
@@ -110,4 +106,8 @@ export default function MysqlAdapter(sqlHelpers: SqlHelpers): Adapter {
       return convertVerificationToken(tokenRecord);
     },
   };
+}
+
+function isNumeric(value: string) {
+  return /^\d+$/.test(value);
 }

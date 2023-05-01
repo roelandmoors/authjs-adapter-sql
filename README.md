@@ -3,34 +3,31 @@
   <a href="https://authjs.dev" target="_blank">
     <img height="64px" src="https://authjs.dev/img/logo/logo-sm.png" />
   </a>
-  <a href="https://github.com/sidorares/node-mysql2#readme" target="_blank">
-    <img height="64px" src="https://www.mysql.com/common/logos/logo-mysql-170x115.png"/>
-  </a>
-  <h3 align="center"><b>Mysql/PlanetScale Adapter</b> - NextAuth.js / Auth.js</a></h3>
+  <h3 align="center"><b>Sql Adapter</b> - NextAuth.js / Auth.js</a></h3>
 </p>
 
-[![CI](https://github.com/roelandmoors/authjs-adapter-mysql/actions/workflows/test.yml/badge.svg)](https://github.com/roelandmoors/authjs-adapter-mysql/actions/workflows/test.yml)
+[![CI](https://github.com/roelandmoors/authjs-adapter-sql/actions/workflows/test.yml/badge.svg)](https://github.com/roelandmoors/authjs-adapter-sql/actions/workflows/test.yml)
 
 ---
 
-This adapter uses mysql statements to integrate with [Authjs](https://authjs.dev/).
+This adapter uses plain sql statements to integrate with [Authjs](https://authjs.dev/).
 
-[PlanetScale](https://planetscale.com/) is supported with Mysql2 or the serverless driver.
+Support for Mysql and Postgres. Also works on [PlanetScale](https://planetscale.com/) or [Vercel/postgres](https://github.com/vercel/storage/tree/main/packages/postgres) with any driver that supports plain sql statements.
 
 ## How to use with Mysql2
 
 Install:
 
 ```
-npm i authjs-adapter-mysql mysql2
+npm i authjs-adapter-sql mysql2
 ```
 
 use [schema.sql](schema.sql) to create the tables.
 
 ```ts
-import MysqlAdapter from "authjs-adapter-mysql";
+import SqlAdapter from "authjs-adapter-mysql";
 import * as mysql from "mysql2/promise";
-import buildMysqlHelpers from "authjs-adapter-mysql/dist/mysql";
+import buildMysql2Helpers from "authjs-adapter-mysql/dist/mysql2";
 
 function getConnection() {
   return mysql.createConnection({
@@ -41,10 +38,10 @@ function getConnection() {
 }
 
 // you can create your own helpers for custom logic
-const mysqlHelpers = buildMysqlHelpers(getConnection);
+const mysqlHelpers = buildMysql2Helpers(getConnection);
 
 export default NextAuth({
-  adapter: MysqlAdapter(mysqlHelpers),
+  adapter: SqlAdapter(mysqlHelpers),
   providers: [],
 });
 ```
@@ -65,14 +62,14 @@ const nextConfig = {
 Install:
 
 ```
-npm i authjs-adapter-mysql @planetscale/database
+npm i authjs-adapter-sql @planetscale/database
 ```
 
 use [schema.sql](schema.sql) to create the tables.
 
 ```ts
-import MysqlAdapter from "authjs-adapter-mysql";
-import buildPlanetScaleHelpers from "authjs-adapter-mysql/dist/planetscale";
+import SqlAdapter from "authjs-adapter-sql";
+import buildPlanetScaleHelpers from "authjs-adapter-sql/dist/planetscale";
 
 const client = new Client(config);
 
@@ -80,7 +77,7 @@ const client = new Client(config);
 const psHelpers = buildPlanetScaleHelpers(client);
 
 export default NextAuth({
-  adapter: MysqlAdapter(psHelpers),
+  adapter: SqlAdapter(psHelpers),
   providers: [],
 });
 ```

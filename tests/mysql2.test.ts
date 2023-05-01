@@ -1,13 +1,13 @@
 import * as mysql from "mysql2/promise";
 
 import { runBasicTests } from "@next-auth/adapter-test";
-import MysqlAdapter from "../src";
+import SqlAdapter from "../src";
 import { buildUnitOfWork } from "../src/db";
 import { convertUser } from "../src/repo/user";
 import { convertVerificationToken } from "../src/repo/verification";
 import { convertSession } from "../src/repo/session";
 import { convertAccount } from "../src/repo/account";
-import buildMysqlHelpers from "../src/mysql";
+import buildMysql2Helpers from "../src/mysql2";
 
 function getConnection() {
   return mysql.createConnection({
@@ -18,12 +18,12 @@ function getConnection() {
   });
 }
 
-const mysqlHelpers = buildMysqlHelpers(getConnection);
+const mysqlHelpers = buildMysql2Helpers(getConnection);
 
 const db = buildUnitOfWork(mysqlHelpers);
 
 runBasicTests({
-  adapter: MysqlAdapter(mysqlHelpers),
+  adapter: SqlAdapter(mysqlHelpers),
   db: {
     connect: async () => {
       await db.raw.execute("truncate table users", []);
