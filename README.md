@@ -12,7 +12,7 @@
 
 This adapter uses plain sql statements to integrate with [Authjs](https://authjs.dev/).
 
-Support for Mysql and Postgres. Also works on [PlanetScale](https://planetscale.com/) or [Vercel/postgres](https://github.com/vercel/storage/tree/main/packages/postgres) with any driver that supports plain sql statements.
+Support for Mysql and Postgres. Also works on [PlanetScale](https://planetscale.com/) or [Vercel/postgres](https://github.com/vercel/storage/tree/main/packages/postgres) (WIP) with any driver that supports plain sql statements.
 
 ## How to use with Mysql2
 
@@ -22,12 +22,12 @@ Install:
 npm i authjs-adapter-sql mysql2
 ```
 
-use [schema.sql](schema.sql) to create the tables.
+use [mysql.sql](mysql.sql) to create the tables.
 
 ```ts
-import SqlAdapter from "authjs-adapter-mysql";
+import SqlAdapter from "authjs-adapter-sql";
 import * as mysql from "mysql2/promise";
-import buildMysql2Helpers from "authjs-adapter-mysql/dist/mysql2";
+import buildMysql2Helpers from "authjs-adapter-sql/dist/mysql2";
 
 function getConnection() {
   return mysql.createConnection({
@@ -38,10 +38,10 @@ function getConnection() {
 }
 
 // you can create your own helpers for custom logic
-const mysqlHelpers = buildMysql2Helpers(getConnection);
+const mysql2Helpers = buildMysql2Helpers(getConnection);
 
 export default NextAuth({
-  adapter: SqlAdapter(mysqlHelpers),
+  adapter: SqlAdapter(mysql2Helpers),
   providers: [],
 });
 ```
@@ -65,7 +65,7 @@ Install:
 npm i authjs-adapter-sql @planetscale/database
 ```
 
-use [schema.sql](schema.sql) to create the tables.
+use [mysql.sql](mysql.sql) to create the tables.
 
 ```ts
 import SqlAdapter from "authjs-adapter-sql";
