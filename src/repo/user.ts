@@ -17,7 +17,7 @@ export function convertUser(userRecord: UserRecord): AdapterUser {
     id: userRecord.id.toString(),
     name: userRecord.name,
     email: userRecord.email,
-    emailVerified: convertDate(userRecord.email_verified),
+    emailVerified: convertDate(userRecord.email_verified, true),
     image: userRecord.image,
   };
 }
@@ -30,51 +30,57 @@ export class UserRepo {
   }
 
   getById(id: number): Promise<UserRecord | null> {
-    return this.sql.queryOne<UserRecord>("select * from users where id = ?", [id]);
+    return this.sql.queryOne<UserRecord>`select * from users where id = ${id}`;
   }
 
   getByEmail(email: string): Promise<UserRecord | null> {
-    return this.sql.queryOne<UserRecord>("select * from users where email = ?", [email]);
+    return this.sql.queryOne<UserRecord>`select * from users where email = ${email}`;
   }
 
   async create(user: Omit<User, "id">): Promise<UserRecord | null> {
     let sqlFields = ["created_at", "updated_at"];
-    let params = ["NOW()", "NOW()"];
+    let params = [];
     let values = [];
     for (const [field, value] of Object.entries(user)) {
       sqlFields.push(toSnakeCase(field));
-      params.push("?");
+      params.push(",");
       values.push(value);
     }
+    params.pop();
 
-    console.log({ sqlFields, params, values });
+    const sql: string[] = [];
+    sql.push(`insert into users (${sqlFields.join(",")}) VALUES (NOW(), NOW(),`);
+    sql.push(...params);
+    sql.push(")");
 
-    const result = await this.sql.execute(
-      `insert into users (${sqlFields.join(",")}) VALUES (${params.join(",")})`,
-      values
-    );
+    const result = await this.sql.execute(sql, ...values);
 
     return await this.getById(result.insertId);
   }
 
   deleteById(id: string) {
-    return this.sql.execute("delete from users where id = ?", [id]);
+    return this.sql.execute`delete from users where id = ${id}`;
   }
 
   async updateUser(user: User) {
+    // const id = Number(user.id);
+
+    // let sqlFields = [];
+    // let values = [];
+    // for (const [field, value] of Object.entries(user)) {
+    //   if (field === "id") continue;
+    //   sqlFields.push(toSnakeCase(field));
+    //   values.push(value);
+    // }
+    // values.push(id);
+    // const updateSql = sqlFields.map((f) => f + " = ?").join(",");
+
+    // await this.sql.execute(`update users set ${updateSql} where id = ? `, ...values);
+    // return await this.getById(id);
+
     const id = Number(user.id);
 
-    let sqlFields = [];
-    let values = [];
-    for (const [field, value] of Object.entries(user)) {
-      if (field === "id") continue;
-      sqlFields.push(toSnakeCase(field));
-      values.push(value);
-    }
-    values.push(id);
-    const updateSql = sqlFields.map((f) => f + " = ?").join(",");
-
-    await this.sql.execute(`update users set ${updateSql} where id = ? `, values);
+    await this.sql.execute`update users set name = ${user.name} where id = ${id} `;
     return await this.getById(id);
   }
 }

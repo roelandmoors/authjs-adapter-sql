@@ -1,30 +1,11 @@
-import * as mysql from "mysql2/promise";
-
-import { runBasicTests } from "@next-auth/adapter-test";
-import MysqlAdapter from "../src";
-import { buildUnitOfWork } from "../src/db";
 import { convertUser } from "../src/repo/user";
 import { convertVerificationToken } from "../src/repo/verification";
 import { convertSession } from "../src/repo/session";
 import { convertAccount } from "../src/repo/account";
-import buildMysqlHelpers from "../src/mysql";
+import { UnitOfWork } from "../src/db";
 
-function getConnection() {
-  return mysql.createConnection({
-    host: "127.0.0.1",
-    user: process.env.DB_USER || "root",
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_DATABASE || "authjs_test",
-  });
-}
-
-const mysqlHelpers = buildMysqlHelpers(getConnection);
-
-const db = buildUnitOfWork(mysqlHelpers);
-
-runBasicTests({
-  adapter: MysqlAdapter(mysqlHelpers),
-  db: {
+export default function dbTests(db: UnitOfWork) {
+  return {
     connect: async () => {
       await db.raw.execute("truncate table users", []);
       await db.raw.execute("truncate table accounts", []);
@@ -32,28 +13,28 @@ runBasicTests({
       await db.raw.execute("truncate table verification_tokens", []);
     },
 
-    verificationToken: async (where) => {
+    verificationToken: async (where: { identifier: string; token: string }) => {
       const token = await db.verificationTokens.getByToken(where.identifier, where.token);
       if (token == null) return null;
       return convertVerificationToken(token);
     },
 
-    user: async (id) => {
+    user: async (id: string) => {
       const userRecord = await db.users.getById(Number(id));
       if (userRecord == null) return null;
       return convertUser(userRecord);
     },
 
-    account: async (where) => {
+    account: async (where: { provider: string; providerAccountId: string }) => {
       const account = await db.accounts.getByProvider(where.provider, where.providerAccountId);
       if (account == null) return null;
       return convertAccount(account);
     },
 
-    session: async (sessionToken) => {
+    session: async (sessionToken: string) => {
       const session = await db.sessions.getByToken(sessionToken);
       if (session == null) return null;
       return convertSession(session);
     },
-  },
-});
+  };
+}

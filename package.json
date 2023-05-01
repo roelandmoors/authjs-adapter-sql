@@ -1,33 +1,33 @@
 {
-  "name": "authjs-adapter-mysql",
-  "version": "0.1.0",
-  "description": "Mysql adapter for next-auth.",
+  "name": "authjs-adapter-sql",
+  "version": "0.1.1",
+  "description": "Sql adapter for next-auth.",
   "homepage": "https://authjs.dev",
-  "repository": "https://github.com/roelandmoors/authjs-adapter-mysql",
+  "repository": "https://github.com/roelandmoors/authjs-adapter-sql",
   "bugs": {
-    "url": "https://github.com/roelandmoors/authjs-adapter-mysql/issues"
+    "url": "https://github.com/roelandmoors/authjs-adapter-sql/issues"
   },
   "author": "github.com/roelandmoors",
   "main": "dist/index.js",
   "exports": {
-    ".": "./dist/index.js",
-    "./planetscale": "./dist/planetscale.js",
-    "./mysql": "./dist/mysql.js",
-    "./db": "./dist/db.js"
+    ".": "./dist/index.js"
   },
   "license": "ISC",
   "keywords": [
     "next-auth",
     "next.js",
     "oauth",
-    "mysql"
+    "postgres",
+    "mysql",
+    "planetscale",
+    "vercel"
   ],
   "private": false,
   "publishConfig": {
     "access": "public"
   },
   "scripts": {
-    "test": "jest tests/mysql.test.ts",
+    "test": "jest tests/mysql2.test.ts",
     "build": "tsc"
   },
   "files": [
@@ -46,7 +46,8 @@
   },
   "peerDependencies": {
     "@planetscale/database": "^1.7.0",
-    "mysql2": "^3.2.3"
+    "mysql2": "^3.2.3",
+    "@vercel/postgres": "^0.1.2"
   },
   "prettier": {
     "printWidth": 120
