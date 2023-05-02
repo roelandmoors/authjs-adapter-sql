@@ -12,7 +12,6 @@ export default function buildPgPromiseHelpers(getConnection: () => ExtendedProto
     if (result.length > 0) {
       insertId = result[0]["id"];
     }
-    console.log({ sqlStr, values, result, insertId });
     return { insertId: Number(insertId) };
   };
 
@@ -20,7 +19,6 @@ export default function buildPgPromiseHelpers(getConnection: () => ExtendedProto
     const db = getConnection();
     const sqlStr = arrayToSqlString(sql, "postgres");
     const result = await db.query(sqlStr, values);
-    console.log({ sqlStr, values, result });
 
     return result;
   };

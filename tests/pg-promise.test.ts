@@ -6,9 +6,7 @@ import buildPgPromiseHelpers from "../src/pg-promise";
 import { buildUnitOfWork } from "../src/db";
 import dbTests from "./shared";
 
-const pgp = pgPromise({
-  /* Initialization Options */
-});
+const pgp = pgPromise();
 const db = pgp("postgres://postgres@localhost:5432/postgres");
 
 function getConnection() {
@@ -19,7 +17,14 @@ const mysqlHelpers = buildPgPromiseHelpers(getConnection);
 
 const uow = buildUnitOfWork(mysqlHelpers);
 
+let iets = {
+  ...dbTests(uow),
+  disconnect: async () => {
+    await pgp.end();
+  },
+};
+
 runBasicTests({
   adapter: SqlAdapter(mysqlHelpers),
-  db: dbTests(uow),
+  db: iets,
 });
