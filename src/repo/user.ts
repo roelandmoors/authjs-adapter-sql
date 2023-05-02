@@ -53,7 +53,7 @@ export class UserRepo {
     sql.push(...params);
     sql.push(")");
 
-    const result = await this.sql.execute(sql, ...values);
+    const result = await this.sql.insert(sql, ...values);
 
     return await this.getById(result.insertId);
   }

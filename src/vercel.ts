@@ -13,5 +13,5 @@ export default function builVercelHelpers(getConnection: () => VercelPool): SqlH
     const { rows } = await conn.sql<T>({ raw: sql, ...sql } as TemplateStringsArray, ...values);
     return rows;
   };
-  return { execute, query };
+  return { execute, query, dialect: "postgres" };
 }
