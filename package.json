@@ -31,7 +31,7 @@
     "access": "public"
   },
   "scripts": {
-    "test": "jest tests/mysql2.test.ts",
+    "test": "jest tests/mysql2.test.ts tests/pg-promise.test.ts",
     "build": "tsc"
   },
   "files": [
