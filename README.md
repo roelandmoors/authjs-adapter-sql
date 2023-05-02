@@ -27,7 +27,7 @@ use [mysql.sql](mysql.sql) to create the tables.
 ```ts
 import SqlAdapter from "authjs-adapter-sql";
 import * as mysql from "mysql2/promise";
-import buildMysql2Helpers from "authjs-adapter-sql/dist/mysql2";
+import buildMysql2Helpers from "authjs-adapter-sql/mysql2";
 
 function getConnection() {
   return mysql.createConnection({
@@ -69,7 +69,7 @@ use [mysql.sql](mysql.sql) to create the tables.
 
 ```ts
 import SqlAdapter from "authjs-adapter-sql";
-import buildPlanetScaleHelpers from "authjs-adapter-sql/dist/planetscale";
+import buildPlanetScaleHelpers from "authjs-adapter-sql/planetscale";
 
 const client = new Client(config);
 

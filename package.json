@@ -1,6 +1,6 @@
 {
   "name": "authjs-adapter-sql",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Sql adapter for next-auth.",
   "homepage": "https://github.com/roelandmoors/authjs-adapter-sql",
   "repository": "https://github.com/roelandmoors/authjs-adapter-sql",
@@ -10,7 +10,10 @@
   "author": "github.com/roelandmoors",
   "main": "dist/index.js",
   "exports": {
-    ".": "./dist/index.js"
+    ".": "./dist/index.js",
+    "./mysql2": "./dist/mysql2.js",
+    "./planetscale": "./dist/planetscale.js",
+    "./vercel": "./dist/vercel.js"
   },
   "license": "ISC",
   "keywords": [
