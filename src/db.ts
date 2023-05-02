@@ -42,7 +42,9 @@ function buildExtendedSqlHelpers(sqlHelpers: SqlHelpers): ExtendedSqlHelpers {
   const insert = async (sql: ReadonlyArray<string>, ...values: Primitive[]): Promise<ExecuteResult> => {
     const replacedValues = replaceUndefined(values);
     const s = sql as string[];
-    s[s.length - 1] += " returning id";
+    if (sqlHelpers.dialect == "postgres") {
+      s[s.length - 1] += " returning id";
+    }
     return await sqlHelpers.execute(s, ...replacedValues);
   };
 
