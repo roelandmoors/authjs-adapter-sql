@@ -35,7 +35,7 @@ jobs:
       - name: Load schema
         run: |
           export PGPASSWORD=postgres
-          psql -h localhost -U postgres -d test_db -f ./postgres.sql
+          psql -h localhost -U postgres -d postgres -f ./postgres.sql
 
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
