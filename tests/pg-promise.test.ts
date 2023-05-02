@@ -13,11 +13,11 @@ function getConnection() {
   return db;
 }
 
-const mysqlHelpers = buildPgPromiseHelpers(getConnection);
+const pgHelpers = buildPgPromiseHelpers(getConnection);
 
-const uow = buildUnitOfWork(mysqlHelpers);
+const uow = buildUnitOfWork(pgHelpers);
 
-let iets = {
+let dbTestsWithDisconnect = {
   ...dbTests(uow),
   disconnect: async () => {
     await pgp.end();
@@ -25,6 +25,6 @@ let iets = {
 };
 
 runBasicTests({
-  adapter: SqlAdapter(mysqlHelpers),
-  db: iets,
+  adapter: SqlAdapter(pgHelpers),
+  db: dbTestsWithDisconnect,
 });
