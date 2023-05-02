@@ -8,12 +8,12 @@ export default function buildPgPromiseHelpers(getConnection: () => ExtendedProto
     const db = getConnection();
     const sqlStr = arrayToSqlString(sql, "postgres");
     const result = await db.query(sqlStr, values);
-    let insertId: number;
+    let insertId: number | null = null;
     if (result.length > 0) {
       insertId = result[0]["id"];
     }
-    console.log({ sqlStr, values, result });
-    return { insertId: result as number };
+    console.log({ sqlStr, values, result, insertId });
+    return { insertId: Number(insertId) };
   };
 
   const query = async <T>(sql: ReadonlyArray<string>, ...values: Primitive[]): Promise<T[]> => {
