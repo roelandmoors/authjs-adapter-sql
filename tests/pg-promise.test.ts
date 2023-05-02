@@ -7,7 +7,7 @@ import { buildUnitOfWork } from "../src/db";
 import dbTests from "./shared";
 
 const pgp = pgPromise();
-const db = pgp("postgres://postgres@localhost:5432/postgres");
+const db = pgp("postgres://postgres:postgres@localhost:5432/postgres");
 
 function getConnection() {
   return db;
