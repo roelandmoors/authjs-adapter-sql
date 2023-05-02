@@ -7,6 +7,8 @@ export interface ExecuteResult {
   insertId: number;
 }
 
+export type Dialect = "postgres" | "mysql";
+
 export type Primitive = string | number | boolean | undefined | null;
 
 export interface QueryResultRow {
@@ -14,12 +16,14 @@ export interface QueryResultRow {
 }
 
 export interface SqlHelpers {
+  dialect: Dialect;
   execute: (sql: ReadonlyArray<string>, ...values: Primitive[]) => Promise<ExecuteResult>;
   query: <T extends QueryResultRow>(sql: ReadonlyArray<string>, ...values: Primitive[]) => Promise<T[]>;
 }
 
 export interface ExtendedSqlHelpers extends SqlHelpers {
   queryOne: <T extends QueryResultRow>(sql: ReadonlyArray<string>, ...values: Primitive[]) => Promise<T | null>;
+  insert: (sql: ReadonlyArray<string>, ...values: Primitive[]) => Promise<ExecuteResult>;
 }
 
 function replaceUndefined(values: any[]) {
@@ -35,6 +39,14 @@ function buildExtendedSqlHelpers(sqlHelpers: SqlHelpers): ExtendedSqlHelpers {
     return await sqlHelpers.execute(sql, ...replacedValues);
   };
 
+  const insert = async (sql: ReadonlyArray<string>, ...values: Primitive[]): Promise<ExecuteResult> => {
+    let insertSql = sql.concat();
+    if (sqlHelpers.dialect == "postgres") {
+      insertSql[insertSql.length - 1] += " returning id";
+    }
+    return await execute(insertSql, ...values);
+  };
+
   const queryOne = async <T extends QueryResultRow>(
     sql: ReadonlyArray<string>,
     ...values: Primitive[]
@@ -44,7 +56,7 @@ function buildExtendedSqlHelpers(sqlHelpers: SqlHelpers): ExtendedSqlHelpers {
     return null;
   };
 
-  return { ...sqlHelpers, execute, queryOne };
+  return { ...sqlHelpers, execute, queryOne, insert };
 }
 
 export const convertDate = (d: Date | string | null, addZ: boolean = false): Date | null => {
@@ -81,17 +93,29 @@ export function datetimeToStr(expires?: Date) {
   return localISOTime;
 }
 
+function generatePlaceholders(o: readonly string[], dialect: Dialect): string {
+  if (dialect == "mysql") return o.join("?");
+
+  let result = "";
+  for (let i = 0; i < o.length - 1; i++) {
+    const part = o[i];
+    result += part + "$" + (i + 1).toString();
+  }
+  result += o[o.length - 1];
+  return result;
+}
+
 // TODO: make this smarter and easier
-export function arrayToSqlString(o: any): string {
+export function arrayToSqlString(o: any, dialect: Dialect): string {
   let sql = "";
   if (Array.isArray(sql)) {
-    sql = (o as string[]).join("?");
+    sql = generatePlaceholders(o, dialect);
   } else if (typeof o === "string" || o instanceof String) {
     sql = o as string;
   } else if (o.hasOwnProperty("raw")) {
-    sql = (o as TemplateStringsArray).raw.join("?");
+    sql = generatePlaceholders((o as TemplateStringsArray).raw, dialect);
   } else {
-    sql = Array.from(o).join("?");
+    sql = generatePlaceholders(Array.from(o), dialect);
   }
   return sql;
 }

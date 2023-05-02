@@ -13,7 +13,8 @@
     ".": "./dist/index.js",
     "./mysql2": "./dist/mysql2.js",
     "./planetscale": "./dist/planetscale.js",
-    "./vercel": "./dist/vercel.js"
+    "./vercel": "./dist/vercel.js",
+    "./pg-promise": "./dist/pg-promise.js"
   },
   "license": "ISC",
   "keywords": [
@@ -30,7 +31,7 @@
     "access": "public"
   },
   "scripts": {
-    "test": "jest tests/mysql2.test.ts",
+    "test": "jest tests/mysql2.test.ts tests/pg-promise.test.ts",
     "build": "tsc"
   },
   "files": [
@@ -49,8 +50,9 @@
   },
   "peerDependencies": {
     "@planetscale/database": "^1.7.0",
+    "@vercel/postgres": "^0.1.2",
     "mysql2": "^3.2.3",
-    "@vercel/postgres": "^0.1.2"
+    "pg-promise": "^11.4.3"
   },
   "prettier": {
     "printWidth": 120

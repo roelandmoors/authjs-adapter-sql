@@ -5,7 +5,7 @@ export default function buildMysql2Helpers(getConnection: () => Promise<Connecti
   const execute = async (sql: ReadonlyArray<string>, ...values: Primitive[]): Promise<ExecuteResult> => {
     const conn = await getConnection();
     try {
-      const result = (await conn.execute(arrayToSqlString(sql), values)) as ResultSetHeader[];
+      const result = (await conn.execute(arrayToSqlString(sql, "mysql"), values)) as ResultSetHeader[];
       return { insertId: Number(result[0].insertId) };
     } finally {
       await conn.end();
@@ -15,11 +15,11 @@ export default function buildMysql2Helpers(getConnection: () => Promise<Connecti
   const query = async <T>(sql: ReadonlyArray<string>, ...values: Primitive[]): Promise<T[]> => {
     const conn = await getConnection();
     try {
-      const [rows] = await conn.query<T[] & RowDataPacket[][]>(arrayToSqlString(sql), values);
+      const [rows] = await conn.query<T[] & RowDataPacket[][]>(arrayToSqlString(sql, "mysql"), values);
       return rows;
     } finally {
       await conn.end();
     }
   };
-  return { execute, query };
+  return { execute, query, dialect: "mysql" };
 }

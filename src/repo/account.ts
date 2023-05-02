@@ -67,7 +67,7 @@ export class AccountRepo {
   async create(
     rec: Omit<AccountRecord, "id" | "oauth_token_secret" | "oauth_token" | "created_at" | "updated_at">
   ): Promise<AccountRecord | null> {
-    const result = await this.sql.execute`insert into accounts 
+    const result = await this.sql.insert`insert into accounts 
         (user_id, type, provider, provider_account_id, access_token, refresh_token, expires_at, token_type, scope, id_token, session_state, created_at, updated_at ) 
         VALUES (${rec.user_id},${rec.type},${rec.provider},${rec.provider_account_id},${rec.access_token},${rec.refresh_token},${rec.expires_at},${rec.token_type},${rec.scope},${rec.id_token},${rec.session_state},NOW(),NOW())`;
     return await this.getById(result.insertId);

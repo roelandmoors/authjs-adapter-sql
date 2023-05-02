@@ -1,4 +1,4 @@
-name: CI
+name: mysql
 
 on:
   push:
@@ -33,5 +33,5 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
       - run: npm install
-      - run: npm test
+      - run: npx jest tests/mysql2.test.ts
         timeout-minutes: 5
