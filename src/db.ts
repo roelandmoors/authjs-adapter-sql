@@ -40,12 +40,11 @@ function buildExtendedSqlHelpers(sqlHelpers: SqlHelpers): ExtendedSqlHelpers {
   };
 
   const insert = async (sql: ReadonlyArray<string>, ...values: Primitive[]): Promise<ExecuteResult> => {
-    const replacedValues = replaceUndefined(values);
-    const s = sql as string[];
+    let insertSql = sql.concat();
     if (sqlHelpers.dialect == "postgres") {
-      s[s.length - 1] += " returning id";
+      insertSql[insertSql.length - 1] += " returning id";
     }
-    return await sqlHelpers.execute(s, ...replacedValues);
+    return await execute(insertSql, ...values);
   };
 
   const queryOne = async <T extends QueryResultRow>(

@@ -42,7 +42,7 @@ export class SessionRepo {
   }
 
   async create(userId: string, sessionToken: string, expires: Date): Promise<SessionRecord | null> {
-    const result = await this.sql.execute`insert into sessions 
+    const result = await this.sql.insert`insert into sessions 
       (user_id, expires, session_token, created_at, updated_at) 
       VALUES (${userId},${datetimeToStr(expires)},${sessionToken},NOW(),NOW())`;
     return await this.getById(result.insertId);
