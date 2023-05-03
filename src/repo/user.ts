@@ -64,24 +64,20 @@ export class UserRepo {
   }
 
   async updateUser(user: User) {
-    // const id = Number(user.id);
-
-    // let sqlFields = [];
-    // let values = [];
-    // for (const [field, value] of Object.entries(user)) {
-    //   if (field === "id") continue;
-    //   sqlFields.push(toSnakeCase(field));
-    //   values.push(value);
-    // }
-    // values.push(id);
-    // const updateSql = sqlFields.map((f) => f + " = ?").join(",");
-
-    // await this.sql.execute(`update users set ${updateSql} where id = ? `, ...values);
-    // return await this.getById(id);
-
     const id = Number(user.id);
 
-    await this.sql.execute`update users set name = ${user.name} where id = ${id} `;
+    let sqlFields = [];
+    let values = [];
+    for (const [field, value] of Object.entries(user)) {
+      if (field === "id") continue;
+      sqlFields.push(toSnakeCase(field));
+      values.push(value);
+    }
+    values.push(id);
+    let updateSql = sqlFields.map((f) => f + " = ?").join(",");
+    updateSql = `update users set ${updateSql} where id = ? `;
+
+    await this.sql.execute(updateSql.split("?"), ...values);
     return await this.getById(id);
   }
 }
