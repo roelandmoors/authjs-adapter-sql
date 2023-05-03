@@ -1,16 +1,19 @@
-import { Client } from "@planetscale/database";
-import { ExecuteResult, Primitive, SqlHelpers, arrayToSqlString } from "./db";
+import type { Client } from "@planetscale/database";
+import type { ExecuteResult, Primitive, Sql, SqlHelpers } from "./db";
+import { buildParameterizedSql } from "./utils";
 
 export default function buildPlanetScaleHelpers(client: Client): SqlHelpers {
-  const execute = async (sql: ReadonlyArray<string>, ...values: Primitive[]): Promise<ExecuteResult> => {
+  const execute = async (sql: Sql, ...values: Primitive[]): Promise<ExecuteResult> => {
     const conn = client.connection();
-    const result = await conn.execute(arrayToSqlString(sql, "mysql"), values);
+    const paramSql = buildParameterizedSql(sql, "mysql");
+    const result = await conn.execute(paramSql, values);
     return { insertId: Number(result.insertId) };
   };
 
-  const query = async <T>(sql: ReadonlyArray<string>, ...values: Primitive[]): Promise<T[]> => {
+  const query = async <T>(sql: Sql, ...values: Primitive[]): Promise<T[]> => {
     const conn = client.connection();
-    const { rows } = await conn.execute(arrayToSqlString(sql, "mysql"), values);
+    const paramSql = buildParameterizedSql(sql, "mysql");
+    const { rows } = await conn.execute(paramSql, values);
     return rows as T[];
   };
 

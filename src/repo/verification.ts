@@ -1,5 +1,6 @@
 import { VerificationToken } from "next-auth/adapters";
-import { ExecuteResult, ExtendedSqlHelpers, convertDate, datetimeToStr } from "../db";
+import { ExecuteResult, ExtendedSqlHelpers } from "../db";
+import { datetimeToStr, parseDate } from "../utils";
 
 export interface VerificationTokenRecord {
   identifier: string;
@@ -13,7 +14,7 @@ export function convertVerificationToken(tokenRecord: VerificationTokenRecord): 
   return {
     identifier: tokenRecord.identifier,
     token: tokenRecord.token,
-    expires: convertDate(tokenRecord.expires) ?? new Date(),
+    expires: parseDate(tokenRecord.expires) ?? new Date(),
   };
 }
 

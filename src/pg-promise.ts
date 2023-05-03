@@ -1,26 +1,20 @@
-import { IDatabase } from "pg-promise";
-import { ExecuteResult, Primitive, SqlHelpers, arrayToSqlString } from "./db";
+import type { IDatabase } from "pg-promise";
+import type { ExecuteResult, Primitive, Sql, SqlHelpers } from "./db";
+import { buildParameterizedSql } from "./utils";
 
-type ExtendedProtocol = IDatabase<{}> & {};
-
-export default function buildPgPromiseHelpers(getConnection: () => ExtendedProtocol): SqlHelpers {
-  const execute = async (sql: ReadonlyArray<string>, ...values: Primitive[]): Promise<ExecuteResult> => {
+export default function buildPgPromiseHelpers(getConnection: () => IDatabase<{}> & {}): SqlHelpers {
+  const execute = async (sql: Sql, ...values: Primitive[]): Promise<ExecuteResult> => {
     const db = getConnection();
-    const sqlStr = arrayToSqlString(sql, "postgres");
-    const result = await db.query(sqlStr, values);
-    let insertId: number | null = null;
-    if (result.length > 0) {
-      insertId = result[0]["id"];
-    }
+    const paramSql = buildParameterizedSql(sql, "postgres");
+    const result = await db.query(paramSql, values);
+    const insertId = result.length > 0 ? result[0]["id"] : null;
     return { insertId: Number(insertId) };
   };
 
-  const query = async <T>(sql: ReadonlyArray<string>, ...values: Primitive[]): Promise<T[]> => {
+  const query = async <T>(sql: Sql, ...values: Primitive[]): Promise<T[]> => {
     const db = getConnection();
-    const sqlStr = arrayToSqlString(sql, "postgres");
-    const result = await db.query(sqlStr, values);
-
-    return result;
+    const paramSql = buildParameterizedSql(sql, "postgres");
+    return await db.query(paramSql, values);
   };
   return { execute, query, dialect: "postgres" };
 }

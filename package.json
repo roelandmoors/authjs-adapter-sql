@@ -11,7 +11,7 @@
   "main": "dist/index.js",
   "exports": {
     ".": "./dist/index.js",
-    "./db": "./dist/db.js",
+    "./utils": "./dist/utils.js",
     "./mysql2": "./dist/mysql2.js",
     "./planetscale": "./dist/planetscale.js",
     "./pg-promise": "./dist/pg-promise.js"

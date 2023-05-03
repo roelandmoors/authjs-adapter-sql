@@ -1,5 +1,4 @@
 import * as mysql from "mysql2/promise";
-
 import { runBasicTests } from "@next-auth/adapter-test";
 import SqlAdapter from "../src";
 import buildMysql2Helpers from "../src/mysql2";
@@ -16,7 +15,6 @@ function getConnection() {
 }
 
 const mysqlHelpers = buildMysql2Helpers(getConnection);
-
 const db = buildUnitOfWork(mysqlHelpers);
 
 runBasicTests({

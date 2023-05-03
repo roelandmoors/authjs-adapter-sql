@@ -1,7 +1,6 @@
 require("dotenv").config();
 import { Client } from "@planetscale/database";
 import fetch from "node-fetch";
-
 import { runBasicTests } from "@next-auth/adapter-test";
 import SqlAdapter from "../src";
 import { buildUnitOfWork } from "../src/db";
@@ -16,9 +15,7 @@ const config = {
 };
 
 const client = new Client(config);
-
 const helpers = buildPlanetScaleHelpers(client);
-
 const db = buildUnitOfWork(helpers);
 
 runBasicTests({

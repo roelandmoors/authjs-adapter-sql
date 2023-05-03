@@ -1,21 +1,24 @@
 import type { Connection, ResultSetHeader, RowDataPacket } from "mysql2/promise";
-import { ExecuteResult, Primitive, SqlHelpers, arrayToSqlString } from "./db";
+import type { ExecuteResult, Primitive, Sql, SqlHelpers } from "./db";
+import { buildParameterizedSql } from "./utils";
 
 export default function buildMysql2Helpers(getConnection: () => Promise<Connection>): SqlHelpers {
-  const execute = async (sql: ReadonlyArray<string>, ...values: Primitive[]): Promise<ExecuteResult> => {
+  const execute = async (sql: Sql, ...values: Primitive[]): Promise<ExecuteResult> => {
     const conn = await getConnection();
     try {
-      const result = (await conn.execute(arrayToSqlString(sql, "mysql"), values)) as ResultSetHeader[];
+      const paramSql = buildParameterizedSql(sql, "mysql");
+      const result = (await conn.execute(paramSql, values)) as ResultSetHeader[];
       return { insertId: Number(result[0].insertId) };
     } finally {
       await conn.end();
     }
   };
 
-  const query = async <T>(sql: ReadonlyArray<string>, ...values: Primitive[]): Promise<T[]> => {
+  const query = async <T>(sql: Sql, ...values: Primitive[]): Promise<T[]> => {
     const conn = await getConnection();
     try {
-      const [rows] = await conn.query<T[] & RowDataPacket[][]>(arrayToSqlString(sql, "mysql"), values);
+      const paramSql = buildParameterizedSql(sql, "mysql");
+      const [rows] = await conn.query<T[] & RowDataPacket[][]>(paramSql, values);
       return rows;
     } finally {
       await conn.end();

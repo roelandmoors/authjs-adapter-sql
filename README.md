@@ -24,6 +24,7 @@ npm i authjs-adapter-sql mysql2
 ```
 
 use [mysql.sql](mysql.sql) to create the tables.
+(you can add foreign keys if needed)
 
 ```ts
 import SqlAdapter from "authjs-adapter-sql";
@@ -95,6 +96,7 @@ npm i authjs-adapter-sql pg-promise
 ```
 
 use [postgres.sql](postgres.sql) to create the tables.
+(you can add foreign keys if needed)
 
 ```ts
 import SqlAdapter from "authjs-adapter-sql";
