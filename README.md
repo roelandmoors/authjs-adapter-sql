@@ -13,7 +13,7 @@
 
 This adapter uses plain sql statements to integrate with [Authjs](https://authjs.dev/).
 
-Support for Mysql and Postgres. Also works on [PlanetScale](https://planetscale.com/) or [Vercel/postgres](https://github.com/vercel/storage/tree/main/packages/postgres) with any driver that supports plain sql statements.
+Support for Mysql and Postgres. Also works on [PlanetScale](https://planetscale.com/).
 
 ## How to use with Mysql2
 

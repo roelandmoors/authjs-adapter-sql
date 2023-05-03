@@ -36,6 +36,7 @@ function replaceUndefined(values: any[]) {
 function buildExtendedSqlHelpers(sqlHelpers: SqlHelpers): ExtendedSqlHelpers {
   const execute = async (sql: ReadonlyArray<string>, ...values: Primitive[]): Promise<ExecuteResult> => {
     const replacedValues = replaceUndefined(values);
+    console.log({ sql, replacedValues });
     return await sqlHelpers.execute(sql, ...replacedValues);
   };
 
