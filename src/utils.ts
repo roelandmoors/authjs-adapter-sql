@@ -28,7 +28,7 @@ export function replaceUndefined(values: any[]): any[] {
 export function buildParameterizedSql(o: Sql, dialect: Dialect): string {
   let sql = "";
   if (Array.isArray(sql)) {
-    sql = generatePlaceholders(o, dialect);
+    sql = generatePlaceholders(o as string[], dialect);
   } else if (typeof o === "string" || o instanceof String) {
     sql = o as string;
   } else if (o.hasOwnProperty("raw")) {
