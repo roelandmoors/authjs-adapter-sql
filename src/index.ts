@@ -1,8 +1,9 @@
 import type { Adapter } from "next-auth/adapters";
-import { SqlHelpers, buildUnitOfWork } from "./db";
+import { buildUnitOfWork } from "./db";
 import { convertUser } from "./repo/user";
 import { convertVerificationToken } from "./repo/verification";
 import { convertSession } from "./repo/session";
+import { SqlHelpers } from "./types";
 
 export default function SqlAdapter(sqlHelpers: SqlHelpers): Adapter {
   const db = buildUnitOfWork(sqlHelpers);

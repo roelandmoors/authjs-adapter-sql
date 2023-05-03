@@ -1,5 +1,5 @@
 import { User } from "next-auth";
-import { ExtendedSqlHelpers } from "../db";
+import { ExtendedSqlHelpers } from "../types";
 import { AdapterUser } from "next-auth/adapters";
 import { parseDate } from "../utils";
 

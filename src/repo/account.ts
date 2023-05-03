@@ -1,6 +1,6 @@
 import { AdapterAccount } from "next-auth/adapters";
 import { ProviderType } from "next-auth/providers";
-import { ExtendedSqlHelpers } from "../db";
+import { ExtendedSqlHelpers } from "../types";
 
 export interface AccountRecord {
   id: number;

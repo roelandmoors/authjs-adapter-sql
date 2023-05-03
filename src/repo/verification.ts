@@ -1,5 +1,5 @@
 import { VerificationToken } from "next-auth/adapters";
-import { ExecuteResult, ExtendedSqlHelpers } from "../db";
+import { ExecuteResult, ExtendedSqlHelpers } from "../types";
 import { datetimeToStr, parseDate } from "../utils";
 
 export interface VerificationTokenRecord {

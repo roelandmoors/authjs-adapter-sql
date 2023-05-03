@@ -2,32 +2,8 @@ import { AccountRepo } from "./repo/account";
 import { SessionRepo } from "./repo/session";
 import { UserRepo } from "./repo/user";
 import { VerificationTokenRepo } from "./repo/verification";
+import { ExecuteResult, ExtendedSqlHelpers, Primitive, QueryResultRow, Sql, SqlHelpers } from "./types";
 import { replaceUndefined } from "./utils";
-
-export interface ExecuteResult {
-  insertId: number;
-}
-
-export type Dialect = "postgres" | "mysql";
-
-export type Primitive = string | number | boolean | undefined | null;
-
-export type Sql = string | readonly string[];
-
-export interface QueryResultRow {
-  [column: string]: any;
-}
-
-export interface SqlHelpers {
-  dialect: Dialect;
-  execute: (sql: Sql, ...values: Primitive[]) => Promise<ExecuteResult>;
-  query: <T extends QueryResultRow>(sql: Sql, ...values: Primitive[]) => Promise<T[]>;
-}
-
-export interface ExtendedSqlHelpers extends SqlHelpers {
-  queryOne: <T extends QueryResultRow>(sql: Sql, ...values: Primitive[]) => Promise<T | null>;
-  insert: (sql: Sql, ...values: Primitive[]) => Promise<ExecuteResult>;
-}
 
 function buildExtendedSqlHelpers(sqlHelpers: SqlHelpers): ExtendedSqlHelpers {
   const execute = async (sql: Sql, ...values: Primitive[]): Promise<ExecuteResult> => {

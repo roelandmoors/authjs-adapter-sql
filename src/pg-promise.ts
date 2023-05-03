@@ -1,5 +1,5 @@
 import type { IDatabase } from "pg-promise";
-import type { ExecuteResult, Primitive, Sql, SqlHelpers } from "./db";
+import type { ExecuteResult, Primitive, Sql, SqlHelpers } from "./types";
 import { buildParameterizedSql } from "./utils";
 
 export default function buildPgPromiseHelpers(getConnection: () => IDatabase<{}> & {}): SqlHelpers {

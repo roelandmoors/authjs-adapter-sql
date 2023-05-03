@@ -1,4 +1,4 @@
-import { ExtendedSqlHelpers } from "../db";
+import { ExtendedSqlHelpers } from "../types";
 import { datetimeToStr, parseDate } from "../utils";
 
 export interface SessionRecord {

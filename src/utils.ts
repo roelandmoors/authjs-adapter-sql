@@ -1,4 +1,4 @@
-import type { Dialect, Sql } from "./db";
+import { Dialect, Sql } from "./types";
 
 //compensate zone difference before creating string of date
 export function datetimeToStr(expires?: Date): string {

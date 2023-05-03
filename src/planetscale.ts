@@ -1,5 +1,5 @@
 import type { Client } from "@planetscale/database";
-import type { ExecuteResult, Primitive, Sql, SqlHelpers } from "./db";
+import type { ExecuteResult, Primitive, Sql, SqlHelpers } from "./types";
 import { buildParameterizedSql } from "./utils";
 
 export default function buildPlanetScaleHelpers(client: Client): SqlHelpers {
