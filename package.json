@@ -1,6 +1,6 @@
 {
   "name": "authjs-adapter-sql",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Sql adapter for next-auth.",
   "homepage": "https://github.com/roelandmoors/authjs-adapter-sql",
   "repository": "https://github.com/roelandmoors/authjs-adapter-sql",
@@ -16,6 +16,25 @@
     "./mysql2": "./dist/mysql2.js",
     "./planetscale": "./dist/planetscale.js",
     "./pg-promise": "./dist/pg-promise.js"
+  },
+  "typesVersions": {
+    "*": {
+      "utils": [
+        "dist/utils.d.ts"
+      ],
+      "types": [
+        "dist/types.d.ts"
+      ],
+      "mysql2": [
+        "dist/mysql2.d.ts"
+      ],
+      "planetscale": [
+        "dist/planetscale.d.ts"
+      ],
+      "pg-promise": [
+        "dist/pg-promise.d.ts"
+      ]
+    }
   },
   "license": "ISC",
   "keywords": [
