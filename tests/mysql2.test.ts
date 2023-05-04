@@ -1,7 +1,7 @@
 import * as mysql from "mysql2/promise";
 import { runBasicTests } from "@next-auth/adapter-test";
 import SqlAdapter from "../src";
-import buildMysql2Helpers from "../src/mysql2";
+import buildMysql2Helpers from "../src/drivers/mysql2";
 import { buildUnitOfWork } from "../src/db";
 import dbTests from "./shared";
 

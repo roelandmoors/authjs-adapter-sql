@@ -1,6 +1,6 @@
 import type { Client } from "@planetscale/database";
-import type { ExecuteResult, Primitive, Sql, SqlHelpers } from "./types";
-import { buildParameterizedSql } from "./utils";
+import type { ExecuteResult, Primitive, Sql, SqlHelpers } from "../types";
+import { buildParameterizedSql } from "../utils";
 
 export default function buildPlanetScaleHelpers(client: Client): SqlHelpers {
   const execute = async (sql: Sql, ...values: Primitive[]): Promise<ExecuteResult> => {

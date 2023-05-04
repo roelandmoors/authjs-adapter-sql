@@ -1,6 +1,6 @@
 import type { Connection, ResultSetHeader, RowDataPacket } from "mysql2/promise";
-import type { ExecuteResult, Primitive, Sql, SqlHelpers } from "./types";
-import { buildParameterizedSql } from "./utils";
+import type { ExecuteResult, Primitive, Sql, SqlHelpers } from "../types";
+import { buildParameterizedSql } from "../utils";
 
 export default function buildMysql2Helpers(getConnection: () => Promise<Connection>): SqlHelpers {
   const execute = async (sql: Sql, ...values: Primitive[]): Promise<ExecuteResult> => {

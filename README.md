@@ -13,7 +13,7 @@
 
 This adapter uses plain sql statements to integrate with [Authjs](https://authjs.dev/).
 
-Support for Mysql and Postgres. Also works on [PlanetScale](https://planetscale.com/).
+Support for Mysql and Postgres. Also works with the [PlanetScale Serverless Driver](https://github.com/planetscale/database-js) and then [Neon Serverless Driver](https://github.com/neondatabase/serverless)
 
 ## How to use with Mysql2
 
@@ -115,6 +115,32 @@ const pgHelpers = buildPgPromiseHelpers(getConnection);
 
 export default NextAuth({
   adapter: SqlAdapter(pgHelpers),
+  providers: [],
+});
+```
+
+## How to use with Neon Serverless Driver
+
+Install:
+
+```
+npm i authjs-adapter-sql @neondatabase/serverless
+```
+
+use [postgres.sql](postgres.sql) to create the tables.
+(you can add foreign keys if needed)
+
+```ts
+import SqlAdapter from "authjs-adapter-sql";
+import buildNeonHelpers from "authjs-adapter-sql/neon";
+
+const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+
+// you can create your own helpers for custom logic
+const helpers = buildNeonHelpers(pool);
+
+export default NextAuth({
+  adapter: SqlAdapter(helpers),
   providers: [],
 });
 ```

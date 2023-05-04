@@ -4,7 +4,7 @@ import fetch from "node-fetch";
 import { runBasicTests } from "@next-auth/adapter-test";
 import SqlAdapter from "../src";
 import { buildUnitOfWork } from "../src/db";
-import buildPlanetScaleHelpers from "../src/planetscale";
+import buildPlanetScaleHelpers from "../src/drivers/planetscale";
 import dbTests from "./shared";
 
 const config = {

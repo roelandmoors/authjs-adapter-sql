@@ -1,6 +1,6 @@
 import type { IDatabase } from "pg-promise";
-import type { ExecuteResult, Primitive, Sql, SqlHelpers } from "./types";
-import { buildParameterizedSql } from "./utils";
+import type { ExecuteResult, Primitive, Sql, SqlHelpers } from "../types";
+import { buildParameterizedSql } from "../utils";
 
 export default function buildPgPromiseHelpers(getConnection: () => IDatabase<{}> & {}): SqlHelpers {
   const execute = async (sql: Sql, ...values: Primitive[]): Promise<ExecuteResult> => {

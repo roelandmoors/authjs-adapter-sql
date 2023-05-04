@@ -1,7 +1,7 @@
 import pgPromise from "pg-promise";
 import { runBasicTests } from "@next-auth/adapter-test";
 import SqlAdapter from "../src";
-import buildPgPromiseHelpers from "../src/pg-promise";
+import buildPgPromiseHelpers from "../src/drivers/pg-promise";
 import { buildUnitOfWork } from "../src/db";
 import dbTests from "./shared";
 

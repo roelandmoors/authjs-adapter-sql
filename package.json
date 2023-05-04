@@ -1,6 +1,6 @@
 {
   "name": "authjs-adapter-sql",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Sql adapter for next-auth.",
   "homepage": "https://github.com/roelandmoors/authjs-adapter-sql",
   "repository": "https://github.com/roelandmoors/authjs-adapter-sql",
@@ -13,9 +13,10 @@
     ".": "./dist/index.js",
     "./utils": "./dist/utils.js",
     "./types": "./dist/types.js",
-    "./mysql2": "./dist/mysql2.js",
-    "./planetscale": "./dist/planetscale.js",
-    "./pg-promise": "./dist/pg-promise.js"
+    "./mysql2": "./dist/drivers/mysql2.js",
+    "./planetscale": "./dist/drivers/planetscale.js",
+    "./pg-promise": "./dist/drivers/pg-promise.js",
+    "./neon": "./dist/drivers/neon.js"
   },
   "typesVersions": {
     "*": {
@@ -26,13 +27,16 @@
         "dist/types.d.ts"
       ],
       "mysql2": [
-        "dist/mysql2.d.ts"
+        "dist/drivers/mysql2.d.ts"
       ],
       "planetscale": [
-        "dist/planetscale.d.ts"
+        "dist/drivers/planetscale.d.ts"
       ],
       "pg-promise": [
-        "dist/pg-promise.d.ts"
+        "dist/drivers/pg-promise.d.ts"
+      ],
+      "neon": [
+        "dist/drivers/neon.d.ts"
       ]
     }
   },
@@ -72,7 +76,8 @@
     "@planetscale/database": "^1.7.0",
     "@vercel/postgres": "^0.1.2",
     "mysql2": "^3.2.3",
-    "pg-promise": "^11.4.3"
+    "pg-promise": "^11.4.3",
+    "@neondatabase/serverless": "^0.4.3"
   },
   "prettier": {
     "printWidth": 120
