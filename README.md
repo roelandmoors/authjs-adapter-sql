@@ -13,7 +13,8 @@
 
 This adapter uses plain sql statements to integrate with [Authjs](https://authjs.dev/).
 
-Support for Mysql and Postgres. Also works with the [PlanetScale Serverless Driver](https://github.com/planetscale/database-js) and then [Neon Serverless Driver](https://github.com/neondatabase/serverless)
+Support for Mysql and Postgres.  
+Also works with the [PlanetScale Serverless Driver](https://github.com/planetscale/database-js) and the [Neon Serverless Driver](https://github.com/neondatabase/serverless).
 
 ## How to use with Mysql2
 
