@@ -3,6 +3,7 @@
   "compilerOptions": {
     "rootDir": "src",
     "outDir": "dist",
+    "target": "ES2021",
   },
   "exclude": ["tests", "dist", "jest.config.js"]
 }

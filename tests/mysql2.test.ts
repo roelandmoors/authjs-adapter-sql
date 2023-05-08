@@ -21,3 +21,10 @@ runBasicTests({
   adapter: SqlAdapter(mysqlHelpers),
   db: dbTests(db),
 });
+
+const dbWithPrefix = buildUnitOfWork(mysqlHelpers, { prefix: "auth_" });
+
+runBasicTests({
+  adapter: SqlAdapter(mysqlHelpers),
+  db: dbTests(dbWithPrefix),
+});

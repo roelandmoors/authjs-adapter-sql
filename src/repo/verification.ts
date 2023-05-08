@@ -28,18 +28,19 @@ export class VerificationTokenRepo {
   }
 
   getByToken(identifier: string, token: string): Promise<VerificationTokenRecord | null> {
-    return this.sql
-      .queryOne<VerificationTokenRecord>`select * from verification_tokens where identifier =${identifier} and token = ${token}`;
+    return this.sql.queryOne<VerificationTokenRecord>`select * from [TABLE_PREFIX]verification_tokens 
+          where identifier =${identifier} and token = ${token}`;
   }
 
   async create(identifier: string, token: string, expires: Date): Promise<VerificationTokenRecord | null> {
-    await this.sql.execute`insert into verification_tokens (identifier, token, expires, created_at, updated_at) 
+    await this.sql
+      .execute`insert into [TABLE_PREFIX]verification_tokens (identifier, token, expires, created_at, updated_at) 
       VALUES (${identifier},${token},${datetimeToStr(expires)},NOW(),NOW())`;
     return await this.getByToken(token, identifier);
   }
 
   deleteByToken(identifier: string, token: string): Promise<ExecuteResult> {
-    return this.sql.execute`delete from verification_tokens 
+    return this.sql.execute`delete from [TABLE_PREFIX]verification_tokens 
       where identifier = ${identifier} and token = ${token}`;
   }
 }

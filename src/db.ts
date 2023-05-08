@@ -3,12 +3,13 @@ import { SessionRepo } from "./repo/session";
 import { UserRepo } from "./repo/user";
 import { VerificationTokenRepo } from "./repo/verification";
 import { Configuration, ExecuteResult, ExtendedSqlHelpers, Primitive, QueryResultRow, Sql, SqlHelpers } from "./types";
-import { replaceUndefined } from "./utils";
+import { replacePrefix, replaceUndefined } from "./utils";
 
-function buildExtendedSqlHelpers(sqlHelpers: SqlHelpers): ExtendedSqlHelpers {
+function buildExtendedSqlHelpers(sqlHelpers: SqlHelpers, config: Configuration): ExtendedSqlHelpers {
   const execute = async (sql: Sql, ...values: Primitive[]): Promise<ExecuteResult> => {
     const replacedValues = replaceUndefined(values);
-    return await sqlHelpers.execute(sql, ...replacedValues);
+    const sqlWithPrefix = replacePrefix(sql, config.prefix);
+    return await sqlHelpers.execute(sqlWithPrefix, ...replacedValues);
   };
 
   //samen as execute, but return the id for postgres
@@ -25,7 +26,8 @@ function buildExtendedSqlHelpers(sqlHelpers: SqlHelpers): ExtendedSqlHelpers {
   };
 
   const queryOne = async <T extends QueryResultRow>(sql: Sql, ...values: Primitive[]): Promise<T | null> => {
-    const rows = await sqlHelpers.query<T>(sql, ...values);
+    const sqlWithPrefix = replacePrefix(sql, config.prefix);
+    const rows = await sqlHelpers.query<T>(sqlWithPrefix, ...values);
     if (rows.length == 1) return rows[0];
     return null;
   };
@@ -42,10 +44,10 @@ export interface UnitOfWork {
 }
 
 export function buildUnitOfWork(sqlHelpers: SqlHelpers, config?: Configuration): UnitOfWork {
-  const esqlHelpers = buildExtendedSqlHelpers(sqlHelpers);
-
   config ||= {};
   config.prefix ||= "";
+
+  const esqlHelpers = buildExtendedSqlHelpers(sqlHelpers, config);
 
   return {
     users: new UserRepo(esqlHelpers, config),
