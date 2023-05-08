@@ -1,4 +1,4 @@
-import { ExtendedSqlHelpers } from "../types";
+import { Configuration, ExtendedSqlHelpers } from "../types";
 import { datetimeToStr, parseDate } from "../utils";
 
 export interface SessionRecord {
@@ -21,9 +21,11 @@ export function convertSession(rec: SessionRecord): any {
 
 export class SessionRepo {
   sql: ExtendedSqlHelpers;
+  config: Configuration;
 
-  constructor(sql: ExtendedSqlHelpers) {
+  constructor(sql: ExtendedSqlHelpers, config: Configuration) {
     this.sql = sql;
+    this.config = config;
   }
 
   getById(id: number): Promise<SessionRecord | null> {

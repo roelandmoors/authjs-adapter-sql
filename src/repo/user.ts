@@ -1,5 +1,5 @@
 import { User } from "next-auth";
-import { ExtendedSqlHelpers } from "../types";
+import { Configuration, ExtendedSqlHelpers } from "../types";
 import { AdapterUser } from "next-auth/adapters";
 import { parseDate } from "../utils";
 
@@ -25,9 +25,11 @@ export function convertUser(userRecord: UserRecord): AdapterUser {
 
 export class UserRepo {
   sql: ExtendedSqlHelpers;
+  config: Configuration;
 
-  constructor(sql: ExtendedSqlHelpers) {
+  constructor(sql: ExtendedSqlHelpers, config: Configuration) {
     this.sql = sql;
+    this.config = config;
   }
 
   getById(id: number): Promise<UserRecord | null> {

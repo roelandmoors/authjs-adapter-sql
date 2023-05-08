@@ -2,7 +2,7 @@ import { AccountRepo } from "./repo/account";
 import { SessionRepo } from "./repo/session";
 import { UserRepo } from "./repo/user";
 import { VerificationTokenRepo } from "./repo/verification";
-import { ExecuteResult, ExtendedSqlHelpers, Primitive, QueryResultRow, Sql, SqlHelpers } from "./types";
+import { Configuration, ExecuteResult, ExtendedSqlHelpers, Primitive, QueryResultRow, Sql, SqlHelpers } from "./types";
 import { replaceUndefined } from "./utils";
 
 function buildExtendedSqlHelpers(sqlHelpers: SqlHelpers): ExtendedSqlHelpers {
@@ -41,14 +41,17 @@ export interface UnitOfWork {
   raw: ExtendedSqlHelpers;
 }
 
-export function buildUnitOfWork(sqlHelpers: SqlHelpers): UnitOfWork {
+export function buildUnitOfWork(sqlHelpers: SqlHelpers, config?: Configuration): UnitOfWork {
   const esqlHelpers = buildExtendedSqlHelpers(sqlHelpers);
 
+  config ||= {};
+  config.prefix ||= "";
+
   return {
-    users: new UserRepo(esqlHelpers),
-    sessions: new SessionRepo(esqlHelpers),
-    accounts: new AccountRepo(esqlHelpers),
-    verificationTokens: new VerificationTokenRepo(esqlHelpers),
+    users: new UserRepo(esqlHelpers, config),
+    sessions: new SessionRepo(esqlHelpers, config),
+    accounts: new AccountRepo(esqlHelpers, config),
+    verificationTokens: new VerificationTokenRepo(esqlHelpers, config),
     raw: esqlHelpers,
   };
 }

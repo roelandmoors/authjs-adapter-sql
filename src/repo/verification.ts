@@ -1,5 +1,5 @@
 import { VerificationToken } from "next-auth/adapters";
-import { ExecuteResult, ExtendedSqlHelpers } from "../types";
+import { Configuration, ExecuteResult, ExtendedSqlHelpers } from "../types";
 import { datetimeToStr, parseDate } from "../utils";
 
 export interface VerificationTokenRecord {
@@ -20,9 +20,11 @@ export function convertVerificationToken(tokenRecord: VerificationTokenRecord): 
 
 export class VerificationTokenRepo {
   sql: ExtendedSqlHelpers;
+  config: Configuration;
 
-  constructor(sql: ExtendedSqlHelpers) {
+  constructor(sql: ExtendedSqlHelpers, config: Configuration) {
     this.sql = sql;
+    this.config = config;
   }
 
   getByToken(identifier: string, token: string): Promise<VerificationTokenRecord | null> {

@@ -1,6 +1,6 @@
 import { AdapterAccount } from "next-auth/adapters";
 import { ProviderType } from "next-auth/providers";
-import { ExtendedSqlHelpers } from "../types";
+import { Configuration, ExtendedSqlHelpers } from "../types";
 
 export interface AccountRecord {
   id: number;
@@ -40,9 +40,11 @@ export function convertAccount(rec: AccountRecord): AdapterAccount {
 
 export class AccountRepo {
   sql: ExtendedSqlHelpers;
+  config: Configuration;
 
-  constructor(sql: ExtendedSqlHelpers) {
+  constructor(sql: ExtendedSqlHelpers, config: Configuration) {
     this.sql = sql;
+    this.config = config;
   }
 
   getById(id: number): Promise<AccountRecord | null> {
