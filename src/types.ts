@@ -1,3 +1,7 @@
+export interface Configuration {
+  prefix?: string;
+}
+
 export interface ExecuteResult {
   insertId: number;
 }

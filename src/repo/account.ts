@@ -1,6 +1,6 @@
 import { AdapterAccount } from "next-auth/adapters";
 import { ProviderType } from "next-auth/providers";
-import { ExtendedSqlHelpers } from "../types";
+import { Configuration, ExtendedSqlHelpers } from "../types";
 
 export interface AccountRecord {
   id: number;
@@ -40,34 +40,36 @@ export function convertAccount(rec: AccountRecord): AdapterAccount {
 
 export class AccountRepo {
   sql: ExtendedSqlHelpers;
+  config: Configuration;
 
-  constructor(sql: ExtendedSqlHelpers) {
+  constructor(sql: ExtendedSqlHelpers, config: Configuration) {
     this.sql = sql;
+    this.config = config;
   }
 
   getById(id: number): Promise<AccountRecord | null> {
-    return this.sql.queryOne<AccountRecord>`select * from accounts where id = ${id}`;
+    return this.sql.queryOne<AccountRecord>`select * from [TABLE_PREFIX]accounts where id = ${id}`;
   }
 
   getByProvider(provider: string, providerAccountId: string): Promise<AccountRecord | null> {
     return this.sql.queryOne<AccountRecord>`
-      select * from accounts 
+      select * from [TABLE_PREFIX]accounts 
       where provider = ${provider} and provider_account_id = ${providerAccountId}`;
   }
 
   deleteByProvider(provider: string, providerAccountId: string) {
-    return this.sql.execute`delete from accounts 
+    return this.sql.execute`delete from [TABLE_PREFIX]accounts 
         where provider = ${provider} and provider_account_id = ${providerAccountId}`;
   }
 
   deleteByUserId(userId: string) {
-    return this.sql.execute`delete from accounts where user_id = ${userId}`;
+    return this.sql.execute`delete from [TABLE_PREFIX]accounts where user_id = ${userId}`;
   }
 
   async create(
     rec: Omit<AccountRecord, "id" | "oauth_token_secret" | "oauth_token" | "created_at" | "updated_at">
   ): Promise<AccountRecord | null> {
-    const result = await this.sql.insert`insert into accounts 
+    const result = await this.sql.insert`insert into [TABLE_PREFIX]accounts 
         (user_id, type, provider, provider_account_id, access_token, refresh_token, expires_at, token_type, scope, id_token, session_state, created_at, updated_at ) 
         VALUES (${rec.user_id},${rec.type},${rec.provider},${rec.provider_account_id},${rec.access_token},${rec.refresh_token},${rec.expires_at},${rec.token_type},${rec.scope},${rec.id_token},${rec.session_state},NOW(),NOW())`;
     return await this.getById(result.insertId);

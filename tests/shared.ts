@@ -7,10 +7,10 @@ import { UnitOfWork } from "../src/db";
 export default function dbTests(db: UnitOfWork) {
   return {
     connect: async () => {
-      await db.raw.execute`truncate table users`;
-      await db.raw.execute`truncate table accounts`;
-      await db.raw.execute`truncate table sessions`;
-      await db.raw.execute`truncate table verification_tokens`;
+      await db.raw.execute`truncate table [TABLE_PREFIX]users`;
+      await db.raw.execute`truncate table [TABLE_PREFIX]accounts`;
+      await db.raw.execute`truncate table [TABLE_PREFIX]sessions`;
+      await db.raw.execute`truncate table [TABLE_PREFIX]verification_tokens`;
     },
 
     verificationToken: async (where: { identifier: string; token: string }) => {

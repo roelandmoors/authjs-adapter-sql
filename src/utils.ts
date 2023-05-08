@@ -50,3 +50,10 @@ function generatePlaceholders(o: readonly string[], dialect: Dialect): string {
   result += o[o.length - 1];
   return result;
 }
+
+export function replacePrefix(sql: Sql, prefix?: string) {
+  if (typeof sql === "string" || sql instanceof String) {
+    return sql.replaceAll("[TABLE_PREFIX]", prefix || "");
+  }
+  return sql.map((s) => s.replace("[TABLE_PREFIX]", prefix || ""));
+}

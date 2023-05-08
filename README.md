@@ -16,6 +16,21 @@ This adapter uses plain sql statements to integrate with [Authjs](https://authjs
 Support for Mysql and Postgres.  
 Also works with the [PlanetScale Serverless Driver](https://github.com/planetscale/database-js) and the [Neon Serverless Driver](https://github.com/neondatabase/serverless).
 
+## Configuration
+
+You can set an optional table prefix/postgres schema.
+
+```ts
+const config = {
+  prefix: "auth_", //or for example 'auth.' for a postgres schema
+};
+
+export default NextAuth({
+  adapter: SqlAdapter(helpers, config),
+  providers: [],
+});
+```
+
 ## How to use with Mysql2
 
 Install:

@@ -1,5 +1,5 @@
 import { User } from "next-auth";
-import { ExtendedSqlHelpers } from "../types";
+import { Configuration, ExtendedSqlHelpers } from "../types";
 import { AdapterUser } from "next-auth/adapters";
 import { parseDate } from "../utils";
 
@@ -25,17 +25,19 @@ export function convertUser(userRecord: UserRecord): AdapterUser {
 
 export class UserRepo {
   sql: ExtendedSqlHelpers;
+  config: Configuration;
 
-  constructor(sql: ExtendedSqlHelpers) {
+  constructor(sql: ExtendedSqlHelpers, config: Configuration) {
     this.sql = sql;
+    this.config = config;
   }
 
   getById(id: number): Promise<UserRecord | null> {
-    return this.sql.queryOne<UserRecord>`select * from users where id = ${id}`;
+    return this.sql.queryOne<UserRecord>`select * from [TABLE_PREFIX]users where id = ${id}`;
   }
 
   getByEmail(email: string): Promise<UserRecord | null> {
-    return this.sql.queryOne<UserRecord>`select * from users where email = ${email}`;
+    return this.sql.queryOne<UserRecord>`select * from [TABLE_PREFIX]users where email = ${email}`;
   }
 
   async create(user: Omit<User, "id">): Promise<UserRecord | null> {
@@ -50,7 +52,7 @@ export class UserRepo {
     params.pop();
 
     const sql: string[] = [];
-    sql.push(`insert into users (${sqlFields.join(",")}) VALUES (NOW(), NOW(),`);
+    sql.push(`insert into [TABLE_PREFIX]users (${sqlFields.join(",")}) VALUES (NOW(), NOW(),`);
     sql.push(...params);
     sql.push(")");
 
@@ -60,7 +62,7 @@ export class UserRepo {
   }
 
   deleteById(id: string) {
-    return this.sql.execute`delete from users where id = ${id}`;
+    return this.sql.execute`delete from [TABLE_PREFIX]users where id = ${id}`;
   }
 
   async updateUser(user: User) {
@@ -75,7 +77,7 @@ export class UserRepo {
     }
     values.push(id);
     let updateSql = sqlFields.map((f) => f + " = ?").join(",");
-    updateSql = `update users set ${updateSql} where id = ? `;
+    updateSql = `update [TABLE_PREFIX]users set ${updateSql} where id = ? `;
 
     await this.sql.execute(updateSql.split("?"), ...values);
     return await this.getById(id);

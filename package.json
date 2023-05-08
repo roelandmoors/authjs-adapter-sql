@@ -1,6 +1,6 @@
 {
   "name": "authjs-adapter-sql",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "Sql adapter for next-auth.",
   "homepage": "https://github.com/roelandmoors/authjs-adapter-sql",
   "repository": "https://github.com/roelandmoors/authjs-adapter-sql",
@@ -55,7 +55,7 @@
     "access": "public"
   },
   "scripts": {
-    "test": "jest tests/mysql2.test.ts tests/pg-promise.test.ts",
+    "test": "jest tests/mysql2.test.ts tests/pg-promise.test.ts tests/pg-promise-schema.test.ts",
     "build": "tsc"
   },
   "files": [
