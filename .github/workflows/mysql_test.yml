@@ -27,6 +27,7 @@ jobs:
           sudo systemctl start mysql.service
           mysql -e 'CREATE DATABASE ${{ env.DB_DATABASE }};' -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}    
           mysql -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }} ${{ env.DB_DATABASE }} < ./mysql.sql
+          mysql -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }} ${{ env.DB_DATABASE }} < ./mysql_prefix.sql
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
