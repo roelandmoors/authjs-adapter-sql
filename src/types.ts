@@ -10,7 +10,7 @@ export type Dialect = "postgres" | "mysql";
 
 export type Primitive = string | number | boolean | undefined | null;
 
-export type Sql = string | readonly string[];
+export type Sql = readonly string[];
 
 export interface QueryResultRow {
   [column: string]: any;

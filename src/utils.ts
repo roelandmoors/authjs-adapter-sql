@@ -29,8 +29,6 @@ export function buildParameterizedSql(o: Sql, dialect: Dialect): string {
   let sql = "";
   if (Array.isArray(sql)) {
     sql = generatePlaceholders(o as string[], dialect);
-  } else if (typeof o === "string" || o instanceof String) {
-    sql = o as string;
   } else if (o.hasOwnProperty("raw")) {
     sql = generatePlaceholders((o as TemplateStringsArray).raw, dialect);
   } else {
@@ -51,9 +49,6 @@ function generatePlaceholders(o: readonly string[], dialect: Dialect): string {
   return result;
 }
 
-export function replacePrefix(sql: Sql, prefix?: string) {
-  if (typeof sql === "string" || sql instanceof String) {
-    return sql.replaceAll("[TABLE_PREFIX]", prefix || "");
-  }
+export function replacePrefix(sql: Sql, prefix?: string): string[] {
   return sql.map((s) => s.replace("[TABLE_PREFIX]", prefix || ""));
 }

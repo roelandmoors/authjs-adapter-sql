@@ -16,11 +16,7 @@ function buildExtendedSqlHelpers(sqlHelpers: SqlHelpers, config: Configuration):
   const insert = async (sql: Sql, ...values: Primitive[]): Promise<ExecuteResult> => {
     let insertSql = sql.concat();
     if (sqlHelpers.dialect == "postgres") {
-      if (typeof insertSql === "string" || insertSql instanceof String) {
-        insertSql += " returning id";
-      } else {
-        insertSql[insertSql.length - 1] += " returning id";
-      }
+      insertSql[insertSql.length - 1] += " returning id";
     }
     return await execute(insertSql, ...values);
   };
