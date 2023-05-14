@@ -20,6 +20,7 @@ export const parseDate = (d: Date | string | null, addZ: boolean = false): Date 
 export function replaceUndefined(values: any[]): any[] {
   return values.map((x) => {
     if (x === undefined) return null;
+    if (Number.isNaN(x)) return null;
     return x;
   });
 }

@@ -23,7 +23,8 @@ function buildExtendedSqlHelpers(sqlHelpers: SqlHelpers, config: Configuration):
 
   const queryOne = async <T extends QueryResultRow>(sql: Sql, ...values: Primitive[]): Promise<T | null> => {
     const sqlWithPrefix = replacePrefix(sql, config.prefix);
-    const rows = await sqlHelpers.query<T>(sqlWithPrefix, ...values);
+    const replacedValues = replaceUndefined(values);
+    const rows = await sqlHelpers.query<T>(sqlWithPrefix, ...replacedValues);
     if (rows.length == 1) return rows[0];
     return null;
   };

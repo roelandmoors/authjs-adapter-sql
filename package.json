@@ -1,6 +1,6 @@
 {
   "name": "authjs-adapter-sql",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "description": "Sql adapter for next-auth.",
   "homepage": "https://github.com/roelandmoors/authjs-adapter-sql",
   "repository": "https://github.com/roelandmoors/authjs-adapter-sql",
@@ -16,7 +16,8 @@
     "./mysql2": "./dist/drivers/mysql2.js",
     "./planetscale": "./dist/drivers/planetscale.js",
     "./pg-promise": "./dist/drivers/pg-promise.js",
-    "./neon": "./dist/drivers/neon.js"
+    "./neon": "./dist/drivers/neon.js",
+    "./kysely": "./dist/drivers/kysely.js"
   },
   "typesVersions": {
     "*": {
@@ -37,6 +38,9 @@
       ],
       "neon": [
         "dist/drivers/neon.d.ts"
+      ],
+      "kysely": [
+        "dist/drivers/kysely.d.ts"
       ]
     }
   },
@@ -48,14 +52,15 @@
     "postgres",
     "mysql",
     "planetscale",
-    "vercel"
+    "vercel",
+    "kysely"
   ],
   "private": false,
   "publishConfig": {
     "access": "public"
   },
   "scripts": {
-    "test": "jest tests/mysql2.test.ts tests/pg-promise.test.ts tests/pg-promise-schema.test.ts",
+    "test": "jest tests/mysql2.test.ts jest tests/kysely.test.ts tests/pg-promise.test.ts tests/pg-promise-schema.test.ts",
     "build": "tsc"
   },
   "files": [
@@ -73,11 +78,12 @@
     "ts-jest": "^27.0.3"
   },
   "peerDependencies": {
+    "@neondatabase/serverless": "^0.4.3",
     "@planetscale/database": "^1.7.0",
     "@vercel/postgres": "^0.1.2",
     "mysql2": "^3.2.3",
     "pg-promise": "^11.4.3",
-    "@neondatabase/serverless": "^0.4.3"
+    "kysely": "^0.24.2"
   },
   "prettier": {
     "printWidth": 120
