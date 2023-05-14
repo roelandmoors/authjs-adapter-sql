@@ -13,16 +13,13 @@ const pool = mysql.createPool({
   database: process.env.DB_DATABASE || "authjs_test",
 });
 
-function getConnection() {
-  const db = new Kysely({
-    dialect: new MysqlDialect({
-      pool,
-    }),
-  });
-  return db;
-}
+const db = new Kysely({
+  dialect: new MysqlDialect({
+    pool,
+  }),
+});
 
-const helpers = builKyselyHelpers(getConnection);
+const helpers = builKyselyHelpers(db);
 const uow = buildUnitOfWork(helpers);
 
 // Close pool after tests

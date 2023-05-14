@@ -160,3 +160,40 @@ export default NextAuth({
   providers: [],
 });
 ```
+
+## How to use with Kysely
+
+Install:
+
+```
+npm i kysely mysql2 (or pg)
+```
+
+use [mysql.sql](mysql.sql) or [postgres.sql](postgres.sql) to create the tables.
+(you can add foreign keys if needed)
+
+```ts
+import SqlAdapter from "authjs-adapter-sql";
+import { Kysely, MysqlDialect } from "kysely";
+
+const pool = mysql.createPool({
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_DATABASE,
+});
+
+const db = new Kysely({
+  dialect: new MysqlDialect({
+    pool,
+  }),
+});
+
+// you can create your own helpers for custom logic
+const helpers = builKyselyHelpers(db);
+
+export default NextAuth({
+  adapter: SqlAdapter(helpers),
+  providers: [],
+});
+```
