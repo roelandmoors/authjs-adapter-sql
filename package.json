@@ -60,7 +60,7 @@
     "access": "public"
   },
   "scripts": {
-    "test": "jest tests/mysql2.test.ts jest tests/kysely-mysql.test.ts tests/pg-promise.test.ts tests/pg-promise-schema.test.ts",
+    "test": "jest tests/mysql2.test.ts jest tests/kysely-mysql.test.ts tests/kysely-postgres.test.ts tests/pg-promise.test.ts tests/pg-promise-schema.test.ts",
     "build": "tsc"
   },
   "files": [

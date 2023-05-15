@@ -1,12 +1,12 @@
 import { Kysely, sql } from "kysely";
-import type { ExecuteResult, Primitive, Sql, SqlHelpers } from "../types";
+import type { Dialect, ExecuteResult, Primitive, Sql, SqlHelpers } from "../types";
 
-const dialect = "mysql";
-
-export default function buildKyselyHelpers(db: Kysely<unknown>): SqlHelpers {
+export default function buildKyselyHelpers(db: Kysely<unknown>, dialect: Dialect): SqlHelpers {
   const execute = async (sqlStmt: Sql, ...values: Primitive[]): Promise<ExecuteResult> => {
     const result = await sql(sqlStmt as TemplateStringsArray, ...values).execute(db);
-    return { insertId: Number(result.insertId) };
+    let insertId = Number(result.insertId);
+    if (!insertId && result.rows && result.rows[0]) insertId = (result.rows[0] as any)["id"];
+    return { insertId };
   };
 
   const query = async <T>(sqlStmt: Sql, ...values: Primitive[]): Promise<T[]> => {
