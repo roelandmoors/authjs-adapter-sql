@@ -45,5 +45,5 @@ jobs:
           cache: "npm"
       - run: npm install
       - run: npm run build
-      - run: npx jest tests/pg-promise.test.ts
+      - run: npx jest tests/pg-promise.test.ts tests/pg-promise-schema.test.ts
         timeout-minutes: 5
