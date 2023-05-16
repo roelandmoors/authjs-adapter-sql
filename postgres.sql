@@ -41,7 +41,7 @@ CREATE TABLE "sessions" (
     PRIMARY KEY ("id")
 );
 CREATE UNIQUE INDEX session_token_ukey ON sessions (sessionToken);
-CREATE UNIQUE INDEX session_user_ukey ON sessions (user_id);
+CREATE INDEX session_user_ukey ON sessions (user_id);
 
 CREATE TABLE "verification_tokens" (
     "identifier" varchar(255) NOT NULL,
