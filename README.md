@@ -191,7 +191,7 @@ const db = new Kysely({
 });
 
 // you can create your own helpers for custom logic
-const helpers = builKyselyHelpers(db, "mysql");
+const helpers = builKyselyHelpers(db, "mysql"); //or postgres
 
 export default NextAuth({
   adapter: SqlAdapter(helpers),
