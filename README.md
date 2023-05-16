@@ -175,6 +175,7 @@ use [mysql.sql](mysql.sql) or [postgres.sql](postgres.sql) to create the tables.
 ```ts
 import SqlAdapter from "authjs-adapter-sql";
 import { Kysely, MysqlDialect } from "kysely";
+import builKyselyHelpers from "authjs-adapter-sql/kysely";
 
 const pool = mysql.createPool({
   host: process.env.DB_HOST,

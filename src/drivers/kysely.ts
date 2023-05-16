@@ -1,7 +1,7 @@
 import { Kysely, sql } from "kysely";
 import type { Dialect, ExecuteResult, Primitive, Sql, SqlHelpers } from "../types";
 
-export default function buildKyselyHelpers(db: Kysely<unknown>, dialect: Dialect): SqlHelpers {
+export default function buildKyselyHelpers(db: Kysely<any>, dialect: Dialect): SqlHelpers {
   const execute = async (sqlStmt: Sql, ...values: Primitive[]): Promise<ExecuteResult> => {
     const result = await sql(sqlStmt as TemplateStringsArray, ...values).execute(db);
     let insertId = Number(result.insertId);
