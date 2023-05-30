@@ -37,7 +37,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: "pnpm"
       - run: pnpm install
-      - run: pnpm install kysely mysql2 @planetscale/database
+      - run: pnpm install kysely mysql2 @planetscale/database pg-promise @neondatabase/serverless
       - run: pnpm run build
       - run: pnpm run test-mysql
         timeout-minutes: 5
