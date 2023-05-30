@@ -11,18 +11,15 @@ dependencies:
   '@planetscale/database':
     specifier: ^1.7.0
     version: 1.7.0
-  '@vercel/postgres':
-    specifier: ^0.1.2
-    version: 0.1.2
   kysely:
-    specifier: '>=0.24.2'
-    version: 0.24.2
+    specifier: ^0.25.0
+    version: 0.25.0
   mysql2:
     specifier: ^3.2.3
     version: 3.3.3
   next-auth:
     specifier: ^4
-    version: 4.0.0(react-dom@17.0.2)(react@17.0.2)
+    version: 4.0.0(mysql2@3.3.3)(pg@8.10.0)(react-dom@17.0.2)(react@17.0.2)
   pg-promise:
     specifier: ^11.4.3
     version: 11.4.3
@@ -876,16 +873,6 @@ packages:
     resolution: {integrity: sha512-fbF6oTd4sGGy0xjHPKAt+eS2CrxJ3+6gQ3FGcBoIJR2TLAyCkCyI8JqZNy+FeON0AhVgNJoUumVoZQjBFUqHkw==}
     dev: false
 
-  /@vercel/postgres@0.1.2:
-    resolution: {integrity: sha512-RTpI/C3koy49bzbxwB2QbWugvdYb5pUy/iKI+CiNiFaVTiwFTpq3Xo/c8ZOZhD3M71iIl7yqHHyhkgDjywkSyw==}
-    engines: {node: '>=14.6'}
-    dependencies:
-      '@neondatabase/serverless': 0.4.3
-      bufferutil: 4.0.7
-      utf-8-validate: 6.0.3
-      ws: 8.13.0(bufferutil@4.0.7)(utf-8-validate@6.0.3)
-    dev: false
-
   /abab@2.0.6:
     resolution: {integrity: sha512-j2afSsaIENvHZN2B8GOpF566vZ5WVk5opAiMTvWgaQT8DkbOqsTfvNAvHoRGU2zzP8cPoqys+xHTRDWW8L+/BA==}
     dev: true
@@ -1127,14 +1114,6 @@ packages:
     dependencies:
       base64-js: 1.5.1
       ieee754: 1.2.1
-    dev: false
-
-  /bufferutil@4.0.7:
-    resolution: {integrity: sha512-kukuqc39WOHtdxtw4UScxF/WVnMFVSQVKhtx3AjZJzhd0RGZZldcrfSEbVsWWe6KNH253574cq5F+wpv0G9pJw==}
-    engines: {node: '>=6.14.2'}
-    requiresBuild: true
-    dependencies:
-      node-gyp-build: 4.6.0
     dev: false
 
   /callsites@3.1.0:
@@ -2356,8 +2335,8 @@ packages:
     engines: {node: '>=6'}
     dev: true
 
-  /kysely@0.24.2:
-    resolution: {integrity: sha512-+7eaTJNUYm2yRq1x+lEOZc+78TO35dTZ9b0dh49+Z9CTt2byMSbMiOKpwPlOyCAaHD4kILkAYWYZNywFlmBwRA==}
+  /kysely@0.25.0:
+    resolution: {integrity: sha512-srn0efIMu5IoEBk0tBmtGnoUss4uwvxtbFQWG/U2MosfqIace1l43IFP1PmEpHRDp+Z79xIcKEqmHH3dAvQdQA==}
     engines: {node: '>=14.0.0'}
     dev: false
 
@@ -2547,7 +2526,7 @@ packages:
     resolution: {integrity: sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==}
     dev: true
 
-  /next-auth@4.0.0(react-dom@17.0.2)(react@17.0.2):
+  /next-auth@4.0.0(mysql2@3.3.3)(pg@8.10.0)(react-dom@17.0.2)(react@17.0.2):
     resolution: {integrity: sha512-GLEBWKRMpJZ4g/dSwj3kBpkk/jrARR6OjbqYlO3qi4J/SiO//QaD9YwUxIU6Vdw6x71YWV6OIwUIzMT8weAwLg==}
     deprecated: This is a bad release. Make sure you have 4.0.1 or newer, or you use a `next` or `beta` release tag.
     peerDependencies:
@@ -2567,7 +2546,7 @@ packages:
       react: 17.0.2
       react-dom: 17.0.2(react@17.0.2)
       require_optional: 1.0.1
-      typeorm: 0.2.45
+      typeorm: 0.2.45(mysql2@3.3.3)(pg@8.10.0)
     transitivePeerDependencies:
       - '@sap/hana-client'
       - better-sqlite3
@@ -2575,6 +2554,7 @@ packages:
       - ioredis
       - mongodb
       - mssql
+      - mysql2
       - oracledb
       - pg
       - pg-native
@@ -2599,11 +2579,6 @@ packages:
       fetch-blob: 3.2.0
       formdata-polyfill: 4.0.10
     dev: true
-
-  /node-gyp-build@4.6.0:
-    resolution: {integrity: sha512-NTZVKn9IylLwUzaKjkas1e4u2DLNcV4rdYagA4PWdPwW87Bi7z+BznyKSRwS/761tV/lzCGXplWsiaMjLqP2zQ==}
-    hasBin: true
-    dev: false
 
   /node-int64@0.4.0:
     resolution: {integrity: sha512-O5lz91xSOeoXP6DulyHfllpq+Eg00MWitZIbtPfoSEvqIHdl5gfcY6hYzDWnj0qD5tz52PI08u9qUvSVeUBeHw==}
@@ -3350,7 +3325,7 @@ packages:
       is-typedarray: 1.0.0
     dev: true
 
-  /typeorm@0.2.45:
+  /typeorm@0.2.45(mysql2@3.3.3)(pg@8.10.0):
     resolution: {integrity: sha512-c0rCO8VMJ3ER7JQ73xfk0zDnVv0WDjpsP6Q1m6CVKul7DB9iVdWLRjPzc8v2eaeBuomsbZ2+gTaYr8k1gm3bYA==}
     hasBin: true
     peerDependencies:
@@ -3411,6 +3386,8 @@ packages:
       glob: 7.2.3
       js-yaml: 4.1.0
       mkdirp: 1.0.4
+      mysql2: 3.3.3
+      pg: 8.10.0
       reflect-metadata: 0.1.13
       sha.js: 2.4.11
       tslib: 2.5.2
@@ -3450,14 +3427,6 @@ packages:
       querystringify: 2.2.0
       requires-port: 1.0.0
     dev: true
-
-  /utf-8-validate@6.0.3:
-    resolution: {integrity: sha512-uIuGf9TWQ/y+0Lp+KGZCMuJWc3N9BHA+l/UmHd/oUHwJJDeysyTRxNQVkbzsIWfGFbRe3OcgML/i0mvVRPOyDA==}
-    engines: {node: '>=6.14.2'}
-    requiresBuild: true
-    dependencies:
-      node-gyp-build: 4.6.0
-    dev: false
 
   /uuid@8.3.2:
     resolution: {integrity: sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==}
@@ -3572,22 +3541,6 @@ packages:
       utf-8-validate:
         optional: true
     dev: true
-
-  /ws@8.13.0(bufferutil@4.0.7)(utf-8-validate@6.0.3):
-    resolution: {integrity: sha512-x9vcZYTrFPC7aSIbj7sRCYo7L/Xb8Iy+pW0ng0wt2vCJv7M9HOMy0UoN3rr+IFC7hb7vXoqS+P9ktyLLLhO+LA==}
-    engines: {node: '>=10.0.0'}
-    peerDependencies:
-      bufferutil: ^4.0.1
-      utf-8-validate: '>=5.0.2'
-    peerDependenciesMeta:
-      bufferutil:
-        optional: true
-      utf-8-validate:
-        optional: true
-    dependencies:
-      bufferutil: 4.0.7
-      utf-8-validate: 6.0.3
-    dev: false
 
   /xml-name-validator@3.0.0:
     resolution: {integrity: sha512-A5CUptxDsvxKJEU3yO6DuWBSJz/qizqzJKOMIfUJHETbBw/sFaDxgd6fxm1ewUaM0jZ444Fc5vC5ROYurg/4Pw==}
