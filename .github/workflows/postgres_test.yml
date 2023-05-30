@@ -43,7 +43,10 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
-      - run: npm install
-      - run: npm run build
-      - run: npx jest tests/pg-promise.test.ts tests/pg-promise-schema.test.ts tests/kysely-postgres.test.ts
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 6.0.2
+      - run: pnpm install
+      - run: pnpm run build
+      - run: pnpm run test-postgres
         timeout-minutes: 5

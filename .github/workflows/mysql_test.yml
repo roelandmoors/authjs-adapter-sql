@@ -33,7 +33,10 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
-      - run: npm install
-      - run: npm run build
-      - run: npx jest tests/mysql2.test.ts tests/kysely-mysql.test.ts
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 6.0.2
+      - run: pnpm install
+      - run: pnpm run build
+      - run: pnpm run test-mysql
         timeout-minutes: 5
