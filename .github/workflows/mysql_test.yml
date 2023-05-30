@@ -30,7 +30,7 @@ jobs:
           mysql -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }} ${{ env.DB_DATABASE }} < ./mysql_prefix.sql
       - uses: pnpm/action-setup@v2
         with:
-          version: 6.0.2
+          version: 8.6.0
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:

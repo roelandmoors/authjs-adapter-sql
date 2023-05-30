@@ -12,12 +12,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 6.0.2
       - uses: actions/setup-node@v3
         with:
           node-version: 18
           registry-url: https://registry.npmjs.org/
-      - run: npm install
-      - run: npm run build
-      - run: npm publish
+      - run: pnpm install
+      - run: pnpm install kysely mysql2 @planetscale/database pg-promise @neondatabase/serverless
+      - run: pnpm run build
+      - run: pnpm publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
