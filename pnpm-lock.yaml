@@ -15,7 +15,7 @@ dependencies:
     specifier: ^0.1.2
     version: 0.1.2
   kysely:
-    specifier: ^0.24.2
+    specifier: '>=0.24.2'
     version: 0.24.2
   mysql2:
     specifier: ^3.2.3

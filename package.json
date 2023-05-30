@@ -1,6 +1,6 @@
 {
   "name": "authjs-adapter-sql",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Sql adapter for next-auth.",
   "homepage": "https://github.com/roelandmoors/authjs-adapter-sql",
   "repository": "https://github.com/roelandmoors/authjs-adapter-sql",
@@ -60,6 +60,7 @@
     "access": "public"
   },
   "scripts": {
+    "preinstall": "npx only-allow pnpm",
     "test": "jest tests/mysql2.test.ts jest tests/kysely-mysql.test.ts tests/kysely-postgres.test.ts tests/pg-promise.test.ts tests/pg-promise-schema.test.ts",
     "test-postgres": "jest tests/pg-promise.test.ts tests/pg-promise-schema.test.ts tests/kysely-postgres.test.ts",
     "test-mysql": "jest tests/mysql2.test.ts tests/kysely-mysql.test.ts",
@@ -85,7 +86,7 @@
     "@vercel/postgres": "^0.1.2",
     "mysql2": "^3.2.3",
     "pg-promise": "^11.4.3",
-    "kysely": "^0.24.2"
+    "kysely": ">=0.24.2"
   },
   "prettier": {
     "printWidth": 120
