@@ -44,7 +44,7 @@ jobs:
           psql -h localhost -U postgres -d postgres -f ./postgres_schema.sql
       - uses: pnpm/action-setup@v2
         with:
-          version: 8.6.0
+          version: 8
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
