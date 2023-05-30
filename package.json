@@ -78,15 +78,16 @@
     "dotenv": "^16.0.3",
     "jest": "^27.5.1",
     "node-fetch": "^3.3.1",
-    "ts-jest": "^27.0.3"
+    "ts-jest": "^27.0.3",
+    "typescript": "^5.0.4"
   },
   "peerDependencies": {
     "@neondatabase/serverless": "^0.4.3",
     "@planetscale/database": "^1.7.0",
     "@vercel/postgres": "^0.1.2",
+    "kysely": ">=0.24.2",
     "mysql2": "^3.2.3",
-    "pg-promise": "^11.4.3",
-    "kysely": ">=0.24.2"
+    "pg-promise": "^11.4.3"
   },
   "prettier": {
     "printWidth": 120
