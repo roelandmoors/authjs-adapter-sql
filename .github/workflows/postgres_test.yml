@@ -50,7 +50,6 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: pnpm install
-      - run: pnpm install kysely mysql2 @planetscale/database pg-promise @neondatabase/serverless
       - run: pnpm run build
       - run: pnpm run test-postgres
         timeout-minutes: 5
