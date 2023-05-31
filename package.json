@@ -84,7 +84,7 @@
   "peerDependencies": {
     "@neondatabase/serverless": "^0.4.3",
     "@planetscale/database": "^1.7.0",
-    "kysely": ">=0.24.0",
+    "kysely": "^0.25.0",
     "mysql2": "^3.2.3",
     "pg-promise": "^11.4.3"
   },
