@@ -37,7 +37,7 @@ export default function SqlAdapter(sqlHelpers: SqlHelpers, config?: Configuratio
     },
 
     async updateUser(user) {
-      if (user.id == null) throw new Error("empty user id");
+      if (!user.id) throw new Error("empty user id");
       const userRecord = await db.users.updateUser(user);
       if (userRecord == null) throw new Error("user not found after update");
       return convertUser(userRecord);
