@@ -177,7 +177,7 @@ use [mysql.sql](mysql.sql) or [postgres.sql](postgres.sql) to create the tables.
 ```ts
 import SqlAdapter from "authjs-adapter-sql";
 import { Kysely, MysqlDialect } from "kysely";
-import builKyselyHelpers from "authjs-adapter-sql/kysely";
+import buildKyselyHelpers from "authjs-adapter-sql/kysely";
 
 const pool = mysql.createPool({
   host: process.env.DB_HOST,
@@ -193,7 +193,7 @@ const db = new Kysely({
 });
 
 // you can create your own helpers for custom logic
-const helpers = builKyselyHelpers(db, "mysql"); //or postgres
+const helpers = buildKyselyHelpers(db, "mysql"); //or postgres
 
 export default NextAuth({
   adapter: SqlAdapter(helpers),

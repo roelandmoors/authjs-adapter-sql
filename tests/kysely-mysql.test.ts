@@ -1,6 +1,6 @@
 import { runBasicTests } from "@next-auth/adapter-test";
 import SqlAdapter from "../src";
-import builKyselyHelpers from "../src/drivers/kysely";
+import buildKyselyHelpers from "../src/drivers/kysely";
 import { buildUnitOfWork } from "../src/db";
 import dbTests from "./shared";
 import { Kysely, MysqlDialect } from "kysely";
@@ -19,7 +19,7 @@ const db = new Kysely({
   }),
 });
 
-const helpers = builKyselyHelpers(db, "mysql");
+const helpers = buildKyselyHelpers(db, "mysql");
 const uow = buildUnitOfWork(helpers);
 
 // Close pool after tests
