@@ -10,7 +10,7 @@ CREATE TABLE "auth"."users" (
     "updated_at" timestamp NOT NULL DEFAULT now(),
     PRIMARY KEY ("id")
 );
-CREATE UNIQUE INDEX auth_users_email_ukey ON users (email);
+CREATE UNIQUE INDEX auth_users_email_ukey ON "auth"."users" (email);
 
 CREATE TABLE "auth"."accounts" (
     "id" bigserial NOT NULL,
@@ -31,7 +31,7 @@ CREATE TABLE "auth"."accounts" (
     "updated_at" timestamp NOT NULL DEFAULT now(),
     PRIMARY KEY ("id")
 );
-CREATE UNIQUE INDEX auth_accounts_user_ukey ON accounts (user_id);
+CREATE UNIQUE INDEX auth_accounts_user_ukey ON "auth"."accounts" (user_id);
 
 CREATE TABLE "auth"."sessions" (
     "id" bigserial NOT NULL,
@@ -42,8 +42,8 @@ CREATE TABLE "auth"."sessions" (
     "updated_at" timestamp NOT NULL DEFAULT now(),
     PRIMARY KEY ("id")
 );
-CREATE UNIQUE INDEX auth_session_token_ukey ON sessions (sessionToken);
-CREATE UNIQUE INDEX auth_session_user_ukey ON sessions (user_id);
+CREATE UNIQUE INDEX auth_session_token_ukey ON "auth"."sessions" (session_token);
+CREATE UNIQUE INDEX auth_session_user_ukey ON "auth"."sessions" (user_id);
 
 CREATE TABLE "auth"."verification_tokens" (
     "identifier" varchar(255) NOT NULL,
