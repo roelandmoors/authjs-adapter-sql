@@ -4,7 +4,7 @@ import { buildParameterizedSql } from "../utils";
 
 const dialect = "postgres";
 
-export default function buildNeonHelpers(pool: Pool): SqlHelpers {
+export function buildNeonHelpers(pool: Pool): SqlHelpers {
   const execute = async (sql: Sql, ...values: Primitive[]): Promise<ExecuteResult> => {
     const paramSql = buildParameterizedSql(sql, dialect);
     const { rows } = await pool.query(paramSql, values);
@@ -20,3 +20,5 @@ export default function buildNeonHelpers(pool: Pool): SqlHelpers {
 
   return { execute, query, dialect };
 }
+
+export default buildNeonHelpers;

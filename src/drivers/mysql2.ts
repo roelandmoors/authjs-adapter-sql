@@ -4,7 +4,7 @@ import { buildParameterizedSql } from "../utils";
 
 const dialect = "mysql";
 
-export default function buildMysql2Helpers(getConnection: () => Promise<Connection>): SqlHelpers {
+export function buildMysql2Helpers(getConnection: () => Promise<Connection>): SqlHelpers {
   const execute = async (sql: Sql, ...values: Primitive[]): Promise<ExecuteResult> => {
     const conn = await getConnection();
     try {
@@ -28,3 +28,5 @@ export default function buildMysql2Helpers(getConnection: () => Promise<Connecti
   };
   return { execute, query, dialect };
 }
+
+export default buildMysql2Helpers;

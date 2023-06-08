@@ -5,7 +5,7 @@ import { convertVerificationToken } from "./repo/verification";
 import { convertSession } from "./repo/session";
 import { Configuration, SqlHelpers } from "./types";
 
-export default function SqlAdapter(sqlHelpers: SqlHelpers, config?: Configuration): Adapter {
+export function SqlAdapter(sqlHelpers: SqlHelpers, config?: Configuration): Adapter {
   const db = buildUnitOfWork(sqlHelpers, config);
 
   return {
@@ -108,6 +108,8 @@ export default function SqlAdapter(sqlHelpers: SqlHelpers, config?: Configuratio
     },
   };
 }
+
+export default SqlAdapter;
 
 function isNumeric(value: string) {
   return /^\d+$/.test(value);

@@ -4,7 +4,7 @@ import { buildParameterizedSql } from "../utils";
 
 const dialect = "mysql";
 
-export default function buildPlanetScaleHelpers(client: Client): SqlHelpers {
+export function buildPlanetScaleHelpers(client: Client): SqlHelpers {
   const execute = async (sql: Sql, ...values: Primitive[]): Promise<ExecuteResult> => {
     const conn = client.connection();
     const paramSql = buildParameterizedSql(sql, dialect);
@@ -21,3 +21,5 @@ export default function buildPlanetScaleHelpers(client: Client): SqlHelpers {
 
   return { execute, query, dialect };
 }
+
+export default buildPlanetScaleHelpers;

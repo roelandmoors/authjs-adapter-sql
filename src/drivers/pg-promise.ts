@@ -4,7 +4,7 @@ import { buildParameterizedSql } from "../utils";
 
 const dialect = "postgres";
 
-export default function buildPgPromiseHelpers(getConnection: () => IDatabase<{}> & {}): SqlHelpers {
+export function buildPgPromiseHelpers(getConnection: () => IDatabase<{}> & {}): SqlHelpers {
   const execute = async (sql: Sql, ...values: Primitive[]): Promise<ExecuteResult> => {
     const db = getConnection();
     const paramSql = buildParameterizedSql(sql, dialect);
@@ -20,3 +20,5 @@ export default function buildPgPromiseHelpers(getConnection: () => IDatabase<{}>
   };
   return { execute, query, dialect };
 }
+
+export default buildPgPromiseHelpers;
