@@ -33,6 +33,24 @@ export default NextAuth({
 });
 ```
 
+## Default vs named imports
+
+If you have problems with default imports (ESM). Than you can also use named imports.
+
+Instead of this:
+
+```ts
+import SqlAdapter from "authjs-adapter-sql";
+import buildMysql2Helpers from "authjs-adapter-sql/mysql2";
+```
+
+Try this:
+
+```ts
+import { SqlAdapter } from "authjs-adapter-sql";
+import { buildMysql2Helpers } from "authjs-adapter-sql/mysql2";
+```
+
 ## How to use with Mysql2
 
 Install:
@@ -194,6 +212,43 @@ const db = new Kysely({
 
 // you can create your own helpers for custom logic
 const helpers = buildKyselyHelpers(db, "mysql"); //or postgres
+
+export default NextAuth({
+  adapter: SqlAdapter(helpers),
+  providers: [],
+});
+```
+
+## How to use with Knex
+
+Install:
+
+```
+npm i knex mysql2 (or pg)
+```
+
+use [mysql.sql](mysql.sql) or [postgres.sql](postgres.sql) to create the tables.
+(you can add foreign keys if needed)
+
+```ts
+import SqlAdapter from "authjs-adapter-sql";
+import { Knex, knex } from "knex";
+import buildKnexHelpers from "authjs-adapter-sql/knex";
+
+const config: Knex.Config = {
+  client: "mysql2",
+  connection: {
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_DATABASE,
+  },
+};
+
+const knexInstance = knex(config);
+
+// you can create your own helpers for custom logic
+const helpers = buildKnexHelpers(knexInstance, "mysql"); //or postgres
 
 export default NextAuth({
   adapter: SqlAdapter(helpers),
