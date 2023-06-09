@@ -35,7 +35,7 @@ export default NextAuth({
 
 ## Default vs named imports
 
-If you have problems with default imports (ESM). Than you can also use named imports.
+If you have problems with default imports in modules, than you can also try named imports.
 
 Instead of this:
 
@@ -44,7 +44,7 @@ import SqlAdapter from "authjs-adapter-sql";
 import buildMysql2Helpers from "authjs-adapter-sql/mysql2";
 ```
 
-Try this:
+try this:
 
 ```ts
 import { SqlAdapter } from "authjs-adapter-sql";
