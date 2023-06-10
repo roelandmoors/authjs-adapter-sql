@@ -2,6 +2,7 @@ import { User } from "@auth/core/types";
 import { Configuration, ExtendedSqlHelpers } from "../types";
 import { AdapterUser } from "@auth/core/adapters";
 import { datetimeToUtcStr, isNumeric, createDate } from "../utils";
+import { Logger, createLogger } from "../logger";
 
 export interface UserRecord {
   id: number;
@@ -26,26 +27,32 @@ export function convertUser(userRecord: UserRecord): AdapterUser {
 export class UserRepo {
   sql: ExtendedSqlHelpers;
   config: Configuration;
+  logger: Logger;
 
   constructor(sql: ExtendedSqlHelpers, config: Configuration) {
     this.sql = sql;
     this.config = config;
+    this.logger = createLogger("user", config.verbose);
   }
 
   async getByStringId(id: string): Promise<UserRecord | null> {
+    this.logger.info("getByStringId", { id });
     if (!isNumeric(id)) return null;
     return await this.getById(Number(id));
   }
 
   getById(id: number): Promise<UserRecord | null> {
+    this.logger.info("getById", { id });
     return this.sql.queryOne<UserRecord>`select * from [TABLE_PREFIX]users where id = ${id}`;
   }
 
   getByEmail(email: string): Promise<UserRecord | null> {
+    this.logger.info("getByEmail", { email });
     return this.sql.queryOne<UserRecord>`select * from [TABLE_PREFIX]users where email = ${email}`;
   }
 
   async create(user: Omit<User, "id">): Promise<UserRecord | null> {
+    this.logger.info("create", { user });
     let sqlFields = ["created_at", "updated_at"];
     let params = [];
     let values = [];
@@ -71,10 +78,12 @@ export class UserRepo {
   }
 
   deleteById(id: string) {
+    this.logger.info("deleteById", { id });
     return this.sql.execute`delete from [TABLE_PREFIX]users where id = ${id}`;
   }
 
   async updateUser(user: User) {
+    this.logger.info("updateUser", { user });
     const id = Number(user.id);
 
     let sqlFields = [];

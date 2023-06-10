@@ -3,7 +3,7 @@ export interface Logger {
   error: (func: string, values: any) => void;
 }
 
-export function createLogger(name: string, verbose: boolean): Logger {
+export function createLogger(name: string, verbose?: boolean): Logger {
   return {
     info: (func: string, values: any) => {
       if (verbose) console.info(`[AUTH - ${name} - ${func}]`, values);

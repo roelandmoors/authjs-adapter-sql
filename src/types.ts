@@ -1,6 +1,6 @@
 export interface Configuration {
   prefix?: string;
-  verbose: boolean;
+  verbose?: boolean;
 }
 
 export interface ExecuteResult {
