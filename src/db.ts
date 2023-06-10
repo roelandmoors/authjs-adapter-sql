@@ -41,8 +41,9 @@ export interface UnitOfWork {
 }
 
 export function buildUnitOfWork(sqlHelpers: SqlHelpers, config?: Configuration): UnitOfWork {
-  config ||= {};
-  config.prefix ||= "";
+  config ??= { verbose: false };
+  config.prefix ??= "";
+  config.verbose ??= false;
 
   const esqlHelpers = buildExtendedSqlHelpers(sqlHelpers, config);
 

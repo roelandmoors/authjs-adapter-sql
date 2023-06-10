@@ -72,6 +72,7 @@
     "test": "jest tests/mysql2.test.ts jest tests/kysely-mysql.test.ts tests/kysely-postgres.test.ts tests/pg-promise.test.ts tests/pg-promise-schema.test.ts tests/knex-postgres.test.ts tests/knex-mysql.test.ts tests/slonik.test.ts",
     "test-postgres": "jest tests/pg-promise.test.ts tests/pg-promise-schema.test.ts tests/kysely-postgres.test.ts tests/knex-postgres.test.ts tests/slonik.test.ts",
     "test-mysql": "jest tests/mysql2.test.ts tests/kysely-mysql.test.ts tests/knex-mysql.test.ts",
+    "test-all": "jest --runInBand",
     "build": "tsc"
   },
   "files": [

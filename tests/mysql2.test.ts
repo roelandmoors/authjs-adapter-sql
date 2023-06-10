@@ -22,7 +22,7 @@ runBasicTests({
   db: dbTests(db),
 });
 
-const config = { prefix: "auth_" };
+const config = { prefix: "auth_", verbose: true };
 const dbWithPrefix = buildUnitOfWork(mysqlHelpers, config);
 
 runBasicTests({
