@@ -23,14 +23,7 @@ export function buildSlonikHelpers(getConnection: () => Promise<DatabasePool>): 
         const field = result.fields[f];
         if (field.dataTypeId === 1114) {
           const row = rows[r] as any;
-          //console.log({ field, value: row[field.name] });
-          if (field.name == "expires") {
-            // Why is expires not in UTC? What am I doing wrong?
-            // Need to look into this if it is less hot in here. Going to join the kids in the pool..
-            row[field.name] = datetimeToString(new Date(row[field.name]), 0);
-          } else {
-            row[field.name] = datetimeToLocalStr(new Date(row[field.name]));
-          }
+          row[field.name] = datetimeToString(new Date(row[field.name]), 0);
         }
       }
     }

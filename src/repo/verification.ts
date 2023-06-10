@@ -1,6 +1,6 @@
 import { VerificationToken } from "@auth/core/adapters";
 import { Configuration, ExecuteResult, ExtendedSqlHelpers } from "../types";
-import { datetimeToUtcStr, parseUtcDate } from "../utils";
+import { datetimeToUtcStr, createDate } from "../utils";
 
 export interface VerificationTokenRecord {
   identifier: string;
@@ -14,7 +14,7 @@ export function convertVerificationToken(tokenRecord: VerificationTokenRecord): 
   return {
     identifier: tokenRecord.identifier,
     token: tokenRecord.token,
-    expires: parseUtcDate(tokenRecord.expires) ?? new Date(),
+    expires: createDate(tokenRecord.expires) ?? new Date(),
   };
 }
 

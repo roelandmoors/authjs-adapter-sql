@@ -1,7 +1,7 @@
 import { User } from "@auth/core/types";
 import { Configuration, ExtendedSqlHelpers } from "../types";
 import { AdapterUser } from "@auth/core/adapters";
-import { datetimeToUtcStr, isNumeric, parseUtcDate } from "../utils";
+import { datetimeToUtcStr, isNumeric, createDate } from "../utils";
 
 export interface UserRecord {
   id: number;
@@ -18,7 +18,7 @@ export function convertUser(userRecord: UserRecord): AdapterUser {
     id: userRecord.id.toString(),
     name: userRecord.name,
     email: userRecord.email,
-    emailVerified: parseUtcDate(userRecord.email_verified, true),
+    emailVerified: createDate(userRecord.email_verified),
     image: userRecord.image,
   };
 }

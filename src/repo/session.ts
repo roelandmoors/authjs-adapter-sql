@@ -1,5 +1,5 @@
 import { Configuration, ExtendedSqlHelpers } from "../types";
-import { datetimeToUtcStr, parseUtcDate } from "../utils";
+import { datetimeToUtcStr, createDate } from "../utils";
 
 export interface SessionRecord {
   id: number;
@@ -14,7 +14,7 @@ export function convertSession(rec: SessionRecord): any {
   return {
     id: rec.id,
     userId: rec.user_id.toString(),
-    expires: parseUtcDate(rec.expires),
+    expires: createDate(rec.expires),
     sessionToken: rec.session_token,
   };
 }

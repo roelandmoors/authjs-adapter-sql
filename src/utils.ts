@@ -18,9 +18,9 @@ export function datetimeToString(d?: Date, correction: number = 1): string {
 }
 
 // convert string back to date
-export const parseUtcDate = (d: Date | string | null, addZ: boolean = false): Date | null => {
+// depending on the driver it can be a string of Date object
+export const createDate = (d: Date | string | null): Date | null => {
   if (typeof d === "string") {
-    if (addZ) d += "Z";
     return new Date(Date.parse(d));
   } else return d;
 };
