@@ -1,15 +1,24 @@
 import { Dialect, Sql } from "./types";
 
 //compensate zone difference before creating string of date
-export function datetimeToStr(expires?: Date): string {
-  if (!expires) expires = new Date();
-  const tzoffset = expires.getTimezoneOffset() * 60000; //offset in milliseconds
-  const localISOTime = new Date(expires.getTime() - tzoffset).toISOString().slice(0, -1);
-  return localISOTime;
+export function datetimeToLocalStr(d?: Date): string {
+  return datetimeToString(d, 1);
+}
+
+//compensate zone difference before creating string of date
+export function datetimeToUtcStr(d?: Date): string {
+  return datetimeToString(d, -1);
+}
+
+export function datetimeToString(d?: Date, correction: number = 1): string {
+  if (!d) d = new Date();
+  const tzoffset = d.getTimezoneOffset() * 60000 * correction; //offset in milliseconds
+  const convertedTime = new Date(d.getTime() + tzoffset).toISOString().slice(0, -1);
+  return convertedTime;
 }
 
 // convert string back to date
-export const parseDate = (d: Date | string | null, addZ: boolean = false): Date | null => {
+export const parseUtcDate = (d: Date | string | null, addZ: boolean = false): Date | null => {
   if (typeof d === "string") {
     if (addZ) d += "Z";
     return new Date(Date.parse(d));

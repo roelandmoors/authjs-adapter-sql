@@ -1,6 +1,6 @@
 import { VerificationToken } from "next-auth/adapters";
 import { Configuration, ExecuteResult, ExtendedSqlHelpers } from "../types";
-import { datetimeToStr, parseDate } from "../utils";
+import { datetimeToUtcStr, parseUtcDate } from "../utils";
 
 export interface VerificationTokenRecord {
   identifier: string;
@@ -14,7 +14,7 @@ export function convertVerificationToken(tokenRecord: VerificationTokenRecord): 
   return {
     identifier: tokenRecord.identifier,
     token: tokenRecord.token,
-    expires: parseDate(tokenRecord.expires) ?? new Date(),
+    expires: parseUtcDate(tokenRecord.expires) ?? new Date(),
   };
 }
 
@@ -35,7 +35,7 @@ export class VerificationTokenRepo {
   async create(identifier: string, token: string, expires: Date): Promise<VerificationTokenRecord | null> {
     await this.sql
       .execute`insert into [TABLE_PREFIX]verification_tokens (identifier, token, expires, created_at, updated_at) 
-      VALUES (${identifier},${token},${datetimeToStr(expires)},NOW(),NOW())`;
+      VALUES (${identifier},${token},${datetimeToUtcStr(expires)},NOW(),NOW())`;
     return await this.getByToken(token, identifier);
   }
 

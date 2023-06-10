@@ -1,13 +1,13 @@
 import { User } from "next-auth";
 import { Configuration, ExtendedSqlHelpers } from "../types";
 import { AdapterUser } from "next-auth/adapters";
-import { datetimeToStr, parseDate } from "../utils";
+import { datetimeToUtcStr, parseUtcDate } from "../utils";
 
 export interface UserRecord {
   id: number;
   name: string | null | undefined;
   email: string;
-  email_verified: Date | string | null;
+  email_verified: string | null;
   image: string | null | undefined;
   created_at: Date;
   updated_at: Date;
@@ -18,7 +18,7 @@ export function convertUser(userRecord: UserRecord): AdapterUser {
     id: userRecord.id.toString(),
     name: userRecord.name,
     email: userRecord.email,
-    emailVerified: parseDate(userRecord.email_verified, true),
+    emailVerified: parseUtcDate(userRecord.email_verified, true),
     image: userRecord.image,
   };
 }
@@ -48,7 +48,7 @@ export class UserRepo {
       sqlFields.push(toSnakeCase(field));
       params.push(",");
       if ((value as any) instanceof Date) {
-        values.push(datetimeToStr(value as any));
+        values.push(datetimeToUtcStr(value as any));
       } else {
         values.push(value);
       }

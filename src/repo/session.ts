@@ -1,10 +1,10 @@
 import { Configuration, ExtendedSqlHelpers } from "../types";
-import { datetimeToStr, parseDate } from "../utils";
+import { datetimeToUtcStr, parseUtcDate } from "../utils";
 
 export interface SessionRecord {
   id: number;
   user_id: number;
-  expires: Date;
+  expires: string;
   session_token: string;
   created_at: Date;
   updated_at: Date;
@@ -14,7 +14,7 @@ export function convertSession(rec: SessionRecord): any {
   return {
     id: rec.id,
     userId: rec.user_id.toString(),
-    expires: parseDate(rec.expires),
+    expires: parseUtcDate(rec.expires),
     sessionToken: rec.session_token,
   };
 }
@@ -47,12 +47,12 @@ export class SessionRepo {
   async create(userId: string, sessionToken: string, expires: Date): Promise<SessionRecord | null> {
     const result = await this.sql.insert`insert into [TABLE_PREFIX]sessions 
       (user_id, expires, session_token, created_at, updated_at) 
-      VALUES (${userId},${datetimeToStr(expires)},${sessionToken},NOW(),NOW())`;
+      VALUES (${userId},${datetimeToUtcStr(expires)},${sessionToken},NOW(),NOW())`;
     return await this.getById(result.insertId);
   }
 
   async updateExpires(sessionToken: string, expires?: Date): Promise<SessionRecord | null> {
-    const result = await this.sql.execute`update [TABLE_PREFIX]sessions set expires = ${datetimeToStr(
+    const result = await this.sql.execute`update [TABLE_PREFIX]sessions set expires = ${datetimeToUtcStr(
       expires
     )} where session_token = ${sessionToken} `;
     return await this.getById(result.insertId);

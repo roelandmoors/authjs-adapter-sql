@@ -14,7 +14,7 @@
 This adapter uses plain sql statements to integrate with [Authjs](https://authjs.dev/).
 
 Support for Mysql ([mysql2](https://github.com/sidorares/node-mysql2)) and Postgres ([pg-promise](https://github.com/vitaly-t/pg-promise)).  
-Also works with the [PlanetScale Serverless Driver](https://github.com/planetscale/database-js), [Neon Serverless Driver](https://github.com/neondatabase/serverless), [Kysely](https://kysely-org.github.io/kysely/) and [Knex](https://knexjs.org/).
+Also works with the [PlanetScale Serverless Driver](https://github.com/planetscale/database-js), [Neon Serverless Driver](https://github.com/neondatabase/serverless), [Kysely](https://kysely-org.github.io/kysely/), [Knex](https://knexjs.org/) and [Slonik](https://github.com/gajus/slonik).
 
 You can create a custom helper function to support other drivers if needed.
 
