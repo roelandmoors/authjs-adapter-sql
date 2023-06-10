@@ -1,7 +1,7 @@
 import { User } from "next-auth";
 import { Configuration, ExtendedSqlHelpers } from "../types";
 import { AdapterUser } from "next-auth/adapters";
-import { parseDate } from "../utils";
+import { datetimeToStr, parseDate } from "../utils";
 
 export interface UserRecord {
   id: number;
@@ -47,7 +47,11 @@ export class UserRepo {
     for (const [field, value] of Object.entries(user)) {
       sqlFields.push(toSnakeCase(field));
       params.push(",");
-      values.push(value);
+      if ((value as any) instanceof Date) {
+        values.push(datetimeToStr(value as any));
+      } else {
+        values.push(value);
+      }
     }
     params.pop();
 
