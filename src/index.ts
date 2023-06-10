@@ -1,4 +1,4 @@
-import type { Adapter } from "next-auth/adapters";
+import type { Adapter } from "@auth/core/adapters";
 import { buildUnitOfWork } from "./db";
 import { convertUser } from "./repo/user";
 import { convertVerificationToken } from "./repo/verification";
