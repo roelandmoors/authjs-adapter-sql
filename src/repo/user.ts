@@ -1,7 +1,7 @@
 import { User } from "@auth/core/types";
 import { Configuration, ExtendedSqlHelpers } from "../types";
 import { AdapterUser } from "@auth/core/adapters";
-import { datetimeToUtcStr, parseUtcDate } from "../utils";
+import { datetimeToUtcStr, isNumeric, parseUtcDate } from "../utils";
 
 export interface UserRecord {
   id: number;
@@ -30,6 +30,11 @@ export class UserRepo {
   constructor(sql: ExtendedSqlHelpers, config: Configuration) {
     this.sql = sql;
     this.config = config;
+  }
+
+  async getByStringId(id: string): Promise<UserRecord | null> {
+    if (!isNumeric(id)) return null;
+    return await this.getById(Number(id));
   }
 
   getById(id: number): Promise<UserRecord | null> {

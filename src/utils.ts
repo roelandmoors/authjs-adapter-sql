@@ -62,3 +62,7 @@ function generatePlaceholders(o: readonly string[], dialect: Dialect): string {
 export function replacePrefix(sql: Sql, prefix?: string): string[] {
   return sql.map((s) => s.replace("[TABLE_PREFIX]", prefix || ""));
 }
+
+export function isNumeric(value: string) {
+  return /^\d+$/.test(value);
+}

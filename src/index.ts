@@ -17,8 +17,7 @@ export function SqlAdapter(sqlHelpers: SqlHelpers, config?: Configuration): Adap
     },
 
     async getUser(id) {
-      if (!isNumeric(id)) return null;
-      const userRecord = await db.users.getById(Number(id));
+      const userRecord = await db.users.getByStringId(id);
       if (userRecord == null) return null;
       return convertUser(userRecord);
     },
@@ -111,7 +110,3 @@ export function SqlAdapter(sqlHelpers: SqlHelpers, config?: Configuration): Adap
 }
 
 export default SqlAdapter;
-
-function isNumeric(value: string) {
-  return /^\d+$/.test(value);
-}
