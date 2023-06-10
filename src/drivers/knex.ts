@@ -7,7 +7,7 @@ export function buildKnexHelpers(knex: Knex, dialect: Dialect): SqlHelpers {
     const paramSql = buildParameterizedSql(sql, "mysql");
     const result = await knex.raw(paramSql, values);
     if (dialect == "mysql") return { insertId: Number(result[0].insertId) };
-    let insertId: number;
+    let insertId = 0;
     if (result.rows && result.rows[0]) insertId = (result.rows[0] as any)["id"];
     return { insertId };
   };

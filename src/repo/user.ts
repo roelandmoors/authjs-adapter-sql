@@ -1,6 +1,6 @@
-import { User } from "next-auth";
+import { User } from "@auth/core/types";
 import { Configuration, ExtendedSqlHelpers } from "../types";
-import { AdapterUser } from "next-auth/adapters";
+import { AdapterUser } from "@auth/core/adapters";
 import { datetimeToUtcStr, parseUtcDate } from "../utils";
 
 export interface UserRecord {

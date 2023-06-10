@@ -1,4 +1,4 @@
-import { VerificationToken } from "next-auth/adapters";
+import { VerificationToken } from "@auth/core/adapters";
 import { Configuration, ExecuteResult, ExtendedSqlHelpers } from "../types";
 import { datetimeToUtcStr, parseUtcDate } from "../utils";
 

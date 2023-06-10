@@ -1,4 +1,4 @@
-import { Dialect, Sql } from "./types";
+import { Dialect, Primitive, PrimitiveDefined, Sql } from "./types";
 
 //compensate zone difference before creating string of date
 export function datetimeToLocalStr(d?: Date): string {
@@ -26,7 +26,7 @@ export const parseUtcDate = (d: Date | string | null, addZ: boolean = false): Da
 };
 
 // replace all undefined with null in array
-export function replaceUndefined(values: any[]): any[] {
+export function replaceUndefined(values: Primitive[]): PrimitiveDefined[] {
   return values.map((x) => {
     if (x === undefined) return null;
     if (Number.isNaN(x)) return null;

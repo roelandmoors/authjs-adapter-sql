@@ -1,6 +1,6 @@
 {
   "name": "authjs-adapter-sql",
-  "version": "0.2.6",
+  "version": "1.0.0-rc1",
   "description": "Sql adapter for next-auth.",
   "homepage": "https://github.com/roelandmoors/authjs-adapter-sql",
   "repository": "https://github.com/roelandmoors/authjs-adapter-sql",
@@ -108,6 +108,6 @@
     ]
   },
   "dependencies": {
-    "next-auth": "^4.22.1"
+    "@auth/core": "^0.8.2"
   }
 }

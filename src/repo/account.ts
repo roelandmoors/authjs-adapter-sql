@@ -1,11 +1,11 @@
-import { AdapterAccount } from "next-auth/adapters";
-import { ProviderType } from "next-auth/providers";
+import { AdapterAccount } from "@auth/core/adapters";
+import { ProviderType } from "@auth/core/providers";
 import { Configuration, ExtendedSqlHelpers } from "../types";
 
 export interface AccountRecord {
   id: number;
   user_id: number;
-  type: ProviderType;
+  type: Extract<ProviderType, "oauth" | "oidc" | "email">;
   provider: string;
   provider_account_id: string;
   access_token?: string;

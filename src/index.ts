@@ -1,9 +1,10 @@
-import type { Adapter } from "next-auth/adapters";
+import type { Adapter } from "@auth/core/adapters";
 import { buildUnitOfWork } from "./db";
 import { convertUser } from "./repo/user";
 import { convertVerificationToken } from "./repo/verification";
 import { convertSession } from "./repo/session";
 import { Configuration, SqlHelpers } from "./types";
+import { User } from "@auth/core/types";
 
 export function SqlAdapter(sqlHelpers: SqlHelpers, config?: Configuration): Adapter {
   const db = buildUnitOfWork(sqlHelpers, config);
@@ -38,7 +39,7 @@ export function SqlAdapter(sqlHelpers: SqlHelpers, config?: Configuration): Adap
 
     async updateUser(user) {
       if (!user.id) throw new Error("empty user id");
-      const userRecord = await db.users.updateUser(user);
+      const userRecord = await db.users.updateUser(user as User);
       if (userRecord == null) throw new Error("user not found after update");
       return convertUser(userRecord);
     },
@@ -61,7 +62,7 @@ export function SqlAdapter(sqlHelpers: SqlHelpers, config?: Configuration): Adap
         token_type: account.token_type,
         scope: account.scope,
         id_token: account.id_token,
-        session_state: account.session_state,
+        session_state: account.session_state?.toString(),
       });
     },
 
