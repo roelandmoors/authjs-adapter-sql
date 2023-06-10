@@ -255,3 +255,34 @@ export default NextAuth({
   providers: [],
 });
 ```
+
+## How to use with Slonik
+
+Install:
+
+```
+npm i slonik pg
+```
+
+use [postgres.sql](postgres.sql) to create the tables.
+(you can add foreign keys if needed)
+
+```ts
+import SqlAdapter from "authjs-adapter-sql";
+import buildSlonikHelpers from "authjs-adapter-sql/slonik";
+import { createPool } from "slonik";
+
+const poolPromise = createPool("postgres://postgres:postgres@localhost:5432/postgres");
+
+function getConnection() {
+  return poolPromise;
+}
+
+// you can create your own helpers for custom logic
+const helpers = buildSlonikHelpers(getConnection);
+
+export default NextAuth({
+  adapter: SqlAdapter(helpers),
+  providers: [],
+});
+```
