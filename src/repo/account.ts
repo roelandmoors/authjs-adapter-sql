@@ -5,7 +5,7 @@ import { Configuration, ExtendedSqlHelpers } from "../types";
 export interface AccountRecord {
   id: number;
   user_id: number;
-  type: ProviderType;
+  type: Extract<ProviderType, "oauth" | "oidc" | "email">;
   provider: string;
   provider_account_id: string;
   access_token?: string;
