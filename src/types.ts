@@ -1,5 +1,6 @@
 export interface Configuration {
   prefix?: string;
+  verbose?: boolean;
 }
 
 export interface ExecuteResult {

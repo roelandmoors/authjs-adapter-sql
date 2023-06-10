@@ -20,11 +20,13 @@ You can create a custom helper function to support other drivers if needed.
 
 ## Configuration
 
-You can set an optional table prefix/postgres schema.
+You can set an optional table prefix/postgres **schema**.  
+There is also a **verbose** option to log all actions
 
 ```ts
 const config = {
-  prefix: "auth_", //or for example 'auth.' for a postgres schema
+  prefix: "auth_", // or for example 'auth.' for a postgres schema
+  verbose: true, // optional, false by default
 };
 
 export default NextAuth({
