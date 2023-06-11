@@ -4,8 +4,10 @@ import SqlAdapter from "../src";
 import { buildUnitOfWork } from "../src/db";
 import buildVercelHelpers from "../src/drivers/vercel";
 import dbTests from "./shared";
-import ws from "ws";
 import { createPool } from "@vercel/postgres";
+
+// Needed for getting it to work in Jest
+import ws from "ws";
 import { neonConfig } from "@neondatabase/serverless";
 neonConfig.webSocketConstructor = ws;
 
