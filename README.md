@@ -14,7 +14,7 @@
 This adapter uses plain sql statements to integrate with [Authjs](https://authjs.dev/).
 
 Support for Mysql ([mysql2](https://github.com/sidorares/node-mysql2)) and Postgres ([pg-promise](https://github.com/vitaly-t/pg-promise)).  
-Also works with the [PlanetScale Serverless Driver](https://github.com/planetscale/database-js), [Neon Serverless Driver](https://github.com/neondatabase/serverless), [Kysely](https://kysely-org.github.io/kysely/), [Knex](https://knexjs.org/) and [Slonik](https://github.com/gajus/slonik).
+Also works with the [PlanetScale Serverless Driver](https://github.com/planetscale/database-js), [Neon Serverless Driver](https://github.com/neondatabase/serverless), [Kysely](https://kysely-org.github.io/kysely/), [Knex](https://knexjs.org/), [Slonik](https://github.com/gajus/slonik) and [Vercel](https://github.com/vercel/storage/tree/main/packages/postgres)
 
 You can create a custom helper function to support other drivers if needed.
 
@@ -282,6 +282,33 @@ function getConnection() {
 
 // you can create your own helpers for custom logic
 const helpers = buildSlonikHelpers(getConnection);
+
+export default NextAuth({
+  adapter: SqlAdapter(helpers),
+  providers: [],
+});
+```
+
+## How to use with @vercel/postgres
+
+Install:
+
+```
+npm i authjs-adapter-sql @vercel/postgres
+```
+
+use [postgres.sql](postgres.sql) to create the tables.
+(you can add foreign keys if needed)
+
+```ts
+import SqlAdapter from "authjs-adapter-sql";
+import buildVercelHelpers from "authjs-adapter-sql/vercel";
+import { createPool } from "@vercel/postgres";
+
+const pool = createPool();
+
+// you can create your own helpers for custom logic
+const helpers = buildVercelHelpers(pool);
 
 export default NextAuth({
   adapter: SqlAdapter(helpers),
