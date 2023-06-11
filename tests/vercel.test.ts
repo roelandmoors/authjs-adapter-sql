@@ -2,7 +2,7 @@ require("dotenv").config();
 import { runBasicTests } from "@next-auth/adapter-test";
 import SqlAdapter from "../src";
 import { buildUnitOfWork } from "../src/db";
-import buildNeonHelpers from "../src/drivers/neon";
+import buildVercelHelpers from "../src/drivers/vercel";
 import dbTests from "./shared";
 import ws from "ws";
 import { createPool } from "@vercel/postgres";
@@ -14,7 +14,7 @@ const pool = createPool({
   /* config */
 });
 
-const helpers = buildNeonHelpers(pool);
+const helpers = buildVercelHelpers(pool);
 const uow = buildUnitOfWork(helpers);
 
 // Close pool after tests
