@@ -97,7 +97,8 @@
     "mysql2": "^3.2.3",
     "pg-promise": "^11.4.3",
     "knex": "^2.4.2",
-    "slonik": "^34.0.1"
+    "slonik": "^34.0.1",
+    "@vercel/postgres": "^0.3.0"
   },
   "prettier": {
     "printWidth": 120
