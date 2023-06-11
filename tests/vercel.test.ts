@@ -6,13 +6,10 @@ import buildVercelHelpers from "../src/drivers/vercel";
 import dbTests from "./shared";
 import ws from "ws";
 import { createPool } from "@vercel/postgres";
-import { neonConfig, Pool } from "@neondatabase/serverless";
+import { neonConfig } from "@neondatabase/serverless";
 neonConfig.webSocketConstructor = ws;
 
-// Need to customize your config?:
-const pool = createPool({
-  /* config */
-});
+const pool = createPool();
 
 const helpers = buildVercelHelpers(pool);
 const uow = buildUnitOfWork(helpers);

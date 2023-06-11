@@ -1,6 +1,6 @@
 {
   "name": "authjs-adapter-sql",
-  "version": "1.0.0-rc3",
+  "version": "1.0.0-rc4",
   "description": "Sql adapter for next-auth.",
   "homepage": "https://github.com/roelandmoors/authjs-adapter-sql",
   "repository": "https://github.com/roelandmoors/authjs-adapter-sql",
@@ -19,7 +19,8 @@
     "./neon": "./dist/drivers/neon.js",
     "./kysely": "./dist/drivers/kysely.js",
     "./knex": "./dist/drivers/knex.js",
-    "./slonik": "./dist/drivers/slonik.js"
+    "./slonik": "./dist/drivers/slonik.js",
+    "./vercel": "./dist/drivers/vercel.js"
   },
   "typesVersions": {
     "*": {
@@ -49,6 +50,9 @@
       ],
       "slonik": [
         "dist/drivers/slonik.d.ts"
+      ],
+      "vercel": [
+        "dist/drivers/vercel.d.ts"
       ]
     }
   },
