@@ -3,11 +3,12 @@ import { buildUnitOfWork } from "./db";
 import { convertUser } from "./repo/user";
 import { convertVerificationToken } from "./repo/verification";
 import { convertSession } from "./repo/session";
-import { Configuration, SqlHelpers } from "./types";
+import { Configuration } from "./types";
 import { User } from "@auth/core/types";
+import { SqlTag } from "sql-tagged-template";
 
-export function SqlAdapter(sqlHelpers: SqlHelpers, config?: Configuration): Adapter {
-  const db = buildUnitOfWork(sqlHelpers, config);
+export function SqlAdapter(sqltag: SqlTag, config?: Configuration): Adapter {
+  const db = buildUnitOfWork(sqltag, config);
 
   return {
     async createUser(user) {

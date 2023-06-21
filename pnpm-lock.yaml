@@ -32,6 +32,9 @@ dependencies:
   slonik:
     specifier: ^34.0.1
     version: 34.0.1(zod@3.21.4)
+  sql-tagged-template:
+    specifier: ^0.0.2
+    version: link:../sql-tagged-template
 
 devDependencies:
   '@next-auth/adapter-test':

@@ -1,8 +1,9 @@
 import { User } from "@auth/core/types";
-import { Configuration, ExtendedSqlHelpers } from "../types";
+import { Configuration } from "../types";
 import { AdapterUser } from "@auth/core/adapters";
 import { datetimeToUtcStr, isNumeric, createDate } from "../utils";
 import { Logger, createLogger } from "../logger";
+import { SqlTag } from "sql-tagged-template";
 
 export interface UserRecord {
   id: number;
@@ -25,11 +26,11 @@ export function convertUser(userRecord: UserRecord): AdapterUser {
 }
 
 export class UserRepo {
-  sql: ExtendedSqlHelpers;
+  sql: SqlTag;
   config: Configuration;
   logger: Logger;
 
-  constructor(sql: ExtendedSqlHelpers, config: Configuration) {
+  constructor(sql: SqlTag, config: Configuration) {
     this.sql = sql;
     this.config = config;
     this.logger = createLogger("user", config.verbose);
@@ -43,16 +44,17 @@ export class UserRepo {
 
   getById(id: number): Promise<UserRecord | null> {
     this.logger.info("getById", { id });
-    return this.sql.queryOne<UserRecord>`select * from [TABLE_PREFIX]users where id = ${id}`;
+    return this.sql`select * from [TABLE_PREFIX]users where id = ${id}`.selectOne<UserRecord>();
   }
 
   getByEmail(email: string): Promise<UserRecord | null> {
     this.logger.info("getByEmail", { email });
-    return this.sql.queryOne<UserRecord>`select * from [TABLE_PREFIX]users where email = ${email}`;
+    return this.sql`select * from [TABLE_PREFIX]users where email = ${email}`.selectOne<UserRecord>();
   }
 
   async create(user: Omit<User, "id">): Promise<UserRecord | null> {
     this.logger.info("create", { user });
+    //TODO: user sql tag features
     let sqlFields = ["created_at", "updated_at"];
     let params = [];
     let values = [];
@@ -72,20 +74,22 @@ export class UserRepo {
     sql.push(...params);
     sql.push(")");
 
-    const result = await this.sql.insert(sql, ...values);
+    const insertId = await this.sql(sql, ...values).insert();
 
-    return await this.getById(result.insertId);
+    return await this.getById(insertId);
   }
 
   deleteById(id: string) {
     this.logger.info("deleteById", { id });
-    return this.sql.execute`delete from [TABLE_PREFIX]users where id = ${id}`;
+    return this.sql`delete from [TABLE_PREFIX]users where id = ${id}`.query();
   }
 
   async updateUser(user: User) {
     this.logger.info("updateUser", { user });
+
     const id = Number(user.id);
 
+    //TODO: user sql tag features
     let sqlFields = [];
     let values = [];
     for (const [field, value] of Object.entries(user)) {
@@ -97,7 +101,7 @@ export class UserRepo {
     let updateSql = sqlFields.map((f) => f + " = ?").join(",");
     updateSql = `update [TABLE_PREFIX]users set ${updateSql} where id = ? `;
 
-    await this.sql.execute(updateSql.split("?"), ...values);
+    await this.sql(updateSql.split("?"), ...values).query();
     return await this.getById(id);
   }
 }

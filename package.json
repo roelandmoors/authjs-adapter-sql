@@ -97,12 +97,12 @@
   "peerDependencies": {
     "@neondatabase/serverless": "^0.4.3",
     "@planetscale/database": "^1.7.0",
+    "@vercel/postgres": "^0.3.0",
+    "knex": "^2.4.2",
     "kysely": ">=0.24.0",
     "mysql2": "^3.2.3",
     "pg-promise": "^11.4.3",
-    "knex": "^2.4.2",
-    "slonik": "^34.0.1",
-    "@vercel/postgres": "^0.3.0"
+    "slonik": "^34.0.1"
   },
   "prettier": {
     "printWidth": 120
@@ -114,6 +114,7 @@
     ]
   },
   "dependencies": {
-    "@auth/core": "^0.8.2"
+    "@auth/core": "^0.8.2",
+    "sql-tagged-template": "^0.0.2"
   }
 }

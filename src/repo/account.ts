@@ -1,7 +1,8 @@
 import { AdapterAccount } from "@auth/core/adapters";
 import { ProviderType } from "@auth/core/providers";
-import { Configuration, ExtendedSqlHelpers } from "../types";
+import { Configuration } from "../types";
 import { Logger, createLogger } from "../logger";
+import { SqlTag } from "sql-tagged-template";
 
 export interface AccountRecord {
   id: number;
@@ -40,11 +41,11 @@ export function convertAccount(rec: AccountRecord): AdapterAccount {
 }
 
 export class AccountRepo {
-  sql: ExtendedSqlHelpers;
+  sql: SqlTag;
   config: Configuration;
   logger: Logger;
 
-  constructor(sql: ExtendedSqlHelpers, config: Configuration) {
+  constructor(sql: SqlTag, config: Configuration) {
     this.sql = sql;
     this.config = config;
     this.logger = createLogger("account", config.verbose);
@@ -52,34 +53,34 @@ export class AccountRepo {
 
   getById(id: number): Promise<AccountRecord | null> {
     this.logger.info("getById", { id });
-    return this.sql.queryOne<AccountRecord>`select * from [TABLE_PREFIX]accounts where id = ${id}`;
+    return this.sql`select * from [TABLE_PREFIX]accounts where id = ${id}`.selectOne<AccountRecord>();
   }
 
   getByProvider(provider: string, providerAccountId: string): Promise<AccountRecord | null> {
     this.logger.info("getByProvider", { provider, providerAccountId });
-    return this.sql.queryOne<AccountRecord>`
+    return this.sql`
       select * from [TABLE_PREFIX]accounts 
-      where provider = ${provider} and provider_account_id = ${providerAccountId}`;
+      where provider = ${provider} and provider_account_id = ${providerAccountId}`.selectOne<AccountRecord>();
   }
 
   deleteByProvider(provider: string, providerAccountId: string) {
     this.logger.info("deleteByProvider", { provider, providerAccountId });
-    return this.sql.execute`delete from [TABLE_PREFIX]accounts 
-        where provider = ${provider} and provider_account_id = ${providerAccountId}`;
+    return this.sql`delete from [TABLE_PREFIX]accounts 
+        where provider = ${provider} and provider_account_id = ${providerAccountId}`.query();
   }
 
   deleteByUserId(userId: string) {
     this.logger.info("deleteByUserId", { userId });
-    return this.sql.execute`delete from [TABLE_PREFIX]accounts where user_id = ${userId}`;
+    return this.sql`delete from [TABLE_PREFIX]accounts where user_id = ${userId}`.query();
   }
 
   async create(
     rec: Omit<AccountRecord, "id" | "oauth_token_secret" | "oauth_token" | "created_at" | "updated_at">
   ): Promise<AccountRecord | null> {
     this.logger.info("create", { rec });
-    const result = await this.sql.insert`insert into [TABLE_PREFIX]accounts 
+    const insertId = await this.sql`insert into [TABLE_PREFIX]accounts 
         (user_id, type, provider, provider_account_id, access_token, refresh_token, expires_at, token_type, scope, id_token, session_state, created_at, updated_at ) 
-        VALUES (${rec.user_id},${rec.type},${rec.provider},${rec.provider_account_id},${rec.access_token},${rec.refresh_token},${rec.expires_at},${rec.token_type},${rec.scope},${rec.id_token},${rec.session_state},NOW(),NOW())`;
-    return await this.getById(result.insertId);
+        VALUES (${rec.user_id},${rec.type},${rec.provider},${rec.provider_account_id},${rec.access_token},${rec.refresh_token},${rec.expires_at},${rec.token_type},${rec.scope},${rec.id_token},${rec.session_state},NOW(),NOW())`.insert();
+    return await this.getById(insertId);
   }
 }
