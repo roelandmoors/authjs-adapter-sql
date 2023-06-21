@@ -15,7 +15,7 @@
     "./types": "./dist/types.js",
     "./mysql2": "./dist/drivers/mysql2.js",
     "./planetscale": "./dist/drivers/planetscale.js",
-    "./pg-promise": "./dist/drivers/pg-promise.js",
+    "./pg": "./dist/drivers/pg.js",
     "./neon": "./dist/drivers/neon.js",
     "./kysely": "./dist/drivers/kysely.js",
     "./knex": "./dist/drivers/knex.js",
@@ -36,8 +36,8 @@
       "planetscale": [
         "dist/drivers/planetscale.d.ts"
       ],
-      "pg-promise": [
-        "dist/drivers/pg-promise.d.ts"
+      "pg": [
+        "dist/drivers/pg.d.ts"
       ],
       "neon": [
         "dist/drivers/neon.d.ts"
@@ -73,8 +73,8 @@
   },
   "scripts": {
     "preinstall": "npx only-allow pnpm",
-    "test": "jest tests/mysql2.test.ts jest tests/kysely-mysql.test.ts tests/kysely-postgres.test.ts tests/pg-promise.test.ts tests/pg-promise-schema.test.ts tests/knex-postgres.test.ts tests/knex-mysql.test.ts tests/slonik.test.ts",
-    "test-postgres": "jest tests/pg-promise.test.ts tests/pg-promise-schema.test.ts tests/kysely-postgres.test.ts tests/knex-postgres.test.ts tests/slonik.test.ts",
+    "test": "jest tests/mysql2.test.ts jest tests/kysely-mysql.test.ts tests/kysely-postgres.test.ts tests/pg.test.ts tests/pg-schema.test.ts tests/knex-postgres.test.ts tests/knex-mysql.test.ts tests/slonik.test.ts",
+    "test-postgres": "jest tests/pg.test.ts tests/pg-schema.test.ts tests/kysely-postgres.test.ts tests/knex-postgres.test.ts tests/slonik.test.ts",
     "test-mysql": "jest tests/mysql2.test.ts tests/kysely-mysql.test.ts tests/knex-mysql.test.ts",
     "test-all": "jest --runInBand",
     "build": "tsc"
@@ -88,6 +88,8 @@
     "@next-auth/tsconfig": "https://gitpkg.now.sh/nextauthjs/next-auth/packages/tsconfig?main",
     "@swc/core": "^1.3.61",
     "@swc/jest": "^0.2.26",
+    "@types/node": "^20.3.1",
+    "@types/pg": "^8.10.2",
     "dotenv": "^16.1.1",
     "jest": "^27.5.1",
     "node-fetch": "^3.3.1",
@@ -101,7 +103,7 @@
     "knex": "^2.4.2",
     "kysely": ">=0.24.0",
     "mysql2": "^3.2.3",
-    "pg-promise": "^11.4.3",
+    "pg": "^8.11.0",
     "slonik": "^34.0.1"
   },
   "prettier": {
@@ -115,6 +117,6 @@
   },
   "dependencies": {
     "@auth/core": "^0.8.2",
-    "sql-tagged-template": "^0.0.2"
+    "sql-tagged-template": "^0.0.4"
   }
 }

@@ -1,25 +1,26 @@
-import pgPromise from "pg-promise";
+import { Pool } from "pg";
 import { runBasicTests } from "@next-auth/adapter-test";
 import SqlAdapter from "../src";
-import buildPgPromiseHelpers from "../src/drivers/pg-promise";
+import buildPgHelpers from "../src/drivers/pg";
 import { buildUnitOfWork } from "../src/db";
 import dbTests from "./shared";
 
-const pgp = pgPromise();
-const db = pgp("postgres://postgres:postgres@localhost:5432/postgres");
+const pool = new Pool({
+  connectionString: "postgres://postgres:postgres@localhost:5432/postgres",
+});
 
 function getConnection() {
-  return db;
+  return pool.connect();
 }
 
-const pgHelpers = buildPgPromiseHelpers(getConnection);
+const pgHelpers = buildPgHelpers(getConnection);
 const uow = buildUnitOfWork(pgHelpers);
 
 // Close pool after tests
 let dbTestsWithDisconnect = {
   ...dbTests(uow),
   disconnect: async () => {
-    await pgp.end();
+    await pool.end();
   },
 };
 

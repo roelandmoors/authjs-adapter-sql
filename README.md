@@ -125,12 +125,12 @@ export default NextAuth({
 - https://planetscale.com/docs/learn/operating-without-foreign-key-constraints
 - https://planetscale.com/docs/tutorials/planetscale-serverless-driver
 
-## How to use with pg-promise
+## How to use with pg
 
 Install:
 
 ```
-npm i authjs-adapter-sql pg-promise
+npm i authjs-adapter-sql pg
 ```
 
 use [postgres.sql](postgres.sql) to create the tables.
@@ -138,21 +138,22 @@ use [postgres.sql](postgres.sql) to create the tables.
 
 ```ts
 import SqlAdapter from "authjs-adapter-sql";
-import pgPromise from "pg-promise";
-import buildPgPromiseHelpers from "../src/pg-promise";
+import { Pool } from "pg";
+import buildPgHelpers from "authjs-adapter-sql/pg";
 
-const pgp = pgPromise();
-const db = pgp("postgres://postgres:postgres@localhost:5432/postgres");
+const pool = new Pool({
+  connectionString: "postgres://postgres:postgres@localhost:5432/postgres",
+});
 
 function getConnection() {
-  return db;
+  return pool.connect();
 }
 
 // you can create your own helpers for custom logic
-const pgHelpers = buildPgPromiseHelpers(getConnection);
+const helpers = buildPgHelpers(getConnection);
 
 export default NextAuth({
-  adapter: SqlAdapter(pgHelpers),
+  adapter: SqlAdapter(helpers),
   providers: [],
 });
 ```
