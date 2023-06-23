@@ -13,7 +13,7 @@
 
 This adapter uses plain sql statements to integrate with [Authjs](https://authjs.dev/).
 
-Support for Mysql ([mysql2](https://github.com/sidorares/node-mysql2)) and Postgres ([pg-promise](https://github.com/vitaly-t/pg-promise)).  
+Support for Mysql ([mysql2](https://github.com/sidorares/node-mysql2)) and Postgres ([pg](https://node-postgres.com/)).  
 Also works with the [PlanetScale Serverless Driver](https://github.com/planetscale/database-js), [Neon Serverless Driver](https://github.com/neondatabase/serverless), [Kysely](https://kysely-org.github.io/kysely/), [Knex](https://knexjs.org/), [Slonik](https://github.com/gajus/slonik) and [Vercel](https://github.com/vercel/storage/tree/main/packages/postgres)
 
 You can create a custom helper function to support other drivers if needed.
@@ -95,6 +95,35 @@ const nextConfig = {
     serverComponentsExternalPackages: ["mysql2"],
   },
 };
+```
+
+## How to use with pg
+
+Install:
+
+```
+npm i authjs-adapter-sql pg
+```
+
+use [postgres.sql](postgres.sql) to create the tables.
+(you can add foreign keys if needed)
+
+```ts
+import SqlAdapter from "authjs-adapter-sql";
+import { Pool } from "pg";
+import buildPgHelpers from "../src/pg";
+
+const pool = new Pool({
+  connectionString: "postgres://postgres:postgres@localhost:5432/postgres",
+});
+
+// you can create your own helpers for custom logic
+const pgHelpers = buildPgHelpers(() => pool.connect());
+
+export default NextAuth({
+  adapter: SqlAdapter(pgHelpers),
+  providers: [],
+});
 ```
 
 ## How to use with PlanetScale serverless driver

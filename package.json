@@ -15,6 +15,7 @@
     "./types": "./dist/types.js",
     "./mysql2": "./dist/drivers/mysql2.js",
     "./planetscale": "./dist/drivers/planetscale.js",
+    "./pg": "./dist/drivers/pg.js",
     "./pg-promise": "./dist/drivers/pg-promise.js",
     "./neon": "./dist/drivers/neon.js",
     "./kysely": "./dist/drivers/kysely.js",
@@ -35,6 +36,9 @@
       ],
       "planetscale": [
         "dist/drivers/planetscale.d.ts"
+      ],
+      "pg": [
+        "dist/drivers/pg.d.ts"
       ],
       "pg-promise": [
         "dist/drivers/pg-promise.d.ts"
@@ -73,8 +77,8 @@
   },
   "scripts": {
     "preinstall": "npx only-allow pnpm",
-    "test": "jest tests/mysql2.test.ts jest tests/kysely-mysql.test.ts tests/kysely-postgres.test.ts tests/pg-promise.test.ts tests/pg-promise-schema.test.ts tests/knex-postgres.test.ts tests/knex-mysql.test.ts tests/slonik.test.ts",
-    "test-postgres": "jest tests/pg-promise.test.ts tests/pg-promise-schema.test.ts tests/kysely-postgres.test.ts tests/knex-postgres.test.ts tests/slonik.test.ts",
+    "test": "jest tests/pg.test tests/mysql2.test.ts jest tests/kysely-mysql.test.ts tests/kysely-postgres.test.ts tests/pg-promise.test.ts tests/pg-promise-schema.test.ts tests/knex-postgres.test.ts tests/knex-mysql.test.ts tests/slonik.test.ts",
+    "test-postgres": "jest tests/pg.test tests/pg-promise.test.ts tests/pg-promise-schema.test.ts tests/kysely-postgres.test.ts tests/knex-postgres.test.ts tests/slonik.test.ts",
     "test-mysql": "jest tests/mysql2.test.ts tests/kysely-mysql.test.ts tests/knex-mysql.test.ts",
     "test-all": "jest --runInBand",
     "build": "tsc"
@@ -100,6 +104,7 @@
     "kysely": ">=0.24.0",
     "mysql2": "^3.2.3",
     "pg-promise": "^11.4.3",
+    "pg": "^8.11.0",
     "knex": "^2.4.2",
     "slonik": "^34.0.1",
     "@vercel/postgres": "^0.3.0"
